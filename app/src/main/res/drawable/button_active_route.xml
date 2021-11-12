@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <bitmap
+            android:gravity="fill"
+            android:src="@drawable/route_background"
+            android:alpha="0.7"/>
+    </item>
+    <item
+        android:gravity="top">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/purple_second_transparent" />
+        </shape>
+    </item>
+    <item
+        android:height="10dp"
+        android:gravity="bottom">
+        <shape
+            android:layout_width="match_parent"
+            android:shape="rectangle">
+            <solid android:color="@color/purple_first" />
+        </shape>
+    </item>
+</layer-list>
