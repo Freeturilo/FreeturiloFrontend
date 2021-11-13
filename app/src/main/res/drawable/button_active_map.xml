@@ -14,7 +14,7 @@
         </shape>
     </item>
     <item
-        android:height="10dp"
+        android:height="@dimen/purple_border_height"
         android:gravity="bottom">
         <shape
             android:layout_width="match_parent"

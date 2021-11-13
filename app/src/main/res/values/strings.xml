@@ -4,4 +4,5 @@
     <string name="map_button_text">Mapa</string>
     <string name="route_button_text">Trasa</string>
     <string name="history_button_text">Historia tras</string>
+    <string name="map_textview_text">Mapa</string>
 </resources>
