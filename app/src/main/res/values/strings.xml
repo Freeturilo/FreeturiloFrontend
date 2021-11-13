@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Freeturilo</string>
-    <string name="logo_description">Application logo</string>
+    <string name="logo_description">Logo aplikacji</string>
     <string name="map_button_text">Mapa</string>
     <string name="route_button_text">Trasa</string>
     <string name="history_button_text">Historia tras</string>
     <string name="map_textview_text">Mapa</string>
+    <string name="map_description">Mapa</string>
+    <string name="no_favourites_message">Ulubione miejsca są niedostępne</string>
 </resources>
