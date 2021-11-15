@@ -31,7 +31,7 @@ public class FavouriteDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.FavouriteDialogTheme);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         final View inflated = inflater.inflate(R.layout.dialog_fragment_favourite, null);
         final EditText nameEditText = inflated.findViewById(R.id.name);
