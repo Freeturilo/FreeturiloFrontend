@@ -4,6 +4,7 @@
     <color name="purple_second">#FFBEA0D3</color>
     <color name="purple_second_transparent">#B3BEA0D3</color>
     <color name="purple_back">#FFFFE9FF</color>
+    <color name="grey">#FFB3B3B3</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
