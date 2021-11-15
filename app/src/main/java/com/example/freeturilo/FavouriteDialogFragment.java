@@ -38,20 +38,29 @@ public class FavouriteDialogFragment extends DialogFragment {
         final RadioGroup typeRadioGroup = inflated.findViewById(R.id.favourite_buttons);
         builder.setView(inflated)
                 .setPositiveButton(R.string.ok_text, (dialog, id) -> {
-                    Favourite favourite = new Favourite();
-                    favourite.name = nameEditText.getText().toString();
-                    favourite.latitude = latLng.latitude;
-                    favourite.longitude = latLng.longitude;
-                    favourite.type = FavouriteType.OTHER;
+                    String name = nameEditText.getText().toString();
+                    FavouriteType type = FavouriteType.OTHER;
                     int buttonId = typeRadioGroup.getCheckedRadioButtonId();
-                    if (buttonId == R.id.favourite_home_button)
-                        favourite.type = FavouriteType.HOME;
-                    else if (buttonId == R.id.favourite_work_button)
-                        favourite.type = FavouriteType.WORK;
-                    else if (buttonId == R.id.favourite_school_button)
-                        favourite.type = FavouriteType.SCHOOL;
-                    else if (buttonId == R.id.favourite_other_button)
-                        favourite.type = FavouriteType.OTHER;
+                    final int homeId = R.id.favourite_home_button;
+                    final int workId = R.id.favourite_work_button;
+                    final int schoolId = R.id.favourite_school_button;
+                    final int otherId = R.id.favourite_other_button;
+                    switch (buttonId) {
+                        case homeId:
+                            type = FavouriteType.HOME;
+                            break;
+                        case workId:
+                            type = FavouriteType.WORK;
+                            break;
+                        case schoolId:
+                            type = FavouriteType.SCHOOL;
+                            break;
+                        case otherId:
+                            type = FavouriteType.OTHER;
+                            break;
+                    }
+                    Favourite favourite = new Favourite(name, latLng.latitude,
+                            latLng.longitude, type);
                     mapActivity.addFavourite(favourite);
                 })
                 .setNegativeButton(R.string.cancel_text, null);

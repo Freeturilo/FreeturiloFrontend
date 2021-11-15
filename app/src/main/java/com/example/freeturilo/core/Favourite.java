@@ -28,7 +28,12 @@ import java.util.Locale;
 
 public class Favourite extends Location {
     public FavouriteType type;
-    public static String filename = "favourites.json";
+    public static String favouritesFile = "favourites.json";
+
+    public Favourite(String name, double latitude, double longitude, FavouriteType type) {
+        super(name, latitude, longitude);
+        this.type = type;
+    }
 
     @Override
     public MarkerOptions createMarkerOptions(Context context) {
@@ -90,7 +95,7 @@ public class Favourite extends Location {
 
     public static List<Favourite> loadFavourites(Context context) throws IOException {
         Gson gson = new Gson();
-        FileInputStream in = context.openFileInput(filename);
+        FileInputStream in = context.openFileInput(favouritesFile);
         JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         List<Favourite> favourites = new ArrayList<>();
         reader.beginArray();
@@ -105,7 +110,7 @@ public class Favourite extends Location {
 
     public static void saveFavourites(Context context, List<Favourite> favourites) throws IOException {
         Gson gson = new Gson();
-        FileOutputStream out = context.openFileOutput(filename, Context.MODE_PRIVATE);
+        FileOutputStream out = context.openFileOutput(favouritesFile, Context.MODE_PRIVATE);
         JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         writer.setIndent("  ");
         writer.beginArray();

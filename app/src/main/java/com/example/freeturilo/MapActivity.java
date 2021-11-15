@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.Location;
+import com.example.freeturilo.core.Station;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,6 +27,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     GoogleMap map;
     List<Favourite> favourites;
+    List<Station> stations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +49,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng warsaw = new LatLng(52.23, 21);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(warsaw, 12));
         showFavourites();
+        showStations();
         map.setOnMapClickListener(this::unfocus);
         map.setOnMapLongClickListener(this::showFavouriteDialog);
         map.setOnMarkerClickListener(this::showMarkerInfo);
+    }
+
+    private void showStations() {
+        stations = Station.loadStations();
+        for(Station station : stations) {
+            Marker marker = map.addMarker(station.createMarkerOptions(this));
+            Objects.requireNonNull(marker).setTag(station);
+        }
     }
 
     private void unfocus(LatLng latLng) {
