@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
 
 import com.example.freeturilo.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -60,6 +61,8 @@ public class Station extends Location {
                 1, 30, 28, 0));
         stations.add(new Station("Metro Młociny", 52.290974, 20.929556,
                 2, 30, 18, 1));
+        stations.add(new Station("Rondo ONZ", 52.232628, 20.997123,
+                3, 29, 24, 2));
         return stations;
     }
 
@@ -72,6 +75,14 @@ public class Station extends Location {
         ssBuilder.append(ssName);
         String fullDetails = context.getResources().getString(R.string.station_helper_text)
                 + bikes + "/" + bikeRacks;
+        String textState;
+        if (state != 0) {
+            if (state == 1)
+                textState = context.getResources().getString(R.string.station_reported_text);
+            else
+                textState = context.getResources().getString(R.string.station_broken_text);
+            fullDetails += "\n(" + textState + ")";
+        }
         SpannableString ssDetails = new SpannableString(fullDetails);
         int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
         ssDetails.setSpan(new AbsoluteSizeSpan(smallSize), 0, fullDetails.length(), 0);

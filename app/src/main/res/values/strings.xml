@@ -17,4 +17,6 @@
     <string name="cancel_text">Anuluj</string>
     <string name="favourite_helper_text">"ulubione miejsce - "</string>
     <string name="station_helper_text">"stacja rowerowa\nrowery: "</string>
+    <string name="station_reported_text">zgłoszona</string>
+    <string name="station_broken_text">niesprawna</string>
 </resources>
