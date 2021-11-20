@@ -19,4 +19,12 @@
     <string name="station_helper_text">"stacja rowerowa\nrowery: "</string>
     <string name="station_reported_text">zgłoszona</string>
     <string name="station_broken_text">niesprawna</string>
+    <string name="route_create_title">Trasa</string>
+    <string name="start_point_hint">Początek trasy</string>
+    <string name="end_point_hint">Koniec trasy</string>
+    <string name="add_stop_text">+przystanek</string>
+    <string name="cost_criterion_text">najtańsza</string>
+    <string name="hybrid_criterion_text">optymalna</string>
+    <string name="time_criterion_text">najszybsza</string>
+    <string name="submit_route_text">Wyznacz</string>
 </resources>

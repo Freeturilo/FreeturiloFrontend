@@ -22,4 +22,9 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
+
+    public void goToRouteCreate(View view) {
+        Intent intent = new Intent(this, RouteCreateActivity.class);
+        startActivity(intent);
+    }
 }
