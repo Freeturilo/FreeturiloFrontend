@@ -34,36 +34,33 @@ public class FavouriteDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.FavouriteDialogTheme);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         final View inflated = inflater.inflate(R.layout.dialog_fragment_favourite, null);
-        final EditText nameEditText = inflated.findViewById(R.id.name);
-        final RadioGroup typeRadioGroup = inflated.findViewById(R.id.favourite_buttons);
         builder.setView(inflated)
                 .setPositiveButton(R.string.ok_text, (dialog, id) -> {
+                    final EditText nameEditText = inflated.findViewById(R.id.name);
                     String name = nameEditText.getText().toString();
-                    FavouriteType type = FavouriteType.OTHER;
-                    int buttonId = typeRadioGroup.getCheckedRadioButtonId();
-                    final int homeId = R.id.favourite_home_button;
-                    final int workId = R.id.favourite_work_button;
-                    final int schoolId = R.id.favourite_school_button;
-                    final int otherId = R.id.favourite_other_button;
-                    switch (buttonId) {
-                        case homeId:
-                            type = FavouriteType.HOME;
-                            break;
-                        case workId:
-                            type = FavouriteType.WORK;
-                            break;
-                        case schoolId:
-                            type = FavouriteType.SCHOOL;
-                            break;
-                        case otherId:
-                            type = FavouriteType.OTHER;
-                            break;
-                    }
-                    Favourite favourite = new Favourite(name, latLng.latitude,
-                            latLng.longitude, type);
+                    final RadioGroup typeRadioGroup = inflated.findViewById(R.id.favourite_buttons);
+                    FavouriteType type = getCheckedType(typeRadioGroup);
+                    Favourite favourite = new Favourite(name, latLng.latitude, latLng.longitude, type);
                     mapActivity.addFavourite(favourite);
                 })
                 .setNegativeButton(R.string.cancel_text, null);
         return builder.create();
+    }
+
+    private FavouriteType getCheckedType(RadioGroup typeRadioGroup) {
+        int buttonId = typeRadioGroup.getCheckedRadioButtonId();
+        final int homeId = R.id.favourite_home_button;
+        final int workId = R.id.favourite_work_button;
+        final int schoolId = R.id.favourite_school_button;
+        switch (buttonId) {
+            case homeId:
+                return FavouriteType.HOME;
+            case workId:
+                return FavouriteType.WORK;
+            case schoolId:
+                return FavouriteType.SCHOOL;
+            default:
+                return FavouriteType.OTHER;
+        }
     }
 }

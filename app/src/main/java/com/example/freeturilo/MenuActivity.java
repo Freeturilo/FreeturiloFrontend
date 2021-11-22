@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.freeturilo.core.Favourite;
+
 import java.util.Objects;
 
 public class MenuActivity extends AppCompatActivity {
@@ -14,8 +16,7 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        setSupportActionBar(findViewById(R.id.toolbar));
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        Favourite.createFavouritesFile(this);
     }
 
     public void goToMap(View view) {

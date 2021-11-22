@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Freeturilo</string>
+    <string name="favourites_filename">favourites.json</string>
     <string name="logo_description">Logo aplikacji</string>
     <string name="map_button_text">Mapa</string>
     <string name="route_button_text">Trasa</string>
@@ -9,22 +10,27 @@
     <string name="no_favourites_message">Ulubione miejsca są niedostępne</string>
     <string name="favourite_dialog_title">Dodaj ulubione miejsce</string>
     <string name="favourite_dialog_hint">Nazwa</string>
-    <string name="favourite_home_text">Dom</string>
-    <string name="favourite_work_text">Praca</string>
-    <string name="favourite_other_text">Inne</string>
-    <string name="favourite_school_text">Szkoła</string>
+    <string name="favourite_home_text">dom</string>
+    <string name="favourite_work_text">praca</string>
+    <string name="favourite_school_text">szkoła</string>
+    <string name="favourite_other_text">inne</string>
     <string name="ok_text">OK</string>
     <string name="cancel_text">Anuluj</string>
-    <string name="favourite_helper_text">"ulubione miejsce - "</string>
-    <string name="station_helper_text">"stacja rowerowa\nrowery: "</string>
+    <string name="favourite_helper_text">Ulubione miejsce</string>
+    <string name="station_helper_text">"Stacja rowerowa"</string>
+    <string name="bikes_availability_text">rowery</string>
+    <string name="station_working_text">sprawna</string>
     <string name="station_reported_text">zgłoszona</string>
     <string name="station_broken_text">niesprawna</string>
     <string name="route_create_title">Trasa</string>
     <string name="start_point_hint">Początek trasy</string>
+    <string name="stop_hint">Przystanek</string>
     <string name="end_point_hint">Koniec trasy</string>
     <string name="add_stop_text">+przystanek</string>
     <string name="cost_criterion_text">najtańsza</string>
     <string name="hybrid_criterion_text">optymalna</string>
     <string name="time_criterion_text">najszybsza</string>
     <string name="submit_route_text">Wyznacz</string>
+    <string name="route_parameters_intent_name">route_parameters</string>
+    <string name="google_attribution">Google attribution</string>
 </resources>

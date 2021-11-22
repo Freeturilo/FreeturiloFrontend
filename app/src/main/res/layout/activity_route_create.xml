@@ -1,154 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_back"
-    tools:context=".RouteCreateActivity">
+    android:fillViewport="true"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:fontFamily="@font/quicksand"
-        android:text="@string/route_create_title"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_big"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <MultiAutoCompleteTextView
-        android:id="@+id/startTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="10dp"
-        android:background="@color/white"
-        android:fontFamily="@font/quicksand"
-        android:hint="@string/start_point_hint"
-        android:minHeight="50dp"
-        android:paddingHorizontal="10dp"
-        android:textColor="@color/strong_grey"
-        android:textColorHint="@color/strong_grey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <MultiAutoCompleteTextView
-        android:id="@+id/finishTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:fontFamily="@font/quicksand"
-        android:hint="@string/end_point_hint"
-        android:minHeight="50dp"
-        android:paddingHorizontal="10dp"
-        android:textColor="@color/strong_grey"
-        android:textColorHint="@color/strong_grey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startTextView" />
-
-    <Button
-        android:id="@+id/add_stop_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:background="@null"
-        android:button="@null"
-        android:fontFamily="@font/quicksand"
-        android:text="@string/add_stop_text"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/finishTextView" />
-
-    <RadioGroup
-        android:id="@+id/criterion_buttons"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:checkedButton="@id/criterion_cost_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_stop_button">
+        android:background="@color/purple_back"
+        tools:context=".RouteCreateActivity">
 
-        <RadioButton
-            android:id="@+id/criterion_cost_button"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:background="@drawable/button_radio"
+            android:fontFamily="@font/quicksand"
+            android:text="@string/route_create_title"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_big"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <LinearLayout
+            android:id="@+id/inputs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <AutoCompleteTextView
+                android:id="@+id/startTextView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:fontFamily="@font/quicksand"
+                android:hint="@string/start_point_hint"
+                android:minHeight="50dp"
+                android:paddingHorizontal="10dp"
+                android:singleLine="true"
+                android:textColorHint="@color/strong_grey"
+                android:textSize="@dimen/text_size_medium" />
+
+            <AutoCompleteTextView
+                android:id="@+id/endTextView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:fontFamily="@font/quicksand"
+                android:hint="@string/end_point_hint"
+                android:minHeight="50dp"
+                android:paddingHorizontal="10dp"
+                android:singleLine="true"
+                android:textColorHint="@color/strong_grey"
+                android:textSize="@dimen/text_size_medium" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/add_stop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:background="@null"
             android:button="@null"
             android:fontFamily="@font/quicksand"
-            android:gravity="center"
-            android:text="@string/cost_criterion_text"
-            android:paddingBottom="@dimen/purple_border_height"
+            android:onClick="addStop"
+            android:text="@string/add_stop_text"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_medium" />
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/inputs" />
 
-        <RadioButton
-            android:id="@+id/criterion_hybrid_button"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/places_powered_by_google_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/submit_button"
+            android:contentDescription="@string/google_attribution" />
+
+        <RadioGroup
+            android:id="@+id/criterion_buttons"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:background="@drawable/button_radio"
-            android:button="@null"
+            android:layout_marginHorizontal="20dp"
+            android:checkedButton="@id/criterion_cost_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_stop_button">
+
+            <RadioButton
+                android:id="@+id/criterion_cost_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/button_radio"
+                android:button="@null"
+                android:fontFamily="@font/quicksand"
+                android:gravity="center"
+                android:text="@string/cost_criterion_text"
+                android:paddingBottom="@dimen/purple_border_height"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_medium" />
+
+            <RadioButton
+                android:id="@+id/criterion_hybrid_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/button_radio"
+                android:button="@null"
+                android:fontFamily="@font/quicksand"
+                android:gravity="center"
+                android:text="@string/hybrid_criterion_text"
+                android:paddingBottom="@dimen/purple_border_height"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_medium" />
+
+            <RadioButton
+                android:id="@+id/criterion_time_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/button_radio"
+                android:button="@null"
+                android:fontFamily="@font/quicksand"
+                android:gravity="center"
+                android:text="@string/time_criterion_text"
+                android:paddingBottom="@dimen/purple_border_height"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_medium" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="30dp"
+            android:background="@drawable/button_enable_disable"
+            android:enabled="true"
             android:fontFamily="@font/quicksand"
-            android:gravity="center"
-            android:text="@string/hybrid_criterion_text"
-            android:paddingBottom="@dimen/purple_border_height"
+            android:onClick="createRoute"
+            android:paddingBottom="10dp"
+            android:text="@string/submit_route_text"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_medium" />
+            android:textSize="@dimen/text_size_big"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintHeight_min="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/criterion_buttons" />
 
-        <RadioButton
-            android:id="@+id/criterion_time_button"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginVertical="10dp"
-            android:background="@drawable/button_radio"
-            android:button="@null"
-            android:fontFamily="@font/quicksand"
-            android:gravity="center"
-            android:text="@string/time_criterion_text"
-            android:paddingBottom="@dimen/purple_border_height"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_medium" />
-    </RadioGroup>
-
-    <Button
-        android:id="@+id/submit_button"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="30dp"
-        android:background="@drawable/button"
-        android:fontFamily="@font/quicksand"
-        android:text="@string/submit_route_text"
-        android:paddingBottom="@dimen/purple_border_height"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_big"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/criterion_buttons"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

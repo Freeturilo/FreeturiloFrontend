@@ -3,9 +3,13 @@ package com.example.freeturilo.core;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.widget.Toast;
 
 import com.example.freeturilo.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -28,7 +32,6 @@ import java.util.Locale;
 
 public class Favourite extends Location {
     public FavouriteType type;
-    public static String favouritesFile = "favourites.json";
 
     public Favourite(String name, double latitude, double longitude, FavouriteType type) {
         super(name, latitude, longitude);
@@ -38,7 +41,57 @@ public class Favourite extends Location {
     @Override
     public MarkerOptions createMarkerOptions(Context context) {
         LatLng markerPosition = new LatLng(latitude, longitude);
-        int markerIconId = R.drawable.marker_other;
+        return new MarkerOptions()
+                .position(markerPosition)
+                .icon(createMarkerIcon(context));
+    }
+
+    @Override
+    public CharSequence createCaption(Context context) {
+        SpannableString ssName = new SpannableString(name);
+        int bigSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_big);
+        ssName.setSpan(new AbsoluteSizeSpan(bigSize), 0, name.length(), 0);
+        String typeText = createTypeText(context);
+        String typeHelper = context.getString(R.string.favourite_helper_text).toLowerCase(Locale.ROOT);
+        String fullType = typeHelper + " - " + typeText;
+        SpannableString ssType = new SpannableString(fullType);
+        int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
+        ssType.setSpan(new AbsoluteSizeSpan(smallSize), 0, fullType.length(), 0);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append(ssName).append("\n").append(ssType);
+        return builder;
+    }
+
+    @Override
+    public void setAutoCompletePredictionText(Context context) {
+        SpannableString ssPrimary = new SpannableString(name);
+        ssPrimary.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
+        SpannableString ssSecondary = new SpannableString(
+                ", " + context.getString(R.string.favourite_helper_text) + ", " + createTypeText(context));
+        ssSecondary.setSpan(new ForegroundColorSpan(context.getColor(R.color.grey)),
+                0, ssSecondary.length(), 0);
+        int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
+        ssSecondary.setSpan(new AbsoluteSizeSpan(smallSize), 0, ssSecondary.length(), 0);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append(ssPrimary).append(ssSecondary);
+        autoCompletePredictionText = builder;
+    }
+
+    private String createTypeText(Context context) {
+        switch (type){
+            case HOME:
+                return context.getString(R.string.favourite_home_text);
+            case SCHOOL:
+                return context.getString(R.string.favourite_school_text);
+            case WORK:
+                return context.getString(R.string.favourite_work_text);
+            default:
+                return context.getString(R.string.favourite_other_text);
+        }
+    }
+
+    private BitmapDescriptor createMarkerIcon(Context context) {
+        int markerIconId;
         switch (type) {
             case HOME:
                 markerIconId = R.drawable.marker_home;
@@ -49,53 +102,30 @@ public class Favourite extends Location {
             case SCHOOL:
                 markerIconId = R.drawable.marker_school;
                 break;
-            case OTHER:
+            default:
                 markerIconId = R.drawable.marker_other;
                 break;
         }
         Bitmap markerBitmap = BitmapFactory.decodeResource(context.getResources(), markerIconId);
-        Bitmap smallMarker = Bitmap.createScaledBitmap(markerBitmap, 95, 150, false);
-        BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
-        return new MarkerOptions()
-                .position(markerPosition)
-                .icon(smallMarkerIcon);
+        int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
+        int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
+        Bitmap smallMarker =
+                Bitmap.createScaledBitmap(markerBitmap, markerWidth, markerHeight, false);
+        return BitmapDescriptorFactory.fromBitmap(smallMarker);
     }
 
-    @Override
-    public CharSequence createCaption(Context context) {
-        SpannableStringBuilder ssBuilder = new SpannableStringBuilder();
-        SpannableString ssName = new SpannableString(name);
-        int bigSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_big);
-        ssName.setSpan(new AbsoluteSizeSpan(bigSize), 0, name.length(), 0);
-        ssBuilder.append(ssName);
-        int typeTextId = R.string.favourite_other_text;
-        switch (type){
-            case HOME:
-                typeTextId = R.string.favourite_home_text;
-                break;
-            case SCHOOL:
-                typeTextId = R.string.favourite_school_text;
-                break;
-            case WORK:
-                typeTextId = R.string.favourite_work_text;
-                break;
-            case OTHER:
-                typeTextId = R.string.favourite_other_text;
-                break;
-        }
-        String typeText = context.getResources().getString(typeTextId).toLowerCase(Locale.ROOT);
-        String typeHelper = context.getResources().getString(R.string.favourite_helper_text);
-        String fullType = typeHelper + typeText;
-        SpannableString ssType = new SpannableString(fullType);
-        int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
-        ssType.setSpan(new AbsoluteSizeSpan(smallSize), 0, fullType.length(), 0);
-        ssBuilder.append("\n").append(ssType);
-        return ssBuilder;
+    public static void createFavouritesFile(Context context) {
+        try {
+            FileInputStream in = context.openFileInput(
+                    context.getString(R.string.favourites_filename));
+            in.close();
+        } catch (IOException ignored) { }
     }
 
     public static List<Favourite> loadFavourites(Context context) throws IOException {
         Gson gson = new Gson();
-        FileInputStream in = context.openFileInput(favouritesFile);
+        FileInputStream in = context.openFileInput(
+                context.getString(R.string.favourites_filename));
         JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         List<Favourite> favourites = new ArrayList<>();
         reader.beginArray();
@@ -108,9 +138,23 @@ public class Favourite extends Location {
         return favourites;
     }
 
-    public static void saveFavourites(Context context, List<Favourite> favourites) throws IOException {
+    public static List<Favourite> loadFavouritesSafe(Context context) {
+        try {
+            return Favourite.loadFavourites(context);
+        }
+        catch (IOException exception) {
+            Toast toast = Toast.makeText(context.getApplicationContext(),
+                    R.string.no_favourites_message, Toast.LENGTH_SHORT);
+            toast.show();
+            return new ArrayList<>();
+        }
+    }
+
+    public static void saveFavourites(Context context, List<Favourite> favourites)
+            throws IOException {
         Gson gson = new Gson();
-        FileOutputStream out = context.openFileOutput(favouritesFile, Context.MODE_PRIVATE);
+        FileOutputStream out = context.openFileOutput(
+                context.getString(R.string.favourites_filename), Context.MODE_PRIVATE);
         JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         writer.setIndent("  ");
         writer.beginArray();
@@ -119,5 +163,18 @@ public class Favourite extends Location {
         }
         writer.endArray();
         writer.close();
+    }
+
+    public static void saveFavouritesSafe(Context context, List<Favourite> favourites)
+    {
+        try {
+            saveFavourites(context, favourites);
+        }
+        catch (IOException exception)
+        {
+            Toast toast = Toast.makeText(context.getApplicationContext(),
+                    R.string.no_favourites_message, Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }

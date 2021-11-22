@@ -10,7 +10,7 @@ public class Route {
     public double cost;
     public RouteParameters parameters;
 
-    public static Route createRoute(RouteParameters parameters) {
+    public static Route loadRoute(RouteParameters parameters) {
         return null;
     }
 

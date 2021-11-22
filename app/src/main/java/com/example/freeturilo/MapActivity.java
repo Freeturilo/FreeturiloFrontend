@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.Location;
@@ -18,8 +17,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,8 +30,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        setSupportActionBar(findViewById(R.id.toolbar));
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         Objects.requireNonNull(mapFragment).getMapAsync(this);
@@ -69,20 +64,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void showFavourites() {
-        try {
-            favourites = Favourite.loadFavourites(getApplicationContext());
-        }
-        catch (IOException exception) {
-            favourites = new ArrayList<>();
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    R.string.no_favourites_message, Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        finally {
-            for(Favourite favourite : favourites) {
-                Marker marker = map.addMarker(favourite.createMarkerOptions(this));
-                Objects.requireNonNull(marker).setTag(favourite);
-            }
+        favourites = Favourite.loadFavouritesSafe(this);
+        for(Favourite favourite : favourites) {
+            Marker marker = map.addMarker(favourite.createMarkerOptions(this));
+            Objects.requireNonNull(marker).setTag(favourite);
         }
     }
 
@@ -103,17 +88,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public void addFavourite(Favourite favourite) {
         favourites.add(favourite);
-        try {
-            Favourite.saveFavourites(this, favourites);
-        }
-        catch (IOException exception) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    R.string.no_favourites_message, Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        finally {
-            Marker marker = map.addMarker(favourite.createMarkerOptions(this));
-            Objects.requireNonNull(marker).setTag(favourite);
-        }
+        Marker marker = map.addMarker(favourite.createMarkerOptions(this));
+        Objects.requireNonNull(marker).setTag(favourite);
+        Favourite.saveFavouritesSafe(this, favourites);
     }
 }

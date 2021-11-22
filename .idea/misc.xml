@@ -14,6 +14,8 @@
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/button_active_map.xml" value="0.253125" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/button_active_route.xml" value="0.253125" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/button_active_transparent.xml" value="0.253125" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/button_deactivable.xml" value="0.2453125" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/button_history.xml" value="0.2453125" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/button_inactive.xml" value="0.3828125" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/button_radio.xml" value="0.24177631578947367" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/freeturilo_launcher_background.xml" value="0.22135416666666666" />
@@ -21,6 +23,7 @@
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/activity_map.xml" value="0.25" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/activity_menu.xml" value="0.33" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/activity_route.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/activity_route_create.xml" value="0.33" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/button_active.xml" value="0.30416666666666664" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/dialog_favourite.xml" value="0.33" />

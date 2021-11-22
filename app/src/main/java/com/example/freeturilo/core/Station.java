@@ -3,9 +3,11 @@ package com.example.freeturilo.core;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 
 import com.example.freeturilo.R;
@@ -48,7 +50,10 @@ public class Station extends Location {
                 break;
         }
         Bitmap markerBitmap = BitmapFactory.decodeResource(context.getResources(), markerIconId);
-        Bitmap smallMarker = Bitmap.createScaledBitmap(markerBitmap, 95, 150, false);
+        int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
+        int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
+        Bitmap smallMarker =
+                Bitmap.createScaledBitmap(markerBitmap, markerWidth, markerHeight, false);
         BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
         return new MarkerOptions()
                 .position(markerPosition)
@@ -68,26 +73,47 @@ public class Station extends Location {
 
     @Override
     public CharSequence createCaption(Context context) {
-        SpannableStringBuilder ssBuilder = new SpannableStringBuilder();
         SpannableString ssName = new SpannableString(name);
         int bigSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_big);
         ssName.setSpan(new AbsoluteSizeSpan(bigSize), 0, name.length(), 0);
-        ssBuilder.append(ssName);
-        String fullDetails = context.getResources().getString(R.string.station_helper_text)
-                + bikes + "/" + bikeRacks;
-        String textState;
-        if (state != 0) {
-            if (state == 1)
-                textState = context.getResources().getString(R.string.station_reported_text);
-            else
-                textState = context.getResources().getString(R.string.station_broken_text);
-            fullDetails += "\n(" + textState + ")";
-        }
+        String fullDetails = context.getString(R.string.station_helper_text)
+                + "\n" + context.getString(R.string.bikes_availability_text)
+                + ": " + bikes + "/" + bikeRacks;
+        if (state != 0)
+            fullDetails += "\n(" + createStateText(context) + ")";
         SpannableString ssDetails = new SpannableString(fullDetails);
         int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
-        ssDetails.setSpan(new AbsoluteSizeSpan(smallSize), 0, fullDetails.length(), 0);
-        ssBuilder.append("\n").append(ssDetails);
-        return ssBuilder;
+        ssDetails.setSpan(new AbsoluteSizeSpan(smallSize), 0, ssDetails.length(), 0);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append(ssName).append("\n").append(ssDetails);
+        return builder;
+    }
+
+    @Override
+    public void setAutoCompletePredictionText(Context context) {
+        SpannableString ssPrimary = new SpannableString(name);
+        ssPrimary.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
+        SpannableString ssSecondary = new SpannableString(
+                ", " + context.getString(R.string.station_helper_text)
+                        + ", " + createStateText(context));
+        ssSecondary.setSpan(new ForegroundColorSpan(context.getColor(R.color.grey)),
+                0, ssSecondary.length(), 0);
+        int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
+        ssSecondary.setSpan(new AbsoluteSizeSpan(smallSize), 0, ssSecondary.length(), 0);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append(ssPrimary).append(ssSecondary);
+        autoCompletePredictionText = builder;
+    }
+
+    private String createStateText(Context context) {
+        switch (state) {
+            case 1:
+                return context.getString(R.string.station_reported_text);
+            case 2:
+                return context.getString(R.string.station_broken_text);
+            default:
+                return context.getString(R.string.station_working_text);
+        }
     }
 
     public void reportBroken() {
