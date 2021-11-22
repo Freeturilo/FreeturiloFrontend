@@ -2,7 +2,6 @@ package com.example.freeturilo.core;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -37,19 +36,7 @@ public class Station extends Location {
     @Override
     public MarkerOptions createMarkerOptions(Context context) {
         LatLng markerPosition = new LatLng(latitude, longitude);
-        int markerIconId = R.drawable.marker_station;
-        switch (state) {
-            case 0:
-                markerIconId = R.drawable.marker_station;
-                break;
-            case 1:
-                markerIconId = R.drawable.marker_station_reported;
-                break;
-            case 2:
-                markerIconId = R.drawable.marker_station_broken;
-                break;
-        }
-        Bitmap markerBitmap = BitmapFactory.decodeResource(context.getResources(), markerIconId);
+        Bitmap markerBitmap = StationStateTools.getMarkerIcon(context, state);
         int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
         int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
         Bitmap smallMarker =
@@ -80,7 +67,7 @@ public class Station extends Location {
                 + "\n" + context.getString(R.string.bikes_availability_text)
                 + ": " + bikes + "/" + bikeRacks;
         if (state != 0)
-            fullDetails += "\n(" + createStateText(context) + ")";
+            fullDetails += "\n(" + StationStateTools.getStateText(context, state) + ")";
         SpannableString ssDetails = new SpannableString(fullDetails);
         int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
         ssDetails.setSpan(new AbsoluteSizeSpan(smallSize), 0, ssDetails.length(), 0);
@@ -95,7 +82,7 @@ public class Station extends Location {
         ssPrimary.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
         SpannableString ssSecondary = new SpannableString(
                 ", " + context.getString(R.string.station_helper_text)
-                        + ", " + createStateText(context));
+                        + ", " + StationStateTools.getStateText(context, state));
         ssSecondary.setSpan(new ForegroundColorSpan(context.getColor(R.color.grey)),
                 0, ssSecondary.length(), 0);
         int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
@@ -103,17 +90,6 @@ public class Station extends Location {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         builder.append(ssPrimary).append(ssSecondary);
         autoCompletePredictionText = builder;
-    }
-
-    private String createStateText(Context context) {
-        switch (state) {
-            case 1:
-                return context.getString(R.string.station_reported_text);
-            case 2:
-                return context.getString(R.string.station_broken_text);
-            default:
-                return context.getString(R.string.station_working_text);
-        }
     }
 
     public void reportBroken() {

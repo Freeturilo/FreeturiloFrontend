@@ -51,7 +51,7 @@ public class Favourite extends Location {
         SpannableString ssName = new SpannableString(name);
         int bigSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_big);
         ssName.setSpan(new AbsoluteSizeSpan(bigSize), 0, name.length(), 0);
-        String typeText = createTypeText(context);
+        String typeText = FavouriteTypeTools.getTypeText(context, type);
         String typeHelper = context.getString(R.string.favourite_helper_text).toLowerCase(Locale.ROOT);
         String fullType = typeHelper + " - " + typeText;
         SpannableString ssType = new SpannableString(fullType);
@@ -67,7 +67,8 @@ public class Favourite extends Location {
         SpannableString ssPrimary = new SpannableString(name);
         ssPrimary.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
         SpannableString ssSecondary = new SpannableString(
-                ", " + context.getString(R.string.favourite_helper_text) + ", " + createTypeText(context));
+                ", " + context.getString(R.string.favourite_helper_text) + ", "
+                        + FavouriteTypeTools.getTypeText(context, type));
         ssSecondary.setSpan(new ForegroundColorSpan(context.getColor(R.color.grey)),
                 0, ssSecondary.length(), 0);
         int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
@@ -77,36 +78,8 @@ public class Favourite extends Location {
         autoCompletePredictionText = builder;
     }
 
-    private String createTypeText(Context context) {
-        switch (type){
-            case HOME:
-                return context.getString(R.string.favourite_home_text);
-            case SCHOOL:
-                return context.getString(R.string.favourite_school_text);
-            case WORK:
-                return context.getString(R.string.favourite_work_text);
-            default:
-                return context.getString(R.string.favourite_other_text);
-        }
-    }
-
     private BitmapDescriptor createMarkerIcon(Context context) {
-        int markerIconId;
-        switch (type) {
-            case HOME:
-                markerIconId = R.drawable.marker_home;
-                break;
-            case WORK:
-                markerIconId = R.drawable.marker_work;
-                break;
-            case SCHOOL:
-                markerIconId = R.drawable.marker_school;
-                break;
-            default:
-                markerIconId = R.drawable.marker_other;
-                break;
-        }
-        Bitmap markerBitmap = BitmapFactory.decodeResource(context.getResources(), markerIconId);
+        Bitmap markerBitmap = FavouriteTypeTools.getMarkerIcon(context, type);
         int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
         int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
         Bitmap smallMarker =
