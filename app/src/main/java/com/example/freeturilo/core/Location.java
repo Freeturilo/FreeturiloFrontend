@@ -1,6 +1,7 @@
 package com.example.freeturilo.core;
 
 import android.content.Context;
+import android.location.Address;
 import android.text.SpannableStringBuilder;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,17 @@ public class Location implements Serializable {
 
     public void setAutoCompletePredictionTextWithPrediction(Context context,
                                                             AutocompletePrediction prediction) {}
+
+    public static Location fromAddress(Address address) throws IllegalStateException {
+        int maxAddressLineIndex = address.getMaxAddressLineIndex();
+        if (maxAddressLineIndex == -1)
+            throw new IllegalStateException();
+        Location location = new Location(address.getAddressLine(0),
+                address.getLatitude(), address.getLongitude());
+        location.autoCompletePredictionText
+                = new SpannableStringBuilder(address.getAddressLine(0));
+        return location;
+    }
 
     @NonNull
     @Override

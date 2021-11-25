@@ -34,4 +34,6 @@
     <string name="route_parameters_intent_name">route_parameters</string>
     <string name="google_attribution">Google attribution</string>
     <string name="route_text">trasa</string>
+    <string name="specify_address_title">Czy chodziło o…</string>
+    <string name="no_address_to_specify_message">"Nie zlokalizowano punktu"</string>
 </resources>

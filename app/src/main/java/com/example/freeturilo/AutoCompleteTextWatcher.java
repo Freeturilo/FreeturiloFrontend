@@ -11,7 +11,6 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
@@ -33,9 +32,8 @@ public class AutoCompleteTextWatcher implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        String query = charSequence.toString();
-        if (query.length() < input.getThreshold())
-            return;
+        input.setTag(null);
+        String query = charSequence.toString().replaceAll("^[ \t]+|[ \t]+$", "");
         ArrayList<Location> autoComplete = new ArrayList<>();
         for (Location location : customLocations)
             if (location.name.toLowerCase(Locale.ROOT)
@@ -53,6 +51,7 @@ public class AutoCompleteTextWatcher implements TextWatcher {
                 .build();
         PlacesClient placesClient = Places.createClient(input.getContext());
         placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+            AutoCompleteAdapter adapter = new AutoCompleteAdapter(input.getContext(), new ArrayList<>());
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
                 IdentifiedLocation idPrediction = new IdentifiedLocation(
                         prediction.getPrimaryText(null).toString(),
@@ -60,8 +59,9 @@ public class AutoCompleteTextWatcher implements TextWatcher {
                 idPrediction.setAutoCompletePredictionTextWithPrediction(input.getContext(), prediction);
                 autoComplete.add(idPrediction);
             }
-            AutoCompleteAdapter adapter = new AutoCompleteAdapter(input.getContext(), autoComplete);
             input.setAdapter(adapter);
+            adapter.addAll(autoComplete);
+            adapter.notifyDataSetChanged();
         });
     }
 

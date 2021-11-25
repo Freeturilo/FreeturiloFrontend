@@ -3,4 +3,8 @@
     <style name="FavouriteDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/purple_back</item>
     </style>
+    <style name="SpecifyAddressDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/purple_back</item>
+        <item name="fontFamily">@font/quicksand</item>
+    </style>
 </resources>

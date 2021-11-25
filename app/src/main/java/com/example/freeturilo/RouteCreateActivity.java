@@ -1,19 +1,25 @@
 package com.example.freeturilo;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.freeturilo.core.Criterion;
 import com.example.freeturilo.core.Favourite;
@@ -27,6 +33,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -67,8 +74,12 @@ public class RouteCreateActivity extends AppCompatActivity {
     }
 
     public void addStop(View view1) {
-        if (stop_inputs.size() >= 3)
+        if (stop_inputs.size() > 2)
             return;
+        if (stop_inputs.size() == 2) {
+            Button add_stop_button = findViewById(R.id.add_stop_button);
+            add_stop_button.setVisibility(View.GONE);
+        }
         AutoCompleteTextView input = new AutoCompleteTextView(this);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -87,8 +98,8 @@ public class RouteCreateActivity extends AppCompatActivity {
                 ResourcesCompat.getColor(getResources(), R.color.strong_grey, getTheme()));
         input.setMinimumHeight(50 * value1dp);
         input.setSingleLine();
-        input.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                getResources().getDimensionPixelSize(R.dimen.text_size_medium));
+        input.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size_medium));
+        input.setThreshold(1);
         input.setPadding(10 * value1dp, 0, 10 * value1dp, 0);
         LinearLayout layout = this.findViewById(R.id.inputs);
         layout.addView(input, stop_inputs.size() + 1);
@@ -105,24 +116,29 @@ public class RouteCreateActivity extends AppCompatActivity {
     public void createRoute(View view) {
         AutoCompleteTextView start_input = this.findViewById(R.id.startTextView);
         AutoCompleteTextView end_input = this.findViewById(R.id.endTextView);
-        Object startTag = start_input.getTag();
-        Object endTag = end_input.getTag();
-        if (!(startTag instanceof Location) || !(endTag instanceof Location))
+        if (!(start_input.getTag() instanceof Location)) {
+            specifyAddress(start_input);
             return;
-        Location start = (Location) startTag;
-        Location end  = (Location) endTag;
+        }
+        Location start = (Location) start_input.getTag();
+        if (!(end_input.getTag() instanceof Location)) {
+            specifyAddress(end_input);
+            return;
+        }
+        Location end  = (Location) end_input.getTag();
         List<Location> stops = new ArrayList<>();
         for (AutoCompleteTextView stop_input : stop_inputs) {
-            Object stopTag = stop_input.getTag();
-            if (stopTag instanceof Location)
-                stops.add((Location) stopTag);
+            if (!(stop_input.getTag() instanceof Location)) {
+                specifyAddress(stop_input);
+                return;
+            }
+            stops.add((Location) stop_input.getTag());
         }
         RadioGroup radioGroup = this.findViewById(R.id.criterion_buttons);
         Criterion criterion = getCheckedCriterion(radioGroup);
         RouteParameters parameters = new RouteParameters(start, end, stops, criterion);
         Bundle bundle = new Bundle();
-        bundle.putBinder(getString(R.string.route_parameters_intent_name),
-                new ObjectWrapperForBinder(parameters));
+        bundle.putBinder(getString(R.string.route_parameters_intent_name), new ObjectWrapperForBinder(parameters));
         Intent intent = new Intent(this, RouteActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
@@ -148,10 +164,50 @@ public class RouteCreateActivity extends AppCompatActivity {
         FetchPlaceRequest request = FetchPlaceRequest.builder(idLocation.placeId, latLngField)
                 .setSessionToken(idLocation.token).build();
         placesClient.fetchPlace(request).addOnSuccessListener(response -> {
-            Log.d("onSuccessListener", "Fetched place");
             LatLng latLng = Objects.requireNonNull(response.getPlace().getLatLng());
             idLocation.latitude = latLng.latitude;
             idLocation.longitude = latLng.longitude;
         });
+    }
+
+    private void specifyAddress(AutoCompleteTextView input) {
+        String locationName = input.getText().toString();
+        Geocoder geocoder = new Geocoder(this);
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocationName(locationName,
+                    5, 52.03, 20.80,
+                    52.36, 21.30 );
+        } catch (IOException exception) {
+            return;
+        }
+        List<Location> locations = new ArrayList<>();
+        for (Address address : addresses)
+        {
+            Location location;
+            try {
+                location = Location.fromAddress(address);
+            }
+            catch (IllegalStateException exception) {
+                continue;
+            }
+            locations.add(location);
+        }
+        if(locations.isEmpty()) {
+            String toastMessage = getString(R.string.no_address_to_specify_message)
+                    + ": \"" + locationName + "\"";
+            Toast toast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+        ArrayAdapter<Location> adapter = new ArrayAdapter<>(this,
+                R.layout.specify_address_dialog_item, locations);
+        new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.SpecifyAddressDialogTheme))
+                .setTitle(getString(R.string.specify_address_title))
+                .setAdapter(adapter, (dialog, i) -> {
+                    input.setText(locations.get(i).toString());
+                    input.setTag(locations.get(i));
+                    createRoute(input.getRootView().findViewById(R.id.submit_button));
+                }).show();
     }
 }
