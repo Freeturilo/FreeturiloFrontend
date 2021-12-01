@@ -7,4 +7,5 @@
     <dimen name="marker_height">48dp</dimen>
     <dimen name="marker_width">29dp</dimen>
     <dimen name="purple_border_height">10dp</dimen>
+    <dimen name="action_button_height">60dp</dimen>
 </resources>

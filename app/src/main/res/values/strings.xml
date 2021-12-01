@@ -8,14 +8,17 @@
     <string name="map_caption_text">Mapa</string>
     <string name="map_description">Mapa</string>
     <string name="no_favourites_message">Ulubione miejsca są niedostępne</string>
-    <string name="favourite_dialog_title">Dodaj ulubione miejsce</string>
-    <string name="favourite_dialog_hint">Nazwa</string>
+    <string name="add_favourite_dialog_title">Dodaj ulubione miejsce</string>
+    <string name="edit_favourite_dialog_title">Edytuj ulubione miejsce</string>
+    <string name="favourite_dialog_name_hint">Nazwa</string>
+    <string name="delete_favourite_message">Czy chcesz usunąć</string>
     <string name="favourite_home_text">dom</string>
     <string name="favourite_work_text">praca</string>
     <string name="favourite_school_text">szkoła</string>
     <string name="favourite_other_text">inne</string>
     <string name="ok_text">OK</string>
     <string name="cancel_text">Anuluj</string>
+    <string name="yes_text">Tak</string>
     <string name="favourite_helper_text">Ulubione miejsce</string>
     <string name="station_helper_text">"Stacja rowerowa"</string>
     <string name="bikes_availability_text">rowery</string>
@@ -35,5 +38,5 @@
     <string name="google_attribution">Google attribution</string>
     <string name="route_text">trasa</string>
     <string name="specify_address_title">Czy chodziło o…</string>
-    <string name="no_address_to_specify_message">"Nie zlokalizowano punktu"</string>
+    <string name="no_address_to_specify_message">Nie zlokalizowano punktu</string>
 </resources>

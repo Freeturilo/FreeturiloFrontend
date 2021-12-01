@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="FavouriteDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/purple_back</item>
-    </style>
-    <style name="SpecifyAddressDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="FreeturiloDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/purple_back</item>
         <item name="fontFamily">@font/quicksand</item>
+        <item name="android:windowTitleStyle">@style/FreeturiloDialogTheme.TitleStyle</item>
+    </style>
+    <style name="FreeturiloDialogTheme.TitleStyle">
+        <item name="android:textAppearance">@style/FreeturiloDialogTheme.TitleStyle.TextAppearance</item>
+    </style>
+    <style name="FreeturiloDialogTheme.TitleStyle.TextAppearance">
+        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="android:fontFamily">@font/quicksand</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

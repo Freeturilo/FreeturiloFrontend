@@ -11,7 +11,6 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -202,8 +201,8 @@ public class RouteCreateActivity extends AppCompatActivity {
         }
         ArrayAdapter<Location> adapter = new ArrayAdapter<>(this,
                 R.layout.specify_address_dialog_item, locations);
-        new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.SpecifyAddressDialogTheme))
-                .setTitle(getString(R.string.specify_address_title))
+        new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
+                .setTitle(R.string.specify_address_title)
                 .setAdapter(adapter, (dialog, i) -> {
                     input.setText(locations.get(i).toString());
                     input.setTag(locations.get(i));

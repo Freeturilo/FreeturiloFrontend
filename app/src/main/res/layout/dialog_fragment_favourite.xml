@@ -5,27 +5,13 @@
     android:layout_height="wrap_content"
     android:background="@color/purple_back">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_margin="20dp"
-        android:text="@string/favourite_dialog_title"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_big"
-        android:fontFamily="@font/quicksand"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:fontFamily="@font/quicksand"
-        android:hint="@string/favourite_dialog_hint"
+        android:hint="@string/favourite_dialog_name_hint"
         android:importantForAutofill="no"
         android:inputType="text"
         android:paddingHorizontal="10dp"
@@ -35,7 +21,7 @@
         android:textSize="@dimen/text_size_big"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
         android:id="@+id/favourite_buttons"
