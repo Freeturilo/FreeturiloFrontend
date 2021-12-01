@@ -1,7 +1,6 @@
 package com.example.freeturilo;
 
 import android.content.Context;
-import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +22,13 @@ public class AutoCompleteAdapter extends ArrayAdapter<Location> {
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(
-                    android.R.layout.simple_dropdown_item_1line, parent, false);
+                    R.layout.item_autocomplete, parent, false);
         }
-        TextView text = convertView.findViewById(android.R.id.text1);
-        text.setText(getItem(position).autoCompletePredictionText);
+        Location location = getItem(position);
+        TextView textPrimary = convertView.findViewById(R.id.text_primary);
+        textPrimary.setText(location.getPrimaryText());
+        TextView textSecondary = convertView.findViewById(R.id.text_secondary);
+        textSecondary.setText(String.format(", %s", location.getSecondaryText(getContext())));
         return convertView;
     }
 }

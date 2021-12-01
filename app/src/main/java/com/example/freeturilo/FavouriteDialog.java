@@ -13,7 +13,7 @@ import com.example.freeturilo.core.FavouriteType;
 
 import java.util.Objects;
 
-public class FavouriteDialogFragment extends DialogFragment {
+public class FavouriteDialog extends DialogFragment {
     View view;
     MapActivity mapActivity;
 
@@ -22,7 +22,7 @@ public class FavouriteDialogFragment extends DialogFragment {
         super.onAttach(context);
         mapActivity = Objects.requireNonNull((MapActivity) context);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        view = inflater.inflate(R.layout.dialog_fragment_favourite, null);
+        view = inflater.inflate(R.layout.dialog_favourite, null);
     }
 
     AlertDialog.Builder createBuilder() {

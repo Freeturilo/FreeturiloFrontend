@@ -2,12 +2,6 @@ package com.example.freeturilo.core;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 
 import com.example.freeturilo.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -17,12 +11,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Station extends Location {
-    public int id;
-    public int bikeRacks;
-    public int bikes;
-    public int state;
+    public final int id;
+    public final int bikeRacks;
+    public final int bikes;
+    public final int state;
 
     public Station(String name, double latitude, double longitude,
                    int id, int bikeRacks, int bikes, int state){
@@ -59,48 +54,22 @@ public class Station extends Location {
     }
 
     @Override
-    public CharSequence createCaption(Context context) {
-        SpannableString ssName = new SpannableString(name);
-        int bigSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_big);
-        ssName.setSpan(new AbsoluteSizeSpan(bigSize), 0, name.length(), 0);
-        String fullDetails = context.getString(R.string.station_helper_text)
-                + "\n" + context.getString(R.string.bikes_availability_text)
-                + ": " + bikes + "/" + bikeRacks;
-        if (state != 0)
-            fullDetails += "\n(" + StationStateTools.getStateText(context, state) + ")";
-        SpannableString ssDetails = new SpannableString(fullDetails);
-        int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
-        ssDetails.setSpan(new AbsoluteSizeSpan(smallSize), 0, ssDetails.length(), 0);
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append(ssName).append("\n").append(ssDetails);
-        return builder;
+    public String getCaption(Context context) {
+        String helperText = context.getString(R.string.station_helper_text);
+        String availabilityHelperText = context.getString(R.string.bikes_availability_text);
+        String availabilityText = String.format(Locale.ROOT, "%d/%d", bikes, bikeRacks);
+        String stateText = String.format("(%s)", StationStateTools.getStateText(context, state));
+        if (state == 0)
+            return String.format("%s\n%s: %s", helperText, availabilityHelperText,
+                    availabilityText);
+        else
+            return String.format("%s\n%s: %s\n%s", helperText, availabilityHelperText,
+                    availabilityText, stateText);
     }
 
     @Override
-    public void setAutoCompletePredictionText(Context context) {
-        SpannableString ssPrimary = new SpannableString(name);
-        ssPrimary.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
-        SpannableString ssSecondary = new SpannableString(
-                ", " + context.getString(R.string.station_helper_text)
-                        + ", " + StationStateTools.getStateText(context, state));
-        ssSecondary.setSpan(new ForegroundColorSpan(context.getColor(R.color.grey)),
-                0, ssSecondary.length(), 0);
-        int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
-        ssSecondary.setSpan(new AbsoluteSizeSpan(smallSize), 0, ssSecondary.length(), 0);
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append(ssPrimary).append(ssSecondary);
-        autoCompletePredictionText = builder;
-    }
-
-    public void reportBroken() {
-
-    }
-
-    public void setBroken() {
-
-    }
-
-    public void setWorking() {
-
+    public String getSecondaryText(Context context) {
+        return context.getString(R.string.station_helper_text)
+                + ", " + StationStateTools.getStateText(context, state);
     }
 }

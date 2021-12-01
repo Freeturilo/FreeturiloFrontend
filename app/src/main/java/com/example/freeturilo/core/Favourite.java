@@ -2,15 +2,8 @@ package com.example.freeturilo.core;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.widget.Toast;
 
+import com.example.freeturilo.ExceptionHandler;
 import com.example.freeturilo.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -47,35 +40,15 @@ public class Favourite extends Location {
     }
 
     @Override
-    public CharSequence createCaption(Context context) {
-        SpannableString ssName = new SpannableString(name);
-        int bigSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_big);
-        ssName.setSpan(new AbsoluteSizeSpan(bigSize), 0, name.length(), 0);
+    public String getCaption(Context context) {
+        String helperText = context.getString(R.string.favourite_helper_text).toLowerCase(Locale.ROOT);
         String typeText = FavouriteTypeTools.getTypeText(context, type);
-        String typeHelper = context.getString(R.string.favourite_helper_text).toLowerCase(Locale.ROOT);
-        String fullType = typeHelper + " - " + typeText;
-        SpannableString ssType = new SpannableString(fullType);
-        int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
-        ssType.setSpan(new AbsoluteSizeSpan(smallSize), 0, fullType.length(), 0);
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append(ssName).append("\n").append(ssType);
-        return builder;
+        return String.format("%s - %s", helperText, typeText);
     }
 
     @Override
-    public void setAutoCompletePredictionText(Context context) {
-        SpannableString ssPrimary = new SpannableString(name);
-        ssPrimary.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
-        SpannableString ssSecondary = new SpannableString(
-                ", " + context.getString(R.string.favourite_helper_text) + ", "
-                        + FavouriteTypeTools.getTypeText(context, type));
-        ssSecondary.setSpan(new ForegroundColorSpan(context.getColor(R.color.grey)),
-                0, ssSecondary.length(), 0);
-        int smallSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_small);
-        ssSecondary.setSpan(new AbsoluteSizeSpan(smallSize), 0, ssSecondary.length(), 0);
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append(ssPrimary).append(ssSecondary);
-        autoCompletePredictionText = builder;
+    public String getSecondaryText(Context context) {
+        return context.getString(R.string.favourite_helper_text) + ", " + FavouriteTypeTools.getTypeText(context, type);
     }
 
     private BitmapDescriptor createMarkerIcon(Context context) {
@@ -87,18 +60,9 @@ public class Favourite extends Location {
         return BitmapDescriptorFactory.fromBitmap(smallMarker);
     }
 
-    public static void createFavouritesFile(Context context) {
-        try {
-            FileInputStream in = context.openFileInput(
-                    context.getString(R.string.favourites_filename));
-            in.close();
-        } catch (IOException ignored) { }
-    }
-
-    public static List<Favourite> loadFavourites(Context context) throws IOException {
+    private static List<Favourite> loadFavourites(Context context) throws IOException {
         Gson gson = new Gson();
-        FileInputStream in = context.openFileInput(
-                context.getString(R.string.favourites_filename));
+        FileInputStream in = context.openFileInput(context.getString(R.string.favourites_filename));
         JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         List<Favourite> favourites = new ArrayList<>();
         reader.beginArray();
@@ -111,43 +75,36 @@ public class Favourite extends Location {
         return favourites;
     }
 
-    public static List<Favourite> loadFavouritesSafe(Context context) {
+    public static List<Favourite> loadFavouritesSafe(Context context, ExceptionHandler handler) {
         try {
             return Favourite.loadFavourites(context);
         }
         catch (IOException exception) {
-            Toast toast = Toast.makeText(context.getApplicationContext(),
-                    R.string.no_favourites_message, Toast.LENGTH_SHORT);
-            toast.show();
+            handler.handle();
             return new ArrayList<>();
         }
     }
 
-    public static void saveFavourites(Context context, List<Favourite> favourites)
+    private static void saveFavourites(Context context, List<Favourite> favourites)
             throws IOException {
         Gson gson = new Gson();
-        FileOutputStream out = context.openFileOutput(
-                context.getString(R.string.favourites_filename), Context.MODE_PRIVATE);
+        FileOutputStream out = context.openFileOutput(context.getString(R.string.favourites_filename), Context.MODE_PRIVATE);
         JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         writer.setIndent("  ");
         writer.beginArray();
-        for (Favourite favourite : favourites) {
+        for (Favourite favourite : favourites)
             gson.toJson(favourite, Favourite.class, writer);
-        }
         writer.endArray();
         writer.close();
     }
 
-    public static void saveFavouritesSafe(Context context, List<Favourite> favourites)
+    public static void saveFavouritesSafe(Context context, List<Favourite> favourites, ExceptionHandler handler)
     {
         try {
             saveFavourites(context, favourites);
         }
-        catch (IOException exception)
-        {
-            Toast toast = Toast.makeText(context.getApplicationContext(),
-                    R.string.no_favourites_message, Toast.LENGTH_SHORT);
-            toast.show();
+        catch (IOException exception) {
+            handler.handle();
         }
     }
 }

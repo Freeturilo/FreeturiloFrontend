@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/purple_back"
     tools:context=".MenuActivity">
 
     <include
@@ -60,6 +61,7 @@
         app:layout_constraintVertical_weight="1"
         android:background="@drawable/button_history"
         android:fontFamily="@font/quicksand"
+        android:onClick="goToHistory"
         android:text="@string/history_button_text"
         android:textAllCaps="false"
         android:textColor="@color/black"

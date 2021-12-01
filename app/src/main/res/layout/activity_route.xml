@@ -23,7 +23,7 @@
         tools:context=".MapActivity" />
 
     <TextView
-        android:id="@+id/bottom_bar"
+        android:id="@+id/bottom_panel_primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_panel"

@@ -9,6 +9,6 @@
     android:paddingEnd="5dp"
     android:ellipsize="marquee"
     android:fontFamily="@font/quicksand"
-    android:background="@drawable/list_item"
+    android:background="@drawable/item_specify_address"
     android:textSize="@dimen/text_size_medium"
     />

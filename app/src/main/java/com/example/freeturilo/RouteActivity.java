@@ -31,6 +31,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         ObjectWrapperForBinder parameters_wrapper = (ObjectWrapperForBinder) getIntent().getExtras()
                         .getBinder(getString(R.string.route_parameters_intent_name));
         routeParameters = (RouteParameters) parameters_wrapper.getData();
+        RouteParameters.addToHistorySafe(this, routeParameters);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         Objects.requireNonNull(mapFragment).getMapAsync(this);
@@ -48,7 +49,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         map.addMarker(routeParameters.end.createMarkerOptions(this));
         for (Location stop : routeParameters.stops)
             map.addMarker(stop.createMarkerOptions(this));
-        TextView bottomBar = findViewById(R.id.bottom_bar);
+        TextView bottomBar = findViewById(R.id.bottom_panel_primary);
         String criterionText = CriterionTools.getCriterionText(this, routeParameters.criterion);
         StringBuilder bottomBarText = new StringBuilder();
         bottomBarText.append(criterionText.substring(0, 1).toUpperCase(Locale.ROOT));

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Freeturilo</string>
     <string name="favourites_filename">favourites.json</string>
+    <string name="history_filename">history.json</string>
     <string name="logo_description">Logo aplikacji</string>
     <string name="map_button_text">Mapa</string>
     <string name="route_button_text">Trasa</string>
@@ -39,4 +40,6 @@
     <string name="route_text">trasa</string>
     <string name="specify_address_title">Czy chodziło o…</string>
     <string name="no_address_to_specify_message">Nie zlokalizowano punktu</string>
+    <string name="no_history_message">Historia tras jest niedostępna</string>
+    <string name="history_title">Historia tras</string>
 </resources>

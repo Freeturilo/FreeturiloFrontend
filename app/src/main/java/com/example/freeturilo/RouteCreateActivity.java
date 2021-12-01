@@ -51,9 +51,7 @@ public class RouteCreateActivity extends AppCompatActivity {
         stop_inputs = new ArrayList<>();
         customLocations = new ArrayList<>();
         customLocations.addAll(Station.loadStations());
-        customLocations.addAll(Favourite.loadFavouritesSafe(this));
-        for (Location location : customLocations)
-            location.setAutoCompletePredictionText(this);
+        customLocations.addAll(Favourite.loadFavouritesSafe(this, new IgnoreExceptionHandler()));
         AutoCompleteTextView start_input = this.findViewById(R.id.startTextView);
         start_input.addTextChangedListener(new AutoCompleteTextWatcher(start_input, customLocations));
         start_input.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -182,16 +180,9 @@ public class RouteCreateActivity extends AppCompatActivity {
         }
         List<Location> locations = new ArrayList<>();
         for (Address address : addresses)
-        {
-            Location location;
-            try {
-                location = Location.fromAddress(address);
-            }
-            catch (IllegalStateException exception) {
-                continue;
-            }
-            locations.add(location);
-        }
+            if (address.getMaxAddressLineIndex() >= 0)
+                locations.add(new Location(address.getAddressLine(0),
+                            address.getLatitude(), address.getLongitude()));
         if(locations.isEmpty()) {
             String toastMessage = getString(R.string.no_address_to_specify_message)
                     + ": \"" + locationName + "\"";
@@ -200,7 +191,7 @@ public class RouteCreateActivity extends AppCompatActivity {
             return;
         }
         ArrayAdapter<Location> adapter = new ArrayAdapter<>(this,
-                R.layout.specify_address_dialog_item, locations);
+                R.layout.item_specify_address, locations);
         new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
                 .setTitle(R.string.specify_address_title)
                 .setAdapter(adapter, (dialog, i) -> {

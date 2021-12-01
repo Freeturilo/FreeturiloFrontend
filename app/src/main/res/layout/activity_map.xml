@@ -54,22 +54,40 @@
         android:background="@drawable/button_edit_favourite"
         android:visibility="gone"
         android:onClick="showEditFavouriteDialog"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_panel"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <TextView
-        android:id="@+id/bottom_bar"
+    <LinearLayout
+        android:id="@+id/bottom_panel"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_panel"
-        android:fontFamily="@font/quicksand"
-        android:gravity="center"
         android:paddingVertical="@dimen/purple_border_height"
-        android:text="@string/map_caption_text"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_big"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/bottom_panel_primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_horizontal"
+            android:text="@string/map_caption_text"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_big" />
+
+        <TextView
+            android:id="@+id/bottom_panel_secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_small" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

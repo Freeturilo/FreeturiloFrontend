@@ -55,8 +55,8 @@ public class AutoCompleteTextWatcher implements TextWatcher {
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
                 IdentifiedLocation idPrediction = new IdentifiedLocation(
                         prediction.getPrimaryText(null).toString(),
+                        prediction.getSecondaryText(null).toString(),
                         prediction.getPlaceId(), token);
-                idPrediction.setAutoCompletePredictionTextWithPrediction(input.getContext(), prediction);
                 autoComplete.add(idPrediction);
             }
             input.setAdapter(adapter);

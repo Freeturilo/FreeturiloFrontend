@@ -69,8 +69,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Objects.requireNonNull(marker).setTag(station);
             markers.add(marker);
         }
-        favourites = Favourite.loadFavouritesSafe(this);
-        favourites = Favourite.loadFavouritesSafe(this);
+        favourites = Favourite.loadFavouritesSafe(this, new ToastExceptionHandler(this, R.string.no_favourites_message));
         for(Favourite favourite : favourites) {
             Marker marker = map.addMarker(favourite.createMarkerOptions(this));
             Objects.requireNonNull(marker).setTag(favourite);
@@ -99,19 +98,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void unfocus(LatLng latLng) {
-        TextView bottomBar = findViewById(R.id.bottom_bar);
-        bottomBar.setText(getString(R.string.map_caption_text));
+        TextView bottomTextPrimary = findViewById(R.id.bottom_panel_primary);
+        bottomTextPrimary.setText(getString(R.string.map_caption_text));
+        TextView bottomTextSecondary = findViewById(R.id.bottom_panel_secondary);
+        bottomTextSecondary.setVisibility(View.GONE);
         hideActionButtons();
     }
 
     private void showAddFavouriteDialog(LatLng latLng) {
-        AddFavouriteDialogFragment dialog = new AddFavouriteDialogFragment(latLng);
+        AddFavouriteDialog dialog = new AddFavouriteDialog(latLng);
         dialog.show(getSupportFragmentManager(), null);
     }
 
     public void showEditFavouriteDialog(View view) {
         Favourite favourite = Objects.requireNonNull((Favourite) view.getTag());
-        EditFavouriteDialogFragment dialog = new EditFavouriteDialogFragment(favourite);
+        EditFavouriteDialog dialog = new EditFavouriteDialog(favourite);
         dialog.show(getSupportFragmentManager(), null);
     }
 
@@ -128,8 +129,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Location location = Objects.requireNonNull((Location) marker.getTag());
         LatLng latLng = new LatLng(location.latitude, location.longitude);
         map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        TextView bottomBar = findViewById(R.id.bottom_bar);
-        bottomBar.setText(location.createCaption(this));
+        TextView bottomTextPrimary = findViewById(R.id.bottom_panel_primary);
+        bottomTextPrimary.setText(location.getPrimaryText());
+        TextView bottomTextSecondary = findViewById(R.id.bottom_panel_secondary);
+        bottomTextSecondary.setVisibility(View.VISIBLE);
+        bottomTextSecondary.setText(location.getCaption(this));
         hideActionButtons();
         showActionButtonsForLocation(location);
         return true;
@@ -148,7 +152,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Objects.requireNonNull(marker).setTag(favourite);
         markers.add(marker);
         showMarkerInfo(marker);
-        Favourite.saveFavouritesSafe(this, favourites);
+        Favourite.saveFavouritesSafe(this, favourites,
+                new ToastExceptionHandler(this, R.string.no_favourites_message));
     }
 
     public void updateFavourite(Favourite favourite) {
@@ -159,7 +164,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Objects.requireNonNull(marker).setTag(favourite);
         markers.add(marker);
         showMarkerInfo(marker);
-        Favourite.saveFavouritesSafe(this, favourites);
+        Favourite.saveFavouritesSafe(this, favourites,
+                new ToastExceptionHandler(this, R.string.no_favourites_message));
     }
 
     public void deleteFavourite(Favourite favourite) {
@@ -167,7 +173,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Marker favouriteMarker = findMarkerByLocation(favourite);
         markers.remove(Objects.requireNonNull(favouriteMarker));
         favouriteMarker.remove();
-        Favourite.saveFavouritesSafe(this, favourites);
+        Favourite.saveFavouritesSafe(this, favourites,
+                new ToastExceptionHandler(this, R.string.no_favourites_message));
         unfocus(null);
     }
 }
