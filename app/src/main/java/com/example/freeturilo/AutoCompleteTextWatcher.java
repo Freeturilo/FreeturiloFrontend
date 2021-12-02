@@ -20,11 +20,14 @@ import java.util.Locale;
 
 public class AutoCompleteTextWatcher implements TextWatcher {
 
+    final private RouteCreateActivity activity;
     final public AutocompleteSessionToken token;
     final private AutoCompleteTextView input;
     final private List<Location> customLocations;
 
-    public AutoCompleteTextWatcher(AutoCompleteTextView input, List<Location> customLocations) {
+    public AutoCompleteTextWatcher(RouteCreateActivity activity, AutoCompleteTextView input,
+                                   List<Location> customLocations) {
+        this.activity = activity;
         this.input = input;
         this.customLocations = new ArrayList<>(customLocations);
         this.token = AutocompleteSessionToken.newInstance();
@@ -32,7 +35,7 @@ public class AutoCompleteTextWatcher implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        input.setTag(null);
+        activity.clearLocationAssignment(input);
         String query = charSequence.toString().replaceAll("^[ \t]+|[ \t]+$", "");
         ArrayList<Location> autoComplete = new ArrayList<>();
         for (Location location : customLocations)

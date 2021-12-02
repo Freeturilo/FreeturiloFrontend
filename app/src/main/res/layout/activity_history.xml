@@ -21,7 +21,7 @@
         android:fontFamily="@font/quicksand"
         android:textSize="@dimen/text_size_big"
         android:textColor="@color/black"
-        android:background="@drawable/item_history"
+        android:background="@drawable/item_history_title_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />

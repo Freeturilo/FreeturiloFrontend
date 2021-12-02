@@ -2,22 +2,22 @@ package com.example.freeturilo;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.res.ResourcesCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.freeturilo.core.Criterion;
@@ -40,7 +40,7 @@ import java.util.Objects;
 
 public class RouteCreateActivity extends AppCompatActivity {
 
-    private List<AutoCompleteTextView> stop_inputs;
+    private List<AutoCompleteTextView> stopInputs;
     private List<Location> customLocations;
 
     @Override
@@ -48,88 +48,51 @@ public class RouteCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_create);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
-        stop_inputs = new ArrayList<>();
+        stopInputs = new ArrayList<>();
         customLocations = new ArrayList<>();
         customLocations.addAll(Station.loadStations());
         customLocations.addAll(Favourite.loadFavouritesSafe(this, new IgnoreExceptionHandler()));
-        AutoCompleteTextView start_input = this.findViewById(R.id.startTextView);
-        start_input.addTextChangedListener(new AutoCompleteTextWatcher(start_input, customLocations));
-        start_input.setOnItemClickListener((adapterView, view, i, l) -> {
-            Object item = adapterView.getItemAtPosition(i);
-            start_input.setTag(item);
-            if (item instanceof IdentifiedLocation)
-                fetchLatLng((IdentifiedLocation) item);
-        });
-        AutoCompleteTextView end_input = this.findViewById(R.id.endTextView);
-        end_input.addTextChangedListener(new AutoCompleteTextWatcher(end_input, customLocations));
-        end_input.setOnItemClickListener((adapterView, view, i, l) -> {
-            Object item = adapterView.getItemAtPosition(i);
-            end_input.setTag(item);
-            if (item instanceof IdentifiedLocation)
-                fetchLatLng((IdentifiedLocation) item);
-        });
+        AutoCompleteTextView startInput = this.findViewById(R.id.startTextView);
+        initializeAutocompleteInput(startInput, R.string.start_point_hint);
+        AutoCompleteTextView endInput = this.findViewById(R.id.endTextView);
+        initializeAutocompleteInput(endInput, R.string.end_point_hint);
     }
 
     public void addStop(View view1) {
-        if (stop_inputs.size() > 2)
+        if (stopInputs.size() > 2)
             return;
-        if (stop_inputs.size() == 2) {
-            Button add_stop_button = findViewById(R.id.add_stop_button);
-            add_stop_button.setVisibility(View.GONE);
+        if (stopInputs.size() == 2) {
+            Button addStopButton = findViewById(R.id.add_stop_button);
+            addStopButton.setVisibility(View.GONE);
         }
-        AutoCompleteTextView input = new AutoCompleteTextView(this);
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float logicalDensity = metrics.density;
-        int value1dp = (int) Math.ceil(logicalDensity);
-        input.setBackground(AppCompatResources.getDrawable(this, R.color.white));
-        input.setTypeface(ResourcesCompat.getFont(this, R.font.quicksand));
-        ViewGroup.MarginLayoutParams marginLayoutParams =
-                new ViewGroup.MarginLayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-        marginLayoutParams.setMargins(0, 10 * value1dp, 0, 0);
-        input.setLayoutParams(marginLayoutParams);
-        input.setHint(R.string.stop_hint);
-        input.setHintTextColor(
-                ResourcesCompat.getColor(getResources(), R.color.strong_grey, getTheme()));
-        input.setMinimumHeight(50 * value1dp);
-        input.setSingleLine();
-        input.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.text_size_medium));
-        input.setThreshold(1);
-        input.setPadding(10 * value1dp, 0, 10 * value1dp, 0);
-        LinearLayout layout = this.findViewById(R.id.inputs);
-        layout.addView(input, stop_inputs.size() + 1);
-        stop_inputs.add(input);
-        input.addTextChangedListener(new AutoCompleteTextWatcher(input, customLocations));
-        input.setOnItemClickListener((adapterView, view, i, l) -> {
-                Object item = adapterView.getItemAtPosition(i);
-                input.setTag(item);
-                if (item instanceof IdentifiedLocation)
-                    fetchLatLng((IdentifiedLocation) item);
-            });
+        LinearLayout autocompleteInputs = this.findViewById(R.id.autocomplete_inputs);
+        AutoCompleteTextView stopInput = (AutoCompleteTextView)
+                getLayoutInflater().inflate(R.layout.input_autocomplete, autocompleteInputs, false);
+        autocompleteInputs.addView(stopInput, stopInputs.size() + 1);
+        stopInputs.add(stopInput);
+        initializeAutocompleteInput(stopInput, R.string.stop_hint);
     }
 
     public void createRoute(View view) {
-        AutoCompleteTextView start_input = this.findViewById(R.id.startTextView);
-        AutoCompleteTextView end_input = this.findViewById(R.id.endTextView);
-        if (!(start_input.getTag() instanceof Location)) {
-            specifyAddress(start_input);
+        AutoCompleteTextView startInput = this.findViewById(R.id.startTextView);
+        AutoCompleteTextView endInput = this.findViewById(R.id.endTextView);
+        if (!(startInput.getTag() instanceof Location)) {
+            specifyAddress(startInput);
             return;
         }
-        Location start = (Location) start_input.getTag();
-        if (!(end_input.getTag() instanceof Location)) {
-            specifyAddress(end_input);
+        Location start = (Location) startInput.getTag();
+        if (!(endInput.getTag() instanceof Location)) {
+            specifyAddress(endInput);
             return;
         }
-        Location end  = (Location) end_input.getTag();
+        Location end  = (Location) endInput.getTag();
         List<Location> stops = new ArrayList<>();
-        for (AutoCompleteTextView stop_input : stop_inputs) {
-            if (!(stop_input.getTag() instanceof Location)) {
-                specifyAddress(stop_input);
+        for (AutoCompleteTextView stopInput : stopInputs) {
+            if (!(stopInput.getTag() instanceof Location)) {
+                specifyAddress(stopInput);
                 return;
             }
-            stops.add((Location) stop_input.getTag());
+            stops.add((Location) stopInput.getTag());
         }
         RadioGroup radioGroup = this.findViewById(R.id.criterion_buttons);
         Criterion criterion = getCheckedCriterion(radioGroup);
@@ -184,8 +147,7 @@ public class RouteCreateActivity extends AppCompatActivity {
                 locations.add(new Location(address.getAddressLine(0),
                             address.getLatitude(), address.getLongitude()));
         if(locations.isEmpty()) {
-            String toastMessage = getString(R.string.no_address_to_specify_message)
-                    + ": \"" + locationName + "\"";
+            String toastMessage = String.format("%s \"%s\"", getString(R.string.no_address_to_specify_message), locationName);
             Toast toast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
             toast.show();
             return;
@@ -196,8 +158,49 @@ public class RouteCreateActivity extends AppCompatActivity {
                 .setTitle(R.string.specify_address_title)
                 .setAdapter(adapter, (dialog, i) -> {
                     input.setText(locations.get(i).toString());
-                    input.setTag(locations.get(i));
+                    assignLocation(input, locations.get(i));
                     createRoute(input.getRootView().findViewById(R.id.submit_button));
                 }).show();
+    }
+
+    public void assignLocation(AutoCompleteTextView input, Location location) {
+        input.setTag(location);
+        if (location instanceof IdentifiedLocation)
+            fetchLatLng((IdentifiedLocation) location);
+        input.setTextColor(getColor(R.color.purple_first));
+        input.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_autocomplete_assigned, 0, 0, 0);
+    }
+
+    public void hideKeyboard(AutoCompleteTextView input) {
+        InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+        input.clearFocus();
+    }
+
+    public void assignLocationAndHideKeyboard(AutoCompleteTextView input, Location location) {
+        assignLocation(input, location);
+        hideKeyboard(input);
+    }
+
+    public void clearLocationAssignment(AutoCompleteTextView input) {
+        if(input.getTag() != null) {
+            input.setTag(null);
+            input.setTextColor(getColor(R.color.black));
+            input.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_autocomplete_unassigned, 0, 0, 0);
+        }
+    }
+
+    private void initializeAutocompleteInput(AutoCompleteTextView input, int hintResourceId) {
+        input.setHint(hintResourceId);
+        input.addTextChangedListener(new AutoCompleteTextWatcher(this, input, customLocations));
+        input.setOnItemClickListener((adapterView, view, i, l) ->
+                assignLocationAndHideKeyboard(input, (Location) adapterView.getItemAtPosition(i)));
+        input.setOnEditorActionListener((TextView v, int actionId, KeyEvent event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard((AutoCompleteTextView) v);
+                return true;
+            }
+            return false;
+        });
     }
 }

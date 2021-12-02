@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Freeturilo</string>
     <string name="favourites_filename">favourites.json</string>
     <string name="history_filename">history.json</string>
@@ -27,6 +27,7 @@
     <string name="station_reported_text">zgłoszona</string>
     <string name="station_broken_text">niesprawna</string>
     <string name="route_create_title">Trasa</string>
+    <string name="input_autocomplete_hint">Pole tekstowe dla lokalizacji</string>
     <string name="start_point_hint">Początek trasy</string>
     <string name="stop_hint">Przystanek</string>
     <string name="end_point_hint">Koniec trasy</string>
@@ -39,6 +40,7 @@
     <string name="google_attribution">Google attribution</string>
     <string name="route_text">trasa</string>
     <string name="specify_address_title">Czy chodziło o…</string>
+    <string name="specify_address_message" tools:ignore="Typos">Wyberz adres lokalizacji</string>
     <string name="no_address_to_specify_message">Nie zlokalizowano punktu</string>
     <string name="no_history_message">Historia tras jest niedostępna</string>
     <string name="history_title">Historia tras</string>

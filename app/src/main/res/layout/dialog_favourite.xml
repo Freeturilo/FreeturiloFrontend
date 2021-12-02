@@ -19,6 +19,7 @@
         android:textColor="@color/black"
         android:textColorHint="@color/strong_grey"
         android:textSize="@dimen/text_size_big"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

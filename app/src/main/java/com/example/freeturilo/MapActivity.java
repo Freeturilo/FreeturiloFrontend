@@ -32,13 +32,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     List<Marker> markers;
     List<Favourite> favourites;
     List<Station> stations;
-    List<Button> action_buttons;
+    List<Button> actionButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        action_buttons = Arrays.asList(
+        actionButtons = Arrays.asList(
                 findViewById(R.id.report_station_button),
                 findViewById(R.id.edit_favourite_button),
                 findViewById(R.id.delete_favourite_button));
@@ -78,7 +78,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void hideActionButtons() {
-        for (Button button : action_buttons) {
+        for (Button button : actionButtons) {
             button.setVisibility(View.GONE);
             button.setTag(null);
         }

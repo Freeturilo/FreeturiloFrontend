@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoCompleteTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/autocomplete_input_height"
+    android:layout_marginTop="10dp"
+    android:background="@color/white"
+    android:fontFamily="@font/quicksand"
+    android:hint="@string/input_autocomplete_hint"
+    android:minHeight="50dp"
+    android:completionThreshold="1"
+    android:paddingHorizontal="10dp"
+    android:singleLine="true"
+    android:textColorHint="@color/strong_grey"
+    android:textSize="@dimen/text_size_medium"
+    android:imeOptions="actionDone"
+    android:drawableLeft="@drawable/icon_autocomplete_unassigned"
+    android:drawablePadding="10dp"/>
