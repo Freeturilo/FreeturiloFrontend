@@ -2,10 +2,10 @@ package com.example.freeturilo.core;
 
 import android.content.Context;
 
-import com.example.freeturilo.ExceptionHandler;
-import com.example.freeturilo.IgnoreExceptionHandler;
+import com.example.freeturilo.handlers.ExceptionHandler;
+import com.example.freeturilo.handlers.IgnoreExceptionHandler;
 import com.example.freeturilo.R;
-import com.example.freeturilo.ToastExceptionHandler;
+import com.example.freeturilo.handlers.ToastExceptionHandler;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;

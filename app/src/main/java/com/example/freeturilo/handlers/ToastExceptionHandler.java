@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.handlers;
 
 import android.content.Context;
 import android.widget.Toast;

@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.handlers;
 
 public class IgnoreExceptionHandler implements ExceptionHandler {
     @Override

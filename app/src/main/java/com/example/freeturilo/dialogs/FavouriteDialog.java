@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.dialogs;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.freeturilo.R;
+import com.example.freeturilo.activities.MapActivity;
 import com.example.freeturilo.core.FavouriteType;
 
 import java.util.Objects;

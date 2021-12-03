@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.freeturilo.misc.HistoryAdapter;
+import com.example.freeturilo.handlers.IgnoreExceptionHandler;
+import com.example.freeturilo.misc.ObjectWrapperForBinder;
+import com.example.freeturilo.R;
+import com.example.freeturilo.handlers.ToastExceptionHandler;
 import com.example.freeturilo.core.RouteParameters;
 
 import java.util.List;

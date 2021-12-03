@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +20,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.freeturilo.misc.AutoCompleteTextWatcher;
+import com.example.freeturilo.BuildConfig;
+import com.example.freeturilo.handlers.IgnoreExceptionHandler;
+import com.example.freeturilo.misc.ObjectWrapperForBinder;
+import com.example.freeturilo.R;
 import com.example.freeturilo.core.Criterion;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.IdentifiedLocation;

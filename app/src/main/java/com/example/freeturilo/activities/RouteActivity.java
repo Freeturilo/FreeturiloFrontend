@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.freeturilo.misc.ObjectWrapperForBinder;
+import com.example.freeturilo.R;
 import com.example.freeturilo.core.CriterionTools;
 import com.example.freeturilo.core.Location;
 import com.example.freeturilo.core.RouteParameters;

@@ -1,9 +1,10 @@
-package com.example.freeturilo;
+package com.example.freeturilo.misc;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.AutoCompleteTextView;
 
+import com.example.freeturilo.activities.RouteCreateActivity;
 import com.example.freeturilo.core.IdentifiedLocation;
 import com.example.freeturilo.core.Location;
 import com.google.android.gms.maps.model.LatLng;

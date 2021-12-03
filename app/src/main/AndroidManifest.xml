@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".MenuActivity"
+            android:name=".activities.MenuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,36 +20,40 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MapActivity"
+            android:name=".activities.MapActivity"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.freeturilo.MenuActivity" />
+                android:value="com.example.freeturilo.activities.MenuActivity" />
         </activity>
         <activity
-            android:name=".RouteCreateActivity"
+            android:name=".activities.RouteCreateActivity"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.freeturilo.MenuActivity" />
+                android:value="com.example.freeturilo.activities.MenuActivity" />
         </activity>
         <activity
-            android:name=".RouteActivity"
+            android:name=".activities.RouteActivity"
             android:exported="false" />
         <activity
-            android:name=".HistoryActivity"
+            android:name=".activities.HistoryActivity"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.freeturilo.MenuActivity" />
+                android:value="com.example.freeturilo.activities.MenuActivity" />
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:exported="false" >
+            android:name=".activities.LoginActivity"
+            android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.freeturilo.MenuActivity" />
+                android:value="com.example.freeturilo.activities.MenuActivity" />
         </activity>
+        <activity
+            android:name=".activities.AdminActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />

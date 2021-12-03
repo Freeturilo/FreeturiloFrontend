@@ -1,33 +1,31 @@
-package com.example.freeturilo;
+package com.example.freeturilo.dialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 
+import com.example.freeturilo.R;
 import com.example.freeturilo.core.Favourite;
+import com.example.freeturilo.core.FavouriteType;
+import com.google.android.gms.maps.model.LatLng;
 
-public class EditFavouriteDialog extends FavouriteDialog {
-    final Favourite favourite;
+public class AddFavouriteDialog extends FavouriteDialog {
+    final LatLng latLng;
 
-    public EditFavouriteDialog(Favourite favourite) {
+    public AddFavouriteDialog(LatLng latLng) {
         super();
-        this.favourite = favourite;
+        this.latLng = latLng;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        EditText nameEditText = view.findViewById(R.id.name);
-        nameEditText.setText(favourite.name);
-        RadioButton typeRadioButton = (RadioButton) findButtonByType(favourite.type);
-        typeRadioButton.setChecked(true);
         return createBuilder()
-                .setTitle(R.string.edit_favourite_dialog_title)
+                .setTitle(R.string.add_favourite_dialog_title)
                 .setPositiveButton(R.string.ok_text, this::onPositiveButton)
                 .setNegativeButton(R.string.cancel_text, null)
                 .create();
@@ -35,9 +33,10 @@ public class EditFavouriteDialog extends FavouriteDialog {
 
     private void onPositiveButton(DialogInterface dialog, int id) {
         final EditText nameEditText = view.findViewById(R.id.name);
-        favourite.name = nameEditText.getText().toString();
+        String name = nameEditText.getText().toString();
         final RadioGroup typeRadioGroup = view.findViewById(R.id.favourite_buttons);
-        favourite.type = getCheckedType(typeRadioGroup);
-        mapActivity.updateFavourite(favourite);
+        FavouriteType type = getCheckedType(typeRadioGroup);
+        Favourite favourite = new Favourite(name, latLng.latitude, latLng.longitude, type);
+        mapActivity.addFavourite(favourite);
     }
 }

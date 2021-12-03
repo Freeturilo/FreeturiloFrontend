@@ -13,4 +13,9 @@
         <item name="android:fontFamily">@font/quicksand</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="FreeturiloSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/purple_first</item>
+        <item name="colorSwitchThumbNormal">@color/purple_second</item>
+        <item name="android:colorForeground">@color/purple_second_transparent</item>
+    </style>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.misc;
 
 import android.os.Binder;
 

@@ -48,4 +48,14 @@
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Hasło</string>
     <string name="submit_login_text">Zaloguj</string>
+    <string name="admin_title">Stan systemu</string>
+    <string name="start_state_text">stan działania</string>
+    <string name="demo_state_text">stan demonstracyjny</string>
+    <string name="stop_state_text">stan zatrzymania</string>
+    <string name="mail_notify_text">powiadomienia mailowe</string>
+    <string name="notify_switch_text">Powiadomienia o\nzgłoszonych stacjach</string>
+    <string name="notify_number_text">Liczba zgłoszeń stacji\ndo powiadomienia</string>
+    <string name="notify_number_hint">Podaj</string>
+    <string name="mail_notify_dialog_title">Powiadomienia mailowe</string>
+    <string name="change_system_state_message">Czy chcesz wprowadzić system w</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.misc;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.freeturilo.R;
 import com.example.freeturilo.core.Location;
 
 import java.util.List;

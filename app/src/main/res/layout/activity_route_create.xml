@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/purple_back"
-        tools:context=".RouteCreateActivity">
+        tools:context=".activities.RouteCreateActivity">
 
         <include
             android:id="@+id/toolbar"

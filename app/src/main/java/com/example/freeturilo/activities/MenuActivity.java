@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.freeturilo.R;
+import com.example.freeturilo.misc.AuthTools;
+
 public class MenuActivity extends AppCompatActivity {
 
     @Override
@@ -14,7 +17,7 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         ImageView logo = findViewById(R.id.toolbar).findViewById(R.id.logo);
-        logo.setOnLongClickListener(this::goToLogin);
+        logo.setOnLongClickListener(this::goToAdmin);
     }
 
     public void goToMap(View view) {
@@ -32,8 +35,12 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public boolean goToLogin(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
+    public boolean goToAdmin(View view) {
+        Intent intent;
+        if (AuthTools.isLoggedIn())
+            intent = new Intent(this, AdminActivity.class);
+        else
+            intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         return true;
     }

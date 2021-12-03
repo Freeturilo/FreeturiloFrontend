@@ -3,7 +3,7 @@ package com.example.freeturilo.core;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.example.freeturilo.ExceptionHandler;
+import com.example.freeturilo.handlers.ExceptionHandler;
 import com.example.freeturilo.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;

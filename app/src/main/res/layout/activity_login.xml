@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purple_back"
-    tools:context=".LoginActivity">
+    tools:context=".activities.LoginActivity">
 
     <include
         android:id="@+id/toolbar"
@@ -83,6 +83,7 @@
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_big"
+        android:onClick="login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.handlers;
 
 public interface ExceptionHandler {
     void handle();

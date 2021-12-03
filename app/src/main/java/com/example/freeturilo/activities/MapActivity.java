@@ -1,4 +1,4 @@
-package com.example.freeturilo;
+package com.example.freeturilo.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.freeturilo.dialogs.AddFavouriteDialog;
+import com.example.freeturilo.dialogs.EditFavouriteDialog;
+import com.example.freeturilo.R;
+import com.example.freeturilo.handlers.ToastExceptionHandler;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.Location;
 import com.example.freeturilo.core.Station;
@@ -119,7 +123,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void showDeleteFavouriteDialog(View view) {
         Favourite favourite = Objects.requireNonNull((Favourite) view.getTag());
         new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.FreeturiloDialogTheme))
-                .setMessage(getString(R.string.delete_favourite_message) + " \"" + favourite.name + "\"?")
+                .setMessage(String.format("%s \"%s\"?", getString(R.string.delete_favourite_message), favourite.name ))
                 .setPositiveButton(R.string.yes_text, (dialog, id) -> deleteFavourite(favourite))
                 .setNegativeButton(R.string.cancel_text, null)
                 .show();
