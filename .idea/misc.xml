@@ -33,9 +33,12 @@
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_autocomplete_assigned.xml" value="0.3" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_autocomplete_unassigned.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/item_history.xml" value="0.3015625" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/item_history_background.xml" value="0.2984375" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/item_history_title_background.xml" value="0.3828125" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/item_specify_address_background.xml" value="0.3828125" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/list_item.xml" value="0.25" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/activity_history.xml" value="0.28541666666666665" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/activity_map.xml" value="0.33" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/activity_menu.xml" value="0.33" />
@@ -50,6 +53,7 @@
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/input_autocomplete.xml" value="0.2838541666666667" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/item_autocomplete.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/item_history.xml" value="0.28541666666666665" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/item_specify_address.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/specify_address_dialog_item.xml" value="0.28854166666666664" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/specify_address_list_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/toolbar.xml" value="0.30416666666666664" />

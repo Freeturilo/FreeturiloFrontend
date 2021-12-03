@@ -16,9 +16,9 @@
     </item>
     <item android:drawable="@drawable/markers_history_item"
         android:gravity="left|center_vertical"
-        android:left="20sp"
-        android:height="100sp"
-        android:width="16sp">
+        android:left="20dp"
+        android:height="100dp"
+        android:width="16dp">
 
     </item>
 </layer-list>

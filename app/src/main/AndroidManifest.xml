@@ -38,6 +38,13 @@
             android:exported="false" />
         <activity
             android:name=".HistoryActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.freeturilo.MenuActivity" />
+        </activity>
+        <activity
+            android:name=".LoginActivity"
             android:exported="false" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

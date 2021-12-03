@@ -5,7 +5,8 @@
     android:gravity="center"
     android:orientation="vertical"
     android:background="@drawable/item_history_background"
-    android:padding="20dp">
+    android:paddingVertical="20dp"
+    android:paddingHorizontal="40dp">
 
     <TextView
         android:id="@+id/start_text"

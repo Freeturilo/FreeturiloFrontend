@@ -44,4 +44,8 @@
     <string name="no_address_to_specify_message">Nie zlokalizowano punktu</string>
     <string name="no_history_message">Historia tras jest niedostępna</string>
     <string name="history_title">Historia tras</string>
+    <string name="login_title">Logowanie</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Hasło</string>
+    <string name="submit_login_text">Zaloguj</string>
 </resources>

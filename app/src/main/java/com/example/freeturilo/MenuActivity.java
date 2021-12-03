@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -12,6 +13,8 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        ImageView logo = findViewById(R.id.toolbar).findViewById(R.id.logo);
+        logo.setOnLongClickListener(this::goToLogin);
     }
 
     public void goToMap(View view) {
@@ -27,5 +30,11 @@ public class MenuActivity extends AppCompatActivity {
     public void goToHistory(View view) {
         Intent intent = new Intent(this, HistoryActivity.class);
         startActivity(intent);
+    }
+
+    public boolean goToLogin(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        return true;
     }
 }

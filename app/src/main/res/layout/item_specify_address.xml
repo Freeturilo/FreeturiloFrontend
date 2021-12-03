@@ -5,10 +5,11 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:paddingVertical="5dp"
-    android:paddingStart="15dp"
+    android:paddingStart="30dp"
     android:paddingEnd="5dp"
     android:ellipsize="marquee"
     android:fontFamily="@font/quicksand"
-    android:background="@drawable/item_specify_address"
+    android:textColor="@color/black"
+    android:background="@drawable/item_specify_address_background"
     android:textSize="@dimen/text_size_medium"
     />
