@@ -2,6 +2,9 @@ package com.example.freeturilo.connection;
 
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.core.Route;
 import com.example.freeturilo.core.RouteParameters;
@@ -24,7 +27,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class APIConnect implements API {
 
-    private URL createURL(String ... pathFragments) throws MalformedURLException {
+    @NonNull
+    private URL createURL(@NonNull String ... pathFragments) throws MalformedURLException {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
                 .authority(BuildConfig.FREETURILO_API_URL);
@@ -33,7 +37,9 @@ public class APIConnect implements API {
         return new URL(builder.build().toString());
     }
 
-    private HttpsURLConnection createConnection(String method, String ... pathFragments) throws APIException {
+    @NonNull
+    private HttpsURLConnection createConnection(@NonNull String method,
+                                                @NonNull String ... pathFragments) throws APIException {
         HttpsURLConnection connection = null;
         try {
             URL url = createURL(pathFragments);
@@ -49,7 +55,8 @@ public class APIConnect implements API {
         }
     }
 
-    private <T> void attachRequestBody(HttpsURLConnection connection, T object) throws APIException {
+    private <T> void attachRequestBody(@NonNull HttpsURLConnection connection,
+                                       @NonNull T object) throws APIException {
         Gson gson = new Gson();
         connection.setDoOutput(true);
         connection.setChunkedStreamingMode(0);
@@ -63,7 +70,7 @@ public class APIConnect implements API {
         }
     }
 
-    private int retrieveResponseCode(HttpsURLConnection connection) throws APIException {
+    private int retrieveResponseCode(@NonNull HttpsURLConnection connection) throws APIException {
         int responseCode;
         try {
             responseCode = connection.getResponseCode();
@@ -78,7 +85,9 @@ public class APIConnect implements API {
         return responseCode;
     }
 
-    private <T> T retrieveResponseJsonObject(HttpsURLConnection connection, Class<T> classOfObject) throws APIException {
+    @NonNull
+    private <T> T retrieveResponseJsonObject(@NonNull HttpsURLConnection connection,
+                                             @NonNull Class<T> classOfObject) throws APIException {
         Gson gson = new Gson();
         try {
             JsonReader reader = new JsonReader(new InputStreamReader(connection.getInputStream()));
@@ -91,7 +100,9 @@ public class APIConnect implements API {
         }
     }
 
-    private <T> List<T> retrieveResponseJsonList(HttpsURLConnection connection, Class<T> classOfElement) throws APIException {
+    @NonNull
+    private <T> List<T> retrieveResponseJsonList(@NonNull HttpsURLConnection connection,
+                                                 @NonNull Class<T> classOfElement) throws APIException {
         Gson gson = new Gson();
         try {
             JsonReader reader = new JsonReader(new InputStreamReader(connection.getInputStream()));
@@ -108,6 +119,7 @@ public class APIConnect implements API {
         }
     }
 
+    @NonNull
     private List<Station> getStations() throws APIException {
         HttpsURLConnection connection = createConnection("GET", "station");
         retrieveResponseCode(connection);
@@ -116,7 +128,8 @@ public class APIConnect implements API {
         return stations;
     }
 
-    private Integer reportStation(Station station) throws APIException {
+    @NonNull
+    private Integer reportStation(@NonNull Station station) throws APIException {
         HttpsURLConnection connection = createConnection("POST",
                 "station", String.valueOf(station.id), "report");
         int responseCode = retrieveResponseCode(connection);
@@ -124,7 +137,8 @@ public class APIConnect implements API {
         return responseCode;
     }
 
-    private Integer setBrokenStation(Station station) throws APIException {
+    @NonNull
+    private Integer setBrokenStation(@NonNull Station station) throws APIException {
         HttpsURLConnection connection = createConnection("POST",
                 "station", String.valueOf(station.id), "broken");
         int responseCode = retrieveResponseCode(connection);
@@ -132,7 +146,8 @@ public class APIConnect implements API {
         return responseCode;
     }
 
-    private Integer setWorkingStation(Station station) throws APIException {
+    @NonNull
+    private Integer setWorkingStation(@NonNull Station station) throws APIException {
         HttpsURLConnection connection = createConnection("POST",
                 "station", String.valueOf(station.id), "working");
         int responseCode = retrieveResponseCode(connection);
@@ -140,7 +155,8 @@ public class APIConnect implements API {
         return responseCode;
     }
 
-    private String postUser(String email, String password) throws APIException {
+    @NonNull
+    private String postUser(@NonNull String email, @NonNull String password) throws APIException {
         HttpsURLConnection connection = createConnection("POST", "user");
         connection.setRequestProperty("email", email);
         connection.setRequestProperty("password", password);
@@ -149,7 +165,8 @@ public class APIConnect implements API {
         return token;
     }
 
-    private Route getRoute(RouteParameters routeParameters) throws APIException {
+    @NonNull
+    private Route getRoute(@NonNull RouteParameters routeParameters) throws APIException {
         HttpsURLConnection connection = createConnection("POST", "route");
         attachRequestBody(connection, routeParameters);
         Route route = retrieveResponseJsonObject(connection, Route.class);
@@ -157,6 +174,7 @@ public class APIConnect implements API {
         return route;
     }
 
+    @NonNull
     private Integer postStateStop() throws APIException {
         HttpsURLConnection connection = createConnection("POST", "app", "stop");
         int responseCode = retrieveResponseCode(connection);
@@ -164,6 +182,7 @@ public class APIConnect implements API {
         return responseCode;
     }
 
+    @NonNull
     private Integer postStateStart() throws APIException {
         HttpsURLConnection connection = createConnection("POST", "app", "start");
         int responseCode = retrieveResponseCode(connection);
@@ -171,6 +190,7 @@ public class APIConnect implements API {
         return responseCode;
     }
 
+    @NonNull
     private Integer postStateDemo() throws APIException {
         HttpsURLConnection connection = createConnection("POST", "app", "demo");
         int responseCode = retrieveResponseCode(connection);
@@ -178,6 +198,7 @@ public class APIConnect implements API {
         return responseCode;
     }
 
+    @NonNull
     private Integer postNotifyThreshold(int threshold) throws APIException {
         HttpsURLConnection connection = createConnection("POST",
                 "app", "notify", String.valueOf(threshold));
@@ -187,52 +208,54 @@ public class APIConnect implements API {
     }
 
     @Override
-    public void getStationsAsync(Callback<List<Station>> callback, APIHandler handler) {
+    public void getStationsAsync(@Nullable Callback<List<Station>> callback, @Nullable APIHandler handler) {
         APIRunnable.create(this::getStations).setCallback(callback).setHandler(handler).startThread();
     }
 
     @Override
-    public void reportStationAsync(Station station, APIHandler handler) {
+    public void reportStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
         APIRunnable.create(() -> reportStation(station)).setHandler(handler).startThread();
     }
 
     @Override
-    public void setBrokenStationAsync(Station station, APIHandler handler) {
+    public void setBrokenStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
         APIRunnable.create(() -> setBrokenStation(station)).setHandler(handler).startThread();
     }
 
     @Override
-    public void setWorkingStationAsync(Station station, APIHandler handler) {
+    public void setWorkingStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
         APIRunnable.create(() -> setWorkingStation(station)).setHandler(handler).startThread();
     }
 
     @Override
-    public void postUserAsync(String username, String password, Callback<String> callback, APIHandler handler) {
+    public void postUserAsync(@NonNull String username, @NonNull String password,
+                              @Nullable Callback<String> callback, @Nullable APIHandler handler) {
         APIRunnable.create(() -> postUser(username, password)).setCallback(callback).setHandler(handler).startThread();
     }
 
     @Override
-    public void getRouteAsync(RouteParameters routeParameters, Callback<Route> callback, APIHandler handler) {
+    public void getRouteAsync(@NonNull RouteParameters routeParameters,
+                              @Nullable Callback<Route> callback, @Nullable APIHandler handler) {
         APIRunnable.create(() -> getRoute(routeParameters)).setCallback(callback).setHandler(handler).startThread();
     }
 
     @Override
-    public void postStateStopAsync(APIHandler handler) {
+    public void postStateStopAsync(@Nullable APIHandler handler) {
         APIRunnable.create(this::postStateStop).setHandler(handler).startThread();
     }
 
     @Override
-    public void postStateStartAsync(APIHandler handler) {
+    public void postStateStartAsync(@Nullable APIHandler handler) {
         APIRunnable.create(this::postStateStart).setHandler(handler).startThread();
     }
 
     @Override
-    public void postStateDemoAsync(APIHandler handler) {
+    public void postStateDemoAsync(@Nullable APIHandler handler) {
         APIRunnable.create(this::postStateDemo).setHandler(handler).startThread();
     }
 
     @Override
-    public void postNotifyThresholdAsync(int threshold, APIHandler handler) {
+    public void postNotifyThresholdAsync(int threshold, @Nullable APIHandler handler) {
         APIRunnable.create(() -> postNotifyThreshold(threshold)).setHandler(handler).startThread();
     }
 }

@@ -4,10 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import androidx.annotation.NonNull;
+
 import com.example.freeturilo.R;
 
 public class FavouriteTypeTools {
-    public static String getTypeText(Context context, FavouriteType favouriteType) {
+
+    @NonNull
+    public static String getTypeText(@NonNull Context context, @NonNull FavouriteType favouriteType) {
         switch (favouriteType){
             case HOME:
                 return context.getString(R.string.favourite_home_text);
@@ -20,7 +24,7 @@ public class FavouriteTypeTools {
         }
     }
 
-    public static int getMarkerIconId(FavouriteType favouriteType) {
+    public static int getMarkerIconId(@NonNull FavouriteType favouriteType) {
         switch (favouriteType) {
             case HOME:
                 return R.drawable.marker_home;
@@ -33,7 +37,8 @@ public class FavouriteTypeTools {
         }
     }
 
-    public static Bitmap getMarkerIcon(Context context, FavouriteType favouriteType) {
+    @NonNull
+    public static Bitmap getMarkerIcon(@NonNull Context context, @NonNull FavouriteType favouriteType) {
         return BitmapFactory.decodeResource(context.getResources(), getMarkerIconId(favouriteType));
     }
 }

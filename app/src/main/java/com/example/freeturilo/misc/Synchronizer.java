@@ -1,12 +1,14 @@
 package com.example.freeturilo.misc;
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Synchronizer {
-    private AtomicInteger counter;
-    private VoidCallback callback;
+    final private AtomicInteger counter;
+    final private VoidCallback callback;
 
-    public Synchronizer(int initialCounter, VoidCallback callback) {
+    public Synchronizer(int initialCounter, @NonNull VoidCallback callback) {
         counter = new AtomicInteger(initialCounter);
         this.callback = callback;
     }

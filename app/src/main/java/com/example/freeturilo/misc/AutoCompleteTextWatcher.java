@@ -4,6 +4,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.AutoCompleteTextView;
 
+import androidx.annotation.NonNull;
+
 import com.example.freeturilo.activities.RouteCreateActivity;
 import com.example.freeturilo.core.IdentifiedLocation;
 import com.example.freeturilo.core.Location;
@@ -22,12 +24,13 @@ import java.util.Locale;
 public class AutoCompleteTextWatcher implements TextWatcher {
 
     final private RouteCreateActivity activity;
-    final public AutocompleteSessionToken token;
+    final private AutocompleteSessionToken token;
     final private AutoCompleteTextView input;
     final private List<Location> customLocations;
 
-    public AutoCompleteTextWatcher(RouteCreateActivity activity, AutoCompleteTextView input,
-                                   List<Location> customLocations) {
+    public AutoCompleteTextWatcher(@NonNull RouteCreateActivity activity,
+                                   @NonNull AutoCompleteTextView input,
+                                   @NonNull List<Location> customLocations) {
         this.activity = activity;
         this.input = input;
         this.customLocations = customLocations;
@@ -35,7 +38,7 @@ public class AutoCompleteTextWatcher implements TextWatcher {
     }
 
     @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    public void onTextChanged(@NonNull CharSequence charSequence, int i, int i1, int i2) {
         activity.clearLocationAssignment(input);
         String query = charSequence.toString().replaceAll("^[ \t]+|[ \t]+$", "");
         ArrayList<Location> autoComplete = new ArrayList<>();
@@ -70,8 +73,8 @@ public class AutoCompleteTextWatcher implements TextWatcher {
     }
 
     @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+    public void beforeTextChanged(@NonNull CharSequence charSequence, int i, int i1, int i2) {}
 
     @Override
-    public void afterTextChanged(Editable editable) {}
+    public void afterTextChanged(@NonNull Editable editable) {}
 }

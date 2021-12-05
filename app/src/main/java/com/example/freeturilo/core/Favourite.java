@@ -29,13 +29,15 @@ import java.util.Locale;
 public class Favourite extends Location {
     public FavouriteType type;
 
-    public Favourite(String name, double latitude, double longitude, FavouriteType type) {
+    public Favourite(@NonNull String name, double latitude,
+                     double longitude, @NonNull FavouriteType type) {
         super(name, latitude, longitude);
         this.type = type;
     }
 
+    @NonNull
     @Override
-    public MarkerOptions createMarkerOptions(Context context) {
+    public MarkerOptions createMarkerOptions(@NonNull Context context) {
         LatLng markerPosition = new LatLng(latitude, longitude);
         return new MarkerOptions()
                 .position(markerPosition)
@@ -44,7 +46,7 @@ public class Favourite extends Location {
 
     @Nullable
     @Override
-    public String getSecondaryText(Context context) {
+    public String getSecondaryText(@NonNull Context context) {
         String helperText = context.getString(R.string.favourite_helper_text).toLowerCase(Locale.ROOT);
         String typeText = FavouriteTypeTools.getTypeText(context, type);
         return String.format("%s - %s", helperText, typeText);
@@ -52,18 +54,19 @@ public class Favourite extends Location {
 
     @Nullable
     @Override
-    public String getTertiaryText(Context context) {
+    public String getTertiaryText(@NonNull Context context) {
         return null;
     }
 
     @NonNull
     @Override
-    public String getInlineSecondaryText(Context context) {
+    public String getInlineSecondaryText(@NonNull Context context) {
         return String.format("%s, %s", context.getString(R.string.favourite_helper_text),
                 FavouriteTypeTools.getTypeText(context, type));
     }
 
-    private BitmapDescriptor createMarkerIcon(Context context) {
+    @NonNull
+    private BitmapDescriptor createMarkerIcon(@NonNull Context context) {
         Bitmap markerBitmap = FavouriteTypeTools.getMarkerIcon(context, type);
         int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
         int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
@@ -72,7 +75,8 @@ public class Favourite extends Location {
         return BitmapDescriptorFactory.fromBitmap(smallMarker);
     }
 
-    private static List<Favourite> loadFavourites(Context context) throws IOException {
+    @NonNull
+    private static List<Favourite> loadFavourites(@NonNull Context context) throws IOException {
         Gson gson = new Gson();
         FileInputStream in = context.openFileInput(context.getString(R.string.favourites_filename));
         JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
@@ -87,17 +91,21 @@ public class Favourite extends Location {
         return favourites;
     }
 
-    public static List<Favourite> loadFavouritesSafe(Context context, ExceptionHandler handler) {
+    @NonNull
+    public static List<Favourite> loadFavouritesSafe(@NonNull Context context,
+                                                     @Nullable ExceptionHandler handler) {
         try {
             return Favourite.loadFavourites(context);
         }
         catch (IOException exception) {
-            handler.handle();
+            if (handler != null)
+                handler.handle();
             return new ArrayList<>();
         }
     }
 
-    private static void saveFavourites(Context context, List<Favourite> favourites)
+    private static void saveFavourites(@NonNull Context context,
+                                       @NonNull List<Favourite> favourites)
             throws IOException {
         Gson gson = new Gson();
         FileOutputStream out = context.openFileOutput(context.getString(R.string.favourites_filename), Context.MODE_PRIVATE);
@@ -110,13 +118,16 @@ public class Favourite extends Location {
         writer.close();
     }
 
-    public static void saveFavouritesSafe(Context context, List<Favourite> favourites, ExceptionHandler handler)
+    public static void saveFavouritesSafe(@NonNull Context context,
+                                          @NonNull List<Favourite> favourites,
+                                          @Nullable ExceptionHandler handler)
     {
         try {
             saveFavourites(context, favourites);
         }
         catch (IOException exception) {
-            handler.handle();
+            if (handler != null)
+                handler.handle();
         }
     }
 }

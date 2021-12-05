@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class AddFavouriteDialog extends FavouriteDialog {
     final LatLng latLng;
 
-    public AddFavouriteDialog(LatLng latLng, Callback<Favourite> positiveCallback) {
+    public AddFavouriteDialog(@NonNull LatLng latLng, @NonNull Callback<Favourite> positiveCallback) {
         super(positiveCallback);
         this.latLng = latLng;
     }
@@ -32,7 +32,7 @@ public class AddFavouriteDialog extends FavouriteDialog {
                 .create();
     }
 
-    private void onPositiveButton(DialogInterface dialog, int id) {
+    private void onPositiveButton(@NonNull DialogInterface dialog, int id) {
         final EditText nameEditText = view.findViewById(R.id.name);
         String name = nameEditText.getText().toString();
         final RadioGroup typeRadioGroup = view.findViewById(R.id.favourite_buttons);

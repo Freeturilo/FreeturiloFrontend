@@ -1,5 +1,6 @@
 package com.example.freeturilo.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,7 +25,6 @@ import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.misc.AutoCompleteTextWatcher;
 import com.example.freeturilo.BuildConfig;
-import com.example.freeturilo.handlers.IgnoreExceptionHandler;
 import com.example.freeturilo.misc.ObjectWrapperForBinder;
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.Criterion;
@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class RouteCreateActivity extends AppCompatActivity {
-    private API api;
     private List<AutoCompleteTextView> stopInputs;
     private List<Location> customLocations;
 
@@ -53,19 +52,19 @@ public class RouteCreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_create);
-        api = new APIMock();
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
+        API api = new APIMock();
         stopInputs = new ArrayList<>();
         customLocations = new ArrayList<>();
         api.getStationsAsync((result) -> customLocations.addAll(result), null);
-        customLocations.addAll(Favourite.loadFavouritesSafe(this, new IgnoreExceptionHandler()));
+        customLocations.addAll(Favourite.loadFavouritesSafe(this, null));
         AutoCompleteTextView startInput = this.findViewById(R.id.startTextView);
-        initializeAutocompleteInput(startInput, R.string.start_point_hint);
         AutoCompleteTextView endInput = this.findViewById(R.id.endTextView);
+        initializeAutocompleteInput(startInput, R.string.start_point_hint);
         initializeAutocompleteInput(endInput, R.string.end_point_hint);
     }
 
-    public void addStop(View view1) {
+    public void addStop(@NonNull View view) {
         if (stopInputs.size() > 2)
             return;
         if (stopInputs.size() == 2) {
@@ -73,14 +72,14 @@ public class RouteCreateActivity extends AppCompatActivity {
             addStopButton.setVisibility(View.GONE);
         }
         LinearLayout autocompleteInputs = this.findViewById(R.id.autocomplete_inputs);
-        AutoCompleteTextView stopInput = (AutoCompleteTextView)
-                getLayoutInflater().inflate(R.layout.input_autocomplete, autocompleteInputs, false);
+        AutoCompleteTextView stopInput = (AutoCompleteTextView) getLayoutInflater()
+                .inflate(R.layout.input_autocomplete, autocompleteInputs, false);
         autocompleteInputs.addView(stopInput, stopInputs.size() + 1);
         stopInputs.add(stopInput);
         initializeAutocompleteInput(stopInput, R.string.stop_hint);
     }
 
-    public void createRoute(View view) {
+    public void createRoute(@NonNull View view) {
         AutoCompleteTextView startInput = this.findViewById(R.id.startTextView);
         AutoCompleteTextView endInput = this.findViewById(R.id.endTextView);
         if (!(startInput.getTag() instanceof Location)) {
@@ -111,7 +110,8 @@ public class RouteCreateActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private Criterion getCheckedCriterion(RadioGroup criterionRadioGroup) {
+    @NonNull
+    private Criterion getCheckedCriterion(@NonNull RadioGroup criterionRadioGroup) {
         int buttonId = criterionRadioGroup.getCheckedRadioButtonId();
         final int costId = R.id.criterion_cost_button;
         final int hybridId = R.id.criterion_hybrid_button;
@@ -125,19 +125,20 @@ public class RouteCreateActivity extends AppCompatActivity {
         }
     }
 
-    private void fetchLatLng(IdentifiedLocation idLocation) {
+    private void fetchLatLng(@NonNull IdentifiedLocation identifiedLocation) {
         PlacesClient placesClient = Places.createClient(this);
         List<Place.Field> latLngField = Collections.singletonList(Place.Field.LAT_LNG);
-        FetchPlaceRequest request = FetchPlaceRequest.builder(idLocation.placeId, latLngField)
-                .setSessionToken(idLocation.token).build();
+        FetchPlaceRequest request = FetchPlaceRequest
+                .builder(identifiedLocation.placeId, latLngField)
+                .setSessionToken(identifiedLocation.token).build();
         placesClient.fetchPlace(request).addOnSuccessListener(response -> {
             LatLng latLng = Objects.requireNonNull(response.getPlace().getLatLng());
-            idLocation.latitude = latLng.latitude;
-            idLocation.longitude = latLng.longitude;
+            identifiedLocation.latitude = latLng.latitude;
+            identifiedLocation.longitude = latLng.longitude;
         });
     }
 
-    private void specifyAddress(AutoCompleteTextView input) {
+    private void specifyAddress(@NonNull AutoCompleteTextView input) {
         String locationName = input.getText().toString();
         Geocoder geocoder = new Geocoder(this);
         List<Address> addresses;
@@ -170,7 +171,7 @@ public class RouteCreateActivity extends AppCompatActivity {
                 }).show();
     }
 
-    public void assignLocation(AutoCompleteTextView input, Location location) {
+    private void assignLocation(@NonNull AutoCompleteTextView input, @NonNull Location location) {
         input.setTag(location);
         if (location instanceof IdentifiedLocation)
             fetchLatLng((IdentifiedLocation) location);
@@ -178,18 +179,18 @@ public class RouteCreateActivity extends AppCompatActivity {
         input.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_autocomplete_assigned, 0, 0, 0);
     }
 
-    public void hideKeyboard(AutoCompleteTextView input) {
+    private void hideKeyboard(@NonNull AutoCompleteTextView input) {
         InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
         input.clearFocus();
     }
 
-    public void assignLocationAndHideKeyboard(AutoCompleteTextView input, Location location) {
+    private void assignLocationAndHideKeyboard(@NonNull AutoCompleteTextView input, @NonNull Location location) {
         assignLocation(input, location);
         hideKeyboard(input);
     }
 
-    public void clearLocationAssignment(AutoCompleteTextView input) {
+    public void clearLocationAssignment(@NonNull AutoCompleteTextView input) {
         if(input.getTag() != null) {
             input.setTag(null);
             input.setTextColor(getColor(R.color.black));
@@ -197,7 +198,7 @@ public class RouteCreateActivity extends AppCompatActivity {
         }
     }
 
-    private void initializeAutocompleteInput(AutoCompleteTextView input, int hintResourceId) {
+    private void initializeAutocompleteInput(@NonNull AutoCompleteTextView input, int hintResourceId) {
         input.setHint(hintResourceId);
         input.addTextChangedListener(new AutoCompleteTextWatcher(this, input, customLocations));
         input.setOnItemClickListener((adapterView, view, i, l) ->

@@ -17,18 +17,19 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.freeturilo.R;
-import com.example.freeturilo.activities.AdminActivity;
-
-import java.util.Objects;
+import com.example.freeturilo.misc.Callback;
 
 public class MailNotifyDialog extends DialogFragment {
-    View view;
-    AdminActivity adminActivity;
+    private View view;
+    final private Callback<Integer> positiveCallback;
+
+    public MailNotifyDialog(Callback<Integer> positiveCallback) {
+        this.positiveCallback = positiveCallback;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        adminActivity = Objects.requireNonNull((AdminActivity) context);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.dialog_mail_notify, null);
     }
@@ -38,7 +39,7 @@ public class MailNotifyDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
         notifySwitch.setOnCheckedChangeListener(this::onSwitchChange);
-        return new AlertDialog.Builder(requireActivity(), R.style.FreeturiloDialogTheme)
+        return new AlertDialog.Builder(requireContext(), R.style.FreeturiloDialogTheme)
                 .setView(view)
                 .setTitle(R.string.mail_notify_dialog_title)
                 .setPositiveButton(R.string.ok_text, this::onPositiveButton)
@@ -50,13 +51,13 @@ public class MailNotifyDialog extends DialogFragment {
         TextView notifyNumberText = view.findViewById(R.id.notify_number_text);
         EditText notifyNumberInput = view.findViewById(R.id.notify_number_input);
         if(!isChecked) {
-            notifyNumberText.setTextColor(adminActivity.getColor(R.color.grey));
-            notifyNumberInput.setTextColor(adminActivity.getColor(R.color.grey));
+            notifyNumberText.setTextColor(requireContext().getColor(R.color.grey));
+            notifyNumberInput.setTextColor(requireContext().getColor(R.color.grey));
             notifyNumberInput.setEnabled(false);
         }
         else {
-            notifyNumberText.setTextColor(adminActivity.getColor(R.color.black));
-            notifyNumberInput.setTextColor(adminActivity.getColor(R.color.black));
+            notifyNumberText.setTextColor(requireContext().getColor(R.color.black));
+            notifyNumberInput.setTextColor(requireContext().getColor(R.color.black));
             notifyNumberInput.setEnabled(true);
         }
     }
@@ -64,11 +65,12 @@ public class MailNotifyDialog extends DialogFragment {
     private void onPositiveButton(DialogInterface dialog, int id) {
         SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
         if (!notifySwitch.isChecked()) {
-            adminActivity.setNotifyThreshold(0);
+            positiveCallback.call(0);
         }
         else {
             EditText notifyNumberInput = view.findViewById(R.id.notify_number_input);
-            adminActivity.setNotifyThreshold(Integer.parseInt(notifyNumberInput.getText().toString()));
+            int threshold = Integer.parseInt(notifyNumberInput.getText().toString());
+            positiveCallback.call(threshold);
         }
     }
 }

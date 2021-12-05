@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.CriterionTools;
@@ -16,16 +17,17 @@ import com.example.freeturilo.core.RouteParameters;
 import java.util.List;
 
 public class HistoryAdapter extends ArrayAdapter<RouteParameters> {
+
     public HistoryAdapter(@NonNull Context context, @NonNull List<RouteParameters> objects) {
         super(context, 0, objects);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null) {
+    public View getView(int position, @Nullable View convertView, @Nullable ViewGroup parent) {
+        if(convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(
                     R.layout.item_history, parent, false);
-        }
         RouteParameters routeParameters = getItem(position);
         TextView startText = convertView.findViewById(R.id.start_text);
         startText.setText(routeParameters.start.name);

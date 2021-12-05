@@ -29,8 +29,9 @@ public class Station extends Location {
         this.state = state;
     }
 
+    @NonNull
     @Override
-    public MarkerOptions createMarkerOptions(Context context) {
+    public MarkerOptions createMarkerOptions(@NonNull Context context) {
         LatLng markerPosition = new LatLng(latitude, longitude);
         Bitmap markerBitmap = StationStateTools.getMarkerIcon(context, state);
         int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
@@ -45,13 +46,13 @@ public class Station extends Location {
 
     @Nullable
     @Override
-    public String getSecondaryText(Context context) {
-        return context.getString(R.string.station_helper_text);
+    public String getSecondaryText(@NonNull Context context) {
+        return context.getString(R.string.station_helper_text).toLowerCase(Locale.ROOT);
     }
 
     @Nullable
     @Override
-    public String getTertiaryText(Context context) {
+    public String getTertiaryText(@NonNull Context context) {
         String availabilityHelperText = context.getString(R.string.bikes_availability_text);
         String availabilityText = String.format(Locale.ROOT, "%d/%d", bikes, bikeRacks);
         String stateText = String.format("(%s)", StationStateTools.getStateText(context, state));
@@ -63,7 +64,7 @@ public class Station extends Location {
 
     @NonNull
     @Override
-    public String getInlineSecondaryText(Context context) {
+    public String getInlineSecondaryText(@NonNull Context context) {
         return String.format("%s, %s", context.getString(R.string.station_helper_text),
                 StationStateTools.getStateText(context, state));
     }

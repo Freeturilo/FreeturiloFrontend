@@ -10,19 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.freeturilo.R;
-import com.example.freeturilo.activities.MapActivity;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.FavouriteType;
 import com.example.freeturilo.misc.Callback;
 
-import java.util.Objects;
-
 public class FavouriteDialog extends DialogFragment {
-    View view;
-    MapActivity mapActivity;
-    final Callback<Favourite> positiveCallback;
+    protected View view;
+    final protected Callback<Favourite> positiveCallback;
 
-    public FavouriteDialog(Callback<Favourite> positiveCallback) {
+    public FavouriteDialog(@NonNull Callback<Favourite> positiveCallback) {
         super();
         this.positiveCallback = positiveCallback;
     }
@@ -30,17 +26,18 @@ public class FavouriteDialog extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mapActivity = Objects.requireNonNull((MapActivity) context);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.dialog_favourite, null);
     }
 
+    @NonNull
     AlertDialog.Builder createBuilder() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mapActivity, R.style.FreeturiloDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.FreeturiloDialogTheme);
         return builder.setView(view);
     }
 
-    View findButtonByType(FavouriteType type) {
+    @NonNull
+    View findButtonByType(@NonNull FavouriteType type) {
         switch (type) {
             case HOME:
                 return view.findViewById(R.id.favourite_home_button);
@@ -53,7 +50,8 @@ public class FavouriteDialog extends DialogFragment {
         }
     }
 
-    FavouriteType getCheckedType(RadioGroup typeRadioGroup) {
+    @NonNull
+    FavouriteType getCheckedType(@NonNull RadioGroup typeRadioGroup) {
         int buttonId = typeRadioGroup.getCheckedRadioButtonId();
         final int homeId = R.id.favourite_home_button;
         final int schoolId = R.id.favourite_school_button;

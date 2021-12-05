@@ -16,7 +16,7 @@ import com.example.freeturilo.misc.Callback;
 public class EditFavouriteDialog extends FavouriteDialog {
     final Favourite favourite;
 
-    public EditFavouriteDialog(Favourite favourite, Callback<Favourite> positiveCallback) {
+    public EditFavouriteDialog(@NonNull Favourite favourite, @NonNull Callback<Favourite> positiveCallback) {
         super(positiveCallback);
         this.favourite = favourite;
     }
@@ -35,7 +35,7 @@ public class EditFavouriteDialog extends FavouriteDialog {
                 .create();
     }
 
-    private void onPositiveButton(DialogInterface dialog, int id) {
+    private void onPositiveButton(@NonNull DialogInterface dialog, int id) {
         final EditText nameEditText = view.findViewById(R.id.name);
         favourite.name = nameEditText.getText().toString();
         final RadioGroup typeRadioGroup = view.findViewById(R.id.favourite_buttons);

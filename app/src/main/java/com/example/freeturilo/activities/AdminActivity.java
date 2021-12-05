@@ -1,5 +1,6 @@
 package com.example.freeturilo.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,18 +16,19 @@ import com.example.freeturilo.dialogs.MailNotifyDialog;
 
 public class AdminActivity extends AppCompatActivity {
     private API api;
-    int checkedButtonId = R.id.start_state_button;
+    private int checkedButtonId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         api = new APIMock();
+        checkedButtonId = R.id.start_state_button;
         RadioGroup systemStateButtons = findViewById(R.id.system_state_buttons);
         systemStateButtons.setOnCheckedChangeListener(this::showChangeSystemStateDialog);
     }
 
-    private void showChangeSystemStateDialog(RadioGroup radioGroup, int checkedButtonId) {
+    private void showChangeSystemStateDialog(@NonNull RadioGroup radioGroup, int checkedButtonId) {
         if (this.checkedButtonId == checkedButtonId) return;
         RadioButton stateButton = findViewById(checkedButtonId);
         new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
@@ -60,12 +62,12 @@ public class AdminActivity extends AppCompatActivity {
         }
     }
 
-    public void showMailNotifyDialog(View view) {
-        MailNotifyDialog dialog = new MailNotifyDialog();
+    public void showMailNotifyDialog(@NonNull View view) {
+        MailNotifyDialog dialog = new MailNotifyDialog(this::setNotifyThreshold);
         dialog.show(getSupportFragmentManager(), null);
     }
 
-    public void setNotifyThreshold(int threshold) {
+    private void setNotifyThreshold(int threshold) {
         api.postNotifyThresholdAsync(threshold, null);
     }
 }

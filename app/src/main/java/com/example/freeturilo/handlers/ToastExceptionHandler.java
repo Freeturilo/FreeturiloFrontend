@@ -3,11 +3,13 @@ package com.example.freeturilo.handlers;
 import android.content.Context;
 import android.widget.Toast;
 
-public class ToastExceptionHandler implements ExceptionHandler {
-    final Context context;
-    final int messageId;
+import androidx.annotation.NonNull;
 
-    public ToastExceptionHandler(Context context, int messageId) {
+public class ToastExceptionHandler implements ExceptionHandler {
+    final private Context context;
+    final private int messageId;
+
+    public ToastExceptionHandler(@NonNull Context context, int messageId) {
         this.context = context;
         this.messageId = messageId;
     }

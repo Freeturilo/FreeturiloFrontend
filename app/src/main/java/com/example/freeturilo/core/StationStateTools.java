@@ -4,10 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import androidx.annotation.NonNull;
+
 import com.example.freeturilo.R;
 
 public class StationStateTools {
-    public static String getStateText(Context context, int state) {
+
+    @NonNull
+    public static String getStateText(@NonNull Context context, int state) {
         switch (state) {
             case 1:
                 return context.getString(R.string.station_reported_text);
@@ -29,7 +33,8 @@ public class StationStateTools {
         }
     }
 
-    public static Bitmap getMarkerIcon(Context context, int state) {
+    @NonNull
+    public static Bitmap getMarkerIcon(@NonNull Context context, int state) {
         return BitmapFactory.decodeResource(context.getResources(), getMarkerIconId(state));
     }
 }

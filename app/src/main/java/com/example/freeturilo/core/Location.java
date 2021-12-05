@@ -15,17 +15,18 @@ public class Location implements Serializable {
     public Double latitude;
     public Double longitude;
 
-    public Location(String name) {
+    public Location(@NonNull String name) {
         this.name = name;
     }
 
-    public Location(String name, double latitude, double longitude) {
+    public Location(@NonNull String name, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public MarkerOptions createMarkerOptions(Context context) {
+    @NonNull
+    public MarkerOptions createMarkerOptions(@NonNull Context context) {
         LatLng markerPosition = new LatLng(latitude, longitude);
         return new MarkerOptions().position(markerPosition);
     }
@@ -36,17 +37,17 @@ public class Location implements Serializable {
     }
 
     @Nullable
-    public String getSecondaryText(Context context) {
+    public String getSecondaryText(@NonNull Context context) {
         return null;
     }
 
     @Nullable
-    public String getTertiaryText(Context context) {
+    public String getTertiaryText(@NonNull Context context) {
         return null;
     }
 
     @NonNull
-    public String getInlineSecondaryText(Context context) {
+    public String getInlineSecondaryText(@NonNull Context context) {
         return "";
     }
 

@@ -1,5 +1,6 @@
 package com.example.freeturilo.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,22 +21,22 @@ public class MenuActivity extends AppCompatActivity {
         logo.setOnLongClickListener(this::goToAdmin);
     }
 
-    public void goToMap(View view) {
+    public void goToMap(@NonNull View view) {
         Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 
-    public void goToRouteCreate(View view) {
+    public void goToRouteCreate(@NonNull View view) {
         Intent intent = new Intent(this, RouteCreateActivity.class);
         startActivity(intent);
     }
 
-    public void goToHistory(View view) {
+    public void goToHistory(@NonNull View view) {
         Intent intent = new Intent(this, HistoryActivity.class);
         startActivity(intent);
     }
 
-    public boolean goToAdmin(View view) {
+    private boolean goToAdmin(@NonNull View view) {
         Intent intent;
         if (AuthTools.isLoggedIn())
             intent = new Intent(this, AdminActivity.class);

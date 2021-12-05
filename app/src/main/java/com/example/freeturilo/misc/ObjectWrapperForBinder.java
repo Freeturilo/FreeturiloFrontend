@@ -2,15 +2,18 @@ package com.example.freeturilo.misc;
 
 import android.os.Binder;
 
+import androidx.annotation.NonNull;
+
 public class ObjectWrapperForBinder extends Binder {
 
-    private final Object mData;
+    private final Object data;
 
-    public ObjectWrapperForBinder(Object data) {
-        mData = data;
+    public ObjectWrapperForBinder(@NonNull Object data) {
+        this.data = data;
     }
 
+    @NonNull
     public Object getData() {
-        return mData;
+        return data;
     }
 }

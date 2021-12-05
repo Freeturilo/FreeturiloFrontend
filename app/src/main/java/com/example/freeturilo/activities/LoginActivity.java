@@ -1,5 +1,6 @@
 package com.example.freeturilo.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,7 +14,6 @@ import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.misc.AuthTools;
 
 public class LoginActivity extends AppCompatActivity {
-
     private API api;
 
     @Override
@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
         api = new APIMock();
     }
 
-    public void login(View view) {
+    public void login(@NonNull View view) {
         EditText emailInput = findViewById(R.id.email);
         String email = emailInput.getText().toString();
         EditText passwordInput = findViewById(R.id.password);
@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         api.postUserAsync(email, password, this::goToAdmin, null);
     }
 
-    public void goToAdmin(String token) {
+    private void goToAdmin(@NonNull String token) {
         AuthTools.setToken(token);
         Intent intent = new Intent(this, AdminActivity.class);
         startActivity(intent);

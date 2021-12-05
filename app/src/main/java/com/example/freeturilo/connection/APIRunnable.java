@@ -4,15 +4,17 @@ package com.example.freeturilo.connection;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.freeturilo.misc.Callback;
 
 public class APIRunnable<T> implements Runnable{
-
     private final APIAction<T> action;
     private Callback<T> callback;
     private APIHandler handler;
 
-    public APIRunnable(APIAction<T> action) {
+    private APIRunnable(@NonNull APIAction<T> action) {
         this.action = action;
     }
 
@@ -28,20 +30,24 @@ public class APIRunnable<T> implements Runnable{
         }
     }
 
-    public static <Q> APIRunnable<Q> create(APIAction<Q> action) {
+    @NonNull
+    public static <Q> APIRunnable<Q> create(@NonNull APIAction<Q> action) {
         return new APIRunnable<>(action);
     }
 
-    public APIRunnable<T> setCallback(Callback<T> callback) {
+    @NonNull
+    public APIRunnable<T> setCallback(@Nullable Callback<T> callback) {
         this.callback = callback;
         return this;
     }
 
-    public APIRunnable<T> setHandler(APIHandler handler) {
+    @NonNull
+    public APIRunnable<T> setHandler(@Nullable APIHandler handler) {
         this.handler = handler;
         return this;
     }
 
+    @NonNull
     public Thread toThread() {
         return new Thread(this);
     }
