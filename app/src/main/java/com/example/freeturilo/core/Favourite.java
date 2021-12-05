@@ -3,6 +3,9 @@ package com.example.freeturilo.core;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.freeturilo.handlers.ExceptionHandler;
 import com.example.freeturilo.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -39,16 +42,25 @@ public class Favourite extends Location {
                 .icon(createMarkerIcon(context));
     }
 
+    @Nullable
     @Override
-    public String getCaption(Context context) {
+    public String getSecondaryText(Context context) {
         String helperText = context.getString(R.string.favourite_helper_text).toLowerCase(Locale.ROOT);
         String typeText = FavouriteTypeTools.getTypeText(context, type);
         return String.format("%s - %s", helperText, typeText);
     }
 
+    @Nullable
     @Override
-    public String getSecondaryText(Context context) {
-        return context.getString(R.string.favourite_helper_text) + ", " + FavouriteTypeTools.getTypeText(context, type);
+    public String getTertiaryText(Context context) {
+        return null;
+    }
+
+    @NonNull
+    @Override
+    public String getInlineSecondaryText(Context context) {
+        return String.format("%s, %s", context.getString(R.string.favourite_helper_text),
+                FavouriteTypeTools.getTypeText(context, type));
     }
 
     private BitmapDescriptor createMarkerIcon(Context context) {

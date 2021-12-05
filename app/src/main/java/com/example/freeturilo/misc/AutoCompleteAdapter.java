@@ -29,7 +29,7 @@ public class AutoCompleteAdapter extends ArrayAdapter<Location> {
         TextView textPrimary = convertView.findViewById(R.id.text_primary);
         textPrimary.setText(location.getPrimaryText());
         TextView textSecondary = convertView.findViewById(R.id.text_secondary);
-        textSecondary.setText(String.format(", %s", location.getSecondaryText(getContext())));
+        textSecondary.setText(String.format(", %s", location.getInlineSecondaryText(getContext())));
         return convertView;
     }
 }

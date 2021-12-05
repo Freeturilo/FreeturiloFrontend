@@ -1,6 +1,9 @@
 package com.example.freeturilo.core;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
+
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 
 public class IdentifiedLocation extends Location {
@@ -16,8 +19,9 @@ public class IdentifiedLocation extends Location {
         this.token = token;
     }
 
+    @NonNull
     @Override
-    public String getSecondaryText(Context context) {
+    public String getInlineSecondaryText(Context context) {
         return details;
     }
 }

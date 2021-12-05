@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@drawable/item_history_background"
     android:paddingVertical="20dp"
-    android:paddingHorizontal="40dp">
+    android:paddingHorizontal="60dp">
 
     <TextView
         android:id="@+id/start_text"
@@ -27,6 +27,13 @@
         android:textColor="@color/black"
         android:singleLine="true"
         android:ellipsize="marquee"/>
+
+    <View
+        android:id="@+id/horizontal_line"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/horizontal_line_grey"/>
 
     <TextView
         android:id="@+id/criterion_text"

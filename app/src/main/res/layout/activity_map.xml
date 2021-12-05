@@ -113,6 +113,26 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_small" />
 
+        <View
+            android:id="@+id/bottom_panel_horizontal_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="40dp"
+            android:visibility="gone"
+            android:background="@drawable/horizontal_line_black"/>
+
+        <TextView
+            android:id="@+id/bottom_panel_tertiary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_small" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

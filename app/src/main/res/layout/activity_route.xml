@@ -22,18 +22,57 @@
         android:contentDescription="@string/map_description"
         tools:context=".activities.MapActivity" />
 
-    <TextView
-        android:id="@+id/bottom_panel_primary"
+    <LinearLayout
+        android:id="@+id/bottom_panel"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_panel"
-        android:fontFamily="@font/quicksand"
-        android:gravity="center"
         android:paddingVertical="@dimen/purple_border_height"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_big"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/bottom_panel_primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_horizontal"
+            android:text="@string/map_caption_text"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_big" />
+
+        <TextView
+            android:id="@+id/bottom_panel_secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_small" />
+
+        <View
+            android:id="@+id/bottom_panel_horizontal_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="40dp"
+            android:visibility="gone"
+            android:background="@drawable/horizontal_line_black"/>
+
+        <TextView
+            android:id="@+id/bottom_panel_tertiary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/quicksand"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_small" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

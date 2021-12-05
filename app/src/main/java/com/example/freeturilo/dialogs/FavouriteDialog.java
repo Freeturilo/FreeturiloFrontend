@@ -11,13 +11,21 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.freeturilo.R;
 import com.example.freeturilo.activities.MapActivity;
+import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.FavouriteType;
+import com.example.freeturilo.misc.Callback;
 
 import java.util.Objects;
 
 public class FavouriteDialog extends DialogFragment {
     View view;
     MapActivity mapActivity;
+    final Callback<Favourite> positiveCallback;
+
+    public FavouriteDialog(Callback<Favourite> positiveCallback) {
+        super();
+        this.positiveCallback = positiveCallback;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {

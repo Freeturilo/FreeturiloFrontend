@@ -11,12 +11,13 @@ import androidx.annotation.NonNull;
 
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.Favourite;
+import com.example.freeturilo.misc.Callback;
 
 public class EditFavouriteDialog extends FavouriteDialog {
     final Favourite favourite;
 
-    public EditFavouriteDialog(Favourite favourite) {
-        super();
+    public EditFavouriteDialog(Favourite favourite, Callback<Favourite> positiveCallback) {
+        super(positiveCallback);
         this.favourite = favourite;
     }
 
@@ -39,6 +40,6 @@ public class EditFavouriteDialog extends FavouriteDialog {
         favourite.name = nameEditText.getText().toString();
         final RadioGroup typeRadioGroup = view.findViewById(R.id.favourite_buttons);
         favourite.type = getCheckedType(typeRadioGroup);
-        mapActivity.updateFavourite(favourite);
+        positiveCallback.call(favourite);
     }
 }

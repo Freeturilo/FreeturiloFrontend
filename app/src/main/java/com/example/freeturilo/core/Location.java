@@ -3,6 +3,7 @@ package com.example.freeturilo.core;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -29,15 +30,23 @@ public class Location implements Serializable {
         return new MarkerOptions().position(markerPosition);
     }
 
-    public String getCaption(Context context) {
-        return "";
-    }
-
+    @NonNull
     public String getPrimaryText() {
         return name;
     }
 
+    @Nullable
     public String getSecondaryText(Context context) {
+        return null;
+    }
+
+    @Nullable
+    public String getTertiaryText(Context context) {
+        return null;
+    }
+
+    @NonNull
+    public String getInlineSecondaryText(Context context) {
         return "";
     }
 
