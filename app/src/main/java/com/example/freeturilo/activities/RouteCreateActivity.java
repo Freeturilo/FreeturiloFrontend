@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.freeturilo.connection.API;
+import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.misc.AutoCompleteTextWatcher;
 import com.example.freeturilo.BuildConfig;
@@ -56,7 +57,7 @@ public class RouteCreateActivity extends AppCompatActivity {
         API api = new APIMock();
         stopInputs = new ArrayList<>();
         customLocations = new ArrayList<>();
-        api.getStationsAsync((result) -> customLocations.addAll(result), null);
+        api.getStationsAsync((result) -> customLocations.addAll(result), new APIActivityHandler(this));
         customLocations.addAll(Favourite.loadFavouritesSafe(this, null));
         AutoCompleteTextView startInput = this.findViewById(R.id.startTextView);
         AutoCompleteTextView endInput = this.findViewById(R.id.endTextView);

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.freeturilo.connection.API;
+import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.core.Route;
 import com.example.freeturilo.handlers.ToastExceptionHandler;
@@ -52,7 +53,8 @@ public class RouteActivity extends AppCompatActivity {
         Synchronizer createSynchronizer = new Synchronizer(2, this::showRoute);
         mapFragment.getMapAsync(googleMap -> onMapReadySync(googleMap, createSynchronizer));
         api.getRouteAsync(routeParameters,
-                retrievedRoute -> onRouteReadySync(retrievedRoute, createSynchronizer), null);
+                retrievedRoute -> onRouteReadySync(retrievedRoute, createSynchronizer),
+                new APIActivityHandler(this));
     }
 
     @Override

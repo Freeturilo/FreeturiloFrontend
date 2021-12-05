@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.freeturilo.connection.API;
+import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.dialogs.AddFavouriteDialog;
 import com.example.freeturilo.dialogs.EditFavouriteDialog;
@@ -47,7 +48,9 @@ public class MapActivity extends AppCompatActivity {
                 getSupportFragmentManager().findFragmentById(R.id.map));
         Synchronizer createSynchronizer = new Synchronizer(3, this::showMarkers);
         mapFragment.getMapAsync(googleMap -> onMapReadySync(googleMap, createSynchronizer));
-        api.getStationsAsync(retrievedStations -> onStationsReadySync(retrievedStations, createSynchronizer), null);
+        api.getStationsAsync(retrievedStations ->
+                onStationsReadySync(retrievedStations, createSynchronizer),
+                new APIActivityHandler(this));
         loadFavouritesSync(createSynchronizer);
     }
 
@@ -78,7 +81,8 @@ public class MapActivity extends AppCompatActivity {
         stations = retrievedStations;
     }
 
-    private void onStationsReadySync(@NonNull List<Station> retrievedStations, @NonNull Synchronizer synchronizer) {
+    private void onStationsReadySync(@NonNull List<Station> retrievedStations,
+                                     @NonNull Synchronizer synchronizer) {
         onStationsReady(retrievedStations);
         synchronizer.decrement();
     }
@@ -167,7 +171,8 @@ public class MapActivity extends AppCompatActivity {
         return true;
     }
 
-    private void updateBottomPanel(@NonNull String textPrimary, @Nullable String textSecondary, @Nullable String textTertiary) {
+    private void updateBottomPanel(@NonNull String textPrimary, @Nullable String textSecondary,
+                                   @Nullable String textTertiary) {
         TextView bottomTextPrimary = findViewById(R.id.bottom_panel_primary);
         View bottomPanelHorizontalLine = findViewById(R.id.bottom_panel_horizontal_line);
         TextView bottomTextSecondary = findViewById(R.id.bottom_panel_secondary);
@@ -227,7 +232,8 @@ public class MapActivity extends AppCompatActivity {
     public void showDeleteFavouriteDialog(@NonNull View view) {
         Favourite favourite = Objects.requireNonNull((Favourite) view.getTag());
         new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
-                .setMessage(String.format("%s \"%s\"?", getString(R.string.delete_favourite_message), favourite.name ))
+                .setMessage(String.format("%s \"%s\"?",
+                        getString(R.string.delete_favourite_message), favourite.name))
                 .setPositiveButton(R.string.yes_text, (dialog, id) -> deleteFavourite(favourite))
                 .setNegativeButton(R.string.cancel_text, null)
                 .show();
@@ -253,32 +259,34 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void reportStation(@NonNull Station station) {
-        api.reportStationAsync(station, null);
+        api.reportStationAsync(station, new APIActivityHandler(this));
     }
 
     public void showSetBrokenStationDialog(@NonNull View view) {
         Station station = Objects.requireNonNull((Station) view.getTag());
         new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
-                .setMessage(String.format("%s \"%s\"?", getString(R.string.set_broken_station_message), station.name))
+                .setMessage(String.format("%s \"%s\"?",
+                        getString(R.string.set_broken_station_message), station.name))
                 .setPositiveButton(R.string.yes_text, (dialog, id) -> setBrokenStation(station))
                 .setNegativeButton(R.string.cancel_text, null)
                 .show();
     }
 
     private void setBrokenStation(@NonNull Station station) {
-        api.setBrokenStationAsync(station, null);
+        api.setBrokenStationAsync(station, new APIActivityHandler(this));
     }
 
     public void showSetWorkingStationDialog(@NonNull View view) {
         Station station = Objects.requireNonNull((Station) view.getTag());
         new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
-                .setMessage(String.format("%s \"%s\"?", getString(R.string.set_working_station_message), station.name))
+                .setMessage(String.format("%s \"%s\"?",
+                        getString(R.string.set_working_station_message), station.name))
                 .setPositiveButton(R.string.yes_text, (dialog, id) -> setWorkingStation(station))
                 .setNegativeButton(R.string.cancel_text, null)
                 .show();
     }
 
     private void setWorkingStation(@NonNull Station station) {
-        api.setWorkingStationAsync(station, null);
+        api.setWorkingStationAsync(station, new APIActivityHandler(this));
     }
 }

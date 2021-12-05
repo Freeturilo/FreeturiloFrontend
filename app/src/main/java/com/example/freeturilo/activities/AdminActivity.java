@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 
 import com.example.freeturilo.R;
 import com.example.freeturilo.connection.API;
+import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.dialogs.MailNotifyDialog;
 
@@ -51,13 +52,13 @@ public class AdminActivity extends AppCompatActivity {
         final int stopStateButton = R.id.stop_state_button;
         switch (stateButtonId) {
             case startStateButton:
-                api.postStateStartAsync(null);
+                api.postStateStartAsync(new APIActivityHandler(this));
                 break;
             case demoStateButton:
-                api.postStateDemoAsync(null);
+                api.postStateDemoAsync(new APIActivityHandler(this));
                 break;
             case stopStateButton:
-                api.postStateStopAsync(null);
+                api.postStateStopAsync(new APIActivityHandler(this));
                 break;
         }
     }
@@ -68,6 +69,6 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void setNotifyThreshold(int threshold) {
-        api.postNotifyThresholdAsync(threshold, null);
+        api.postNotifyThresholdAsync(threshold, new APIActivityHandler(this));
     }
 }

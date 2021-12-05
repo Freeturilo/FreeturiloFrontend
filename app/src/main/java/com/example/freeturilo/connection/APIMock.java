@@ -31,11 +31,11 @@ public class APIMock implements API {
         } catch (InterruptedException ignored) {}
     }
 
-    private Integer responseAuthorized() {
+    private Integer responseAuthorized() throws APIException {
         if(AuthTools.isLoggedIn())
             return HttpsURLConnection.HTTP_OK;
         else
-            return HttpsURLConnection.HTTP_UNAUTHORIZED;
+            throw new APIException(HttpsURLConnection.HTTP_UNAUTHORIZED);
     }
 
     private List<Station> getStations() {
@@ -57,13 +57,13 @@ public class APIMock implements API {
         return HttpsURLConnection.HTTP_OK;
     }
 
-    private Integer setBrokenStation(Station station) {
+    private Integer setBrokenStation(Station station) throws APIException {
         randomWait();
         Log.d("MockAPI", "setBrokenStation");
         return responseAuthorized();
     }
 
-    private Integer setWorkingStation(Station station) {
+    private Integer setWorkingStation(Station station) throws APIException {
         randomWait();
         Log.d("MockAPI", "setWorkingStation");
         return responseAuthorized();
@@ -75,7 +75,7 @@ public class APIMock implements API {
         return "API_MOCK_TOKEN";
     }
 
-    private Route getRoute(RouteParameters routeParameters) {
+    private Route getRoute(RouteParameters routeParameters) throws APIException {
         randomWait();
         Log.d("MockAPI", "getRoute");
         Route route = new Route();
@@ -112,25 +112,25 @@ public class APIMock implements API {
         return route;
     }
 
-    private Integer postStateStop() {
+    private Integer postStateStop() throws APIException {
         randomWait();
         Log.d("MockAPI", "postStateStop");
         return responseAuthorized();
     }
 
-    private Integer postStateStart() {
+    private Integer postStateStart() throws APIException {
         randomWait();
         Log.d("MockAPI", "postStateStart");
         return responseAuthorized();
     }
 
-    private Integer postStateDemo() {
+    private Integer postStateDemo() throws APIException {
         randomWait();
         Log.d("MockAPI", "postStateDemo");
         return responseAuthorized();
     }
 
-    private Integer postNotifyThreshold(int threshold) {
+    private Integer postNotifyThreshold(int threshold) throws APIException {
         randomWait();
         Log.d("MockAPI", "postNotifyThreshold");
         return responseAuthorized();

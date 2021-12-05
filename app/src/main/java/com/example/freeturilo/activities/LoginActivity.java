@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.example.freeturilo.R;
 import com.example.freeturilo.connection.API;
+import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.misc.AuthTools;
 
@@ -28,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailInput.getText().toString();
         EditText passwordInput = findViewById(R.id.password);
         String password = passwordInput.getText().toString();
-        api.postUserAsync(email, password, this::goToAdmin, null);
+        api.postUserAsync(email, password, this::goToAdmin, new APIActivityHandler(this));
     }
 
     private void goToAdmin(@NonNull String token) {
