@@ -20,6 +20,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.freeturilo.connection.API;
+import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.misc.AutoCompleteTextWatcher;
 import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.handlers.IgnoreExceptionHandler;
@@ -30,7 +32,6 @@ import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.IdentifiedLocation;
 import com.example.freeturilo.core.Location;
 import com.example.freeturilo.core.RouteParameters;
-import com.example.freeturilo.core.Station;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -44,7 +45,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class RouteCreateActivity extends AppCompatActivity {
-
+    private API api;
     private List<AutoCompleteTextView> stopInputs;
     private List<Location> customLocations;
 
@@ -52,10 +53,11 @@ public class RouteCreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_create);
+        api = new APIMock();
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         stopInputs = new ArrayList<>();
         customLocations = new ArrayList<>();
-        customLocations.addAll(Station.loadStations());
+        api.getStationsAsync((result) -> customLocations.addAll(result), null);
         customLocations.addAll(Favourite.loadFavouritesSafe(this, new IgnoreExceptionHandler()));
         AutoCompleteTextView startInput = this.findViewById(R.id.startTextView);
         initializeAutocompleteInput(startInput, R.string.start_point_hint);

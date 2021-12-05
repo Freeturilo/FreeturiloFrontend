@@ -23,6 +23,30 @@
         tools:context=".activities.MapActivity" />
 
     <Button
+        android:id="@+id/set_broken_station_button"
+        android:layout_width="@dimen/action_button_height"
+        android:layout_height="@dimen/action_button_height"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="20dp"
+        android:background="@drawable/button_set_broken_station"
+        android:visibility="gone"
+        android:onClick="showSetBrokenStationDialog"
+        app:layout_constraintBottom_toTopOf="@+id/set_working_station_button"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <Button
+        android:id="@+id/set_working_station_button"
+        android:layout_width="@dimen/action_button_height"
+        android:layout_height="@dimen/action_button_height"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="20dp"
+        android:background="@drawable/button_set_working_station"
+        android:visibility="gone"
+        android:onClick="showSetWorkingStationDialog"
+        app:layout_constraintBottom_toTopOf="@+id/report_station_button"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <Button
         android:id="@+id/report_station_button"
         android:layout_width="@dimen/action_button_height"
         android:layout_height="@dimen/action_button_height"
@@ -30,6 +54,7 @@
         android:layout_marginVertical="20dp"
         android:background="@drawable/button_report_station"
         android:visibility="gone"
+        android:onClick="showReportStationDialog"
         app:layout_constraintBottom_toTopOf="@+id/delete_favourite_button"
         app:layout_constraintRight_toRightOf="parent"/>
 

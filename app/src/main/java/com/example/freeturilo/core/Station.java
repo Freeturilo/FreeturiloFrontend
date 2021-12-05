@@ -9,8 +9,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class Station extends Location {
@@ -40,17 +38,6 @@ public class Station extends Location {
         return new MarkerOptions()
                 .position(markerPosition)
                 .icon(smallMarkerIcon);
-    }
-
-    public static List<Station> loadStations() {
-        ArrayList<Station> stations = new ArrayList<>();
-        stations.add(new Station("Dewajtis - UKSW", 52.296298, 20.958358,
-                1, 30, 28, 0));
-        stations.add(new Station("Metro Młociny", 52.290974, 20.929556,
-                2, 30, 18, 1));
-        stations.add(new Station("Rondo ONZ", 52.232628, 20.997123,
-                3, 29, 24, 2));
-        return stations;
     }
 
     @Override

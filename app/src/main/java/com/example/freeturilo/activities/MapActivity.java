@@ -5,11 +5,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.freeturilo.connection.API;
+import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.dialogs.AddFavouriteDialog;
 import com.example.freeturilo.dialogs.EditFavouriteDialog;
 import com.example.freeturilo.R;
@@ -17,6 +18,8 @@ import com.example.freeturilo.handlers.ToastExceptionHandler;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.Location;
 import com.example.freeturilo.core.Station;
+import com.example.freeturilo.misc.AuthTools;
+import com.example.freeturilo.misc.Synchronizer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,24 +34,31 @@ import java.util.List;
 import java.util.Objects;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
-
-    GoogleMap map;
-    List<Marker> markers;
-    List<Favourite> favourites;
-    List<Station> stations;
-    List<Button> actionButtons;
+    private API api;
+    private GoogleMap map;
+    private List<Marker> markers;
+    private List<Favourite> favourites;
+    private List<Station> stations;
+    private List<Button> actionButtons;
+    private Synchronizer createSynchronizer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        api = new APIMock();
+        createSynchronizer = new Synchronizer(3, this::showMarkers);
         actionButtons = Arrays.asList(
+                findViewById(R.id.set_broken_station_button),
+                findViewById(R.id.set_working_station_button),
                 findViewById(R.id.report_station_button),
                 findViewById(R.id.edit_favourite_button),
                 findViewById(R.id.delete_favourite_button));
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         Objects.requireNonNull(mapFragment).getMapAsync(this);
+        loadStations(createSynchronizer);
+        loadFavourites(createSynchronizer);
     }
 
     @Override
@@ -59,24 +69,43 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "raw", getPackageName())));
         LatLng warsaw = new LatLng(52.23, 21);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(warsaw, 12));
-        loadAndShowMarkers();
         map.setOnMapClickListener(this::unfocus);
         map.setOnMapLongClickListener(this::showAddFavouriteDialog);
         map.setOnMarkerClickListener(this::showMarkerInfo);
+        createSynchronizer.decrement();
     }
 
-    private void loadAndShowMarkers() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        unfocus(null);
+    }
+
+    private void loadStations(Synchronizer synchronizer) {
+        api.getStationsAsync((retrievedStations) -> {
+            stations = retrievedStations;
+            if(synchronizer != null)
+                synchronizer.decrement();
+        }, null);
+    }
+
+    private void loadFavourites(Synchronizer synchronizer) {
+        favourites = Favourite.loadFavouritesSafe(this,
+                new ToastExceptionHandler(this, R.string.no_favourites_message));
+        if(synchronizer != null)
+            synchronizer.decrement();
+    }
+
+    private void showMarkers() {
         markers = new ArrayList<>();
-        stations = Station.loadStations();
-        for(Station station : stations) {
-            Marker marker = map.addMarker(station.createMarkerOptions(this));
-            Objects.requireNonNull(marker).setTag(station);
-            markers.add(marker);
-        }
-        favourites = Favourite.loadFavouritesSafe(this, new ToastExceptionHandler(this, R.string.no_favourites_message));
         for(Favourite favourite : favourites) {
             Marker marker = map.addMarker(favourite.createMarkerOptions(this));
             Objects.requireNonNull(marker).setTag(favourite);
+            markers.add(marker);
+        }
+        for (Station station : stations) {
+            Marker marker = map.addMarker(station.createMarkerOptions(this));
+            Objects.requireNonNull(marker).setTag(station);
             markers.add(marker);
         }
     }
@@ -92,13 +121,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (location instanceof Favourite) {
             findViewById(R.id.edit_favourite_button).setVisibility(View.VISIBLE);
             findViewById(R.id.edit_favourite_button).setTag(location);
-
             findViewById(R.id.delete_favourite_button).setVisibility(View.VISIBLE);
             findViewById(R.id.delete_favourite_button).setTag(location);
         }
-        else if (location instanceof Station)
-            findViewById(R.id.report_station_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.report_station_button).setTag(location);
+        else if (location instanceof Station) {
+            if (AuthTools.isLoggedIn()) {
+                Station station = (Station) location;
+                if (station.state != 0) {
+                    findViewById(R.id.set_working_station_button).setVisibility(View.VISIBLE);
+                    findViewById(R.id.set_working_station_button).setTag(location);
+                }
+                if (station.state != 2) {
+                    findViewById(R.id.set_broken_station_button).setVisibility(View.VISIBLE);
+                    findViewById(R.id.set_broken_station_button).setTag(location);
+                }
+            }
+            else {
+                findViewById(R.id.report_station_button).setVisibility(View.VISIBLE);
+                findViewById(R.id.report_station_button).setTag(location);
+            }
+        }
     }
 
     private void unfocus(LatLng latLng) {
@@ -107,26 +149,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         TextView bottomTextSecondary = findViewById(R.id.bottom_panel_secondary);
         bottomTextSecondary.setVisibility(View.GONE);
         hideActionButtons();
-    }
-
-    private void showAddFavouriteDialog(LatLng latLng) {
-        AddFavouriteDialog dialog = new AddFavouriteDialog(latLng);
-        dialog.show(getSupportFragmentManager(), null);
-    }
-
-    public void showEditFavouriteDialog(View view) {
-        Favourite favourite = Objects.requireNonNull((Favourite) view.getTag());
-        EditFavouriteDialog dialog = new EditFavouriteDialog(favourite);
-        dialog.show(getSupportFragmentManager(), null);
-    }
-
-    public void showDeleteFavouriteDialog(View view) {
-        Favourite favourite = Objects.requireNonNull((Favourite) view.getTag());
-        new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.FreeturiloDialogTheme))
-                .setMessage(String.format("%s \"%s\"?", getString(R.string.delete_favourite_message), favourite.name ))
-                .setPositiveButton(R.string.yes_text, (dialog, id) -> deleteFavourite(favourite))
-                .setNegativeButton(R.string.cancel_text, null)
-                .show();
     }
 
     private boolean showMarkerInfo(Marker marker) {
@@ -150,6 +172,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return null;
     }
 
+    private void showAddFavouriteDialog(LatLng latLng) {
+        AddFavouriteDialog dialog = new AddFavouriteDialog(latLng);
+        dialog.show(getSupportFragmentManager(), null);
+    }
+
     public void addFavourite(Favourite favourite) {
         favourites.add(favourite);
         Marker marker = map.addMarker(favourite.createMarkerOptions(this));
@@ -158,6 +185,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         showMarkerInfo(marker);
         Favourite.saveFavouritesSafe(this, favourites,
                 new ToastExceptionHandler(this, R.string.no_favourites_message));
+    }
+
+    public void showEditFavouriteDialog(View view) {
+        Favourite favourite = Objects.requireNonNull((Favourite) view.getTag());
+        EditFavouriteDialog dialog = new EditFavouriteDialog(favourite);
+        dialog.show(getSupportFragmentManager(), null);
     }
 
     public void updateFavourite(Favourite favourite) {
@@ -172,6 +205,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 new ToastExceptionHandler(this, R.string.no_favourites_message));
     }
 
+    public void showDeleteFavouriteDialog(View view) {
+        Favourite favourite = Objects.requireNonNull((Favourite) view.getTag());
+        new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
+                .setMessage(String.format("%s \"%s\"?", getString(R.string.delete_favourite_message), favourite.name ))
+                .setPositiveButton(R.string.yes_text, (dialog, id) -> deleteFavourite(favourite))
+                .setNegativeButton(R.string.cancel_text, null)
+                .show();
+    }
+
     public void deleteFavourite(Favourite favourite) {
         favourites.remove(favourite);
         Marker favouriteMarker = findMarkerByLocation(favourite);
@@ -180,5 +222,44 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Favourite.saveFavouritesSafe(this, favourites,
                 new ToastExceptionHandler(this, R.string.no_favourites_message));
         unfocus(null);
+    }
+
+    public void showReportStationDialog(View view) {
+        Station station = Objects.requireNonNull((Station) view.getTag());
+        new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
+                .setMessage(String.format("%s \"%s\"?", getString(R.string.report_station_message), station.name))
+                .setPositiveButton(R.string.yes_text, (dialog, id) -> reportStation(station))
+                .setNegativeButton(R.string.cancel_text, null)
+                .show();
+    }
+
+    public void reportStation(Station station) {
+        api.reportStationAsync(station, null);
+    }
+
+    public void showSetBrokenStationDialog(View view) {
+        Station station = Objects.requireNonNull((Station) view.getTag());
+        new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
+                .setMessage(String.format("%s \"%s\"?", getString(R.string.set_broken_station_message), station.name))
+                .setPositiveButton(R.string.yes_text, (dialog, id) -> setBrokenStation(station))
+                .setNegativeButton(R.string.cancel_text, null)
+                .show();
+    }
+
+    public void setBrokenStation(Station station) {
+        api.setBrokenStationAsync(station, null);
+    }
+
+    public void showSetWorkingStationDialog(View view) {
+        Station station = Objects.requireNonNull((Station) view.getTag());
+        new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
+                .setMessage(String.format("%s \"%s\"?", getString(R.string.set_working_station_message), station.name))
+                .setPositiveButton(R.string.yes_text, (dialog, id) -> setWorkingStation(station))
+                .setNegativeButton(R.string.cancel_text, null)
+                .show();
+    }
+
+    public void setWorkingStation(Station station) {
+        api.setWorkingStationAsync(station, null);
     }
 }

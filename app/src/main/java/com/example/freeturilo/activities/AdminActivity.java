@@ -9,16 +9,19 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.freeturilo.R;
+import com.example.freeturilo.connection.API;
+import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.dialogs.MailNotifyDialog;
 
 public class AdminActivity extends AppCompatActivity {
-
+    private API api;
     int checkedButtonId = R.id.start_state_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        api = new APIMock();
         RadioGroup systemStateButtons = findViewById(R.id.system_state_buttons);
         systemStateButtons.setOnCheckedChangeListener(this::showChangeSystemStateDialog);
     }
@@ -46,8 +49,13 @@ public class AdminActivity extends AppCompatActivity {
         final int stopStateButton = R.id.stop_state_button;
         switch (stateButtonId) {
             case startStateButton:
+                api.postStateStartAsync(null);
+                break;
             case demoStateButton:
+                api.postStateDemoAsync(null);
+                break;
             case stopStateButton:
+                api.postStateStopAsync(null);
                 break;
         }
     }
@@ -57,5 +65,7 @@ public class AdminActivity extends AppCompatActivity {
         dialog.show(getSupportFragmentManager(), null);
     }
 
-    public void setNotifyThreshold(int threshold) { }
+    public void setNotifyThreshold(int threshold) {
+        api.postNotifyThresholdAsync(threshold, null);
+    }
 }

@@ -10,10 +10,6 @@ public class Route {
     public double cost;
     public RouteParameters parameters;
 
-    public static Route loadRoute(RouteParameters parameters) {
-        return null;
-    }
-
     public String getLength() {
         return null;
     }

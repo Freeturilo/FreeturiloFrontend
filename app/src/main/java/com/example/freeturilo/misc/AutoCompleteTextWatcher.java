@@ -30,7 +30,7 @@ public class AutoCompleteTextWatcher implements TextWatcher {
                                    List<Location> customLocations) {
         this.activity = activity;
         this.input = input;
-        this.customLocations = new ArrayList<>(customLocations);
+        this.customLocations = customLocations;
         this.token = AutocompleteSessionToken.newInstance();
     }
 
