@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AutoCompleteTextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/textView"
     android:layout_width="match_parent"
     android:layout_height="@dimen/autocomplete_input_height"
@@ -16,4 +15,4 @@
     android:textSize="@dimen/text_size_medium"
     android:imeOptions="actionDone"
     android:drawableLeft="@drawable/icon_autocomplete_unassigned"
-    android:drawablePadding="10dp"/>
+    android:drawablePadding="10dp" />

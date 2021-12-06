@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
@@ -33,6 +32,7 @@ import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.IdentifiedLocation;
 import com.example.freeturilo.core.Location;
 import com.example.freeturilo.core.RouteParameters;
+import com.example.freeturilo.misc.ValidationTools;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -46,6 +46,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class RouteCreateActivity extends AppCompatActivity {
+    private AutoCompleteTextView startInput;
+    private AutoCompleteTextView endInput;
     private List<AutoCompleteTextView> stopInputs;
     private List<Location> customLocations;
 
@@ -55,12 +57,13 @@ public class RouteCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route_create);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         API api = new APIMock();
-        stopInputs = new ArrayList<>();
         customLocations = new ArrayList<>();
-        api.getStationsAsync((result) -> customLocations.addAll(result), new APIActivityHandler(this));
+        api.getStationsAsync((result) -> customLocations.addAll(result),
+                new APIActivityHandler(this));
         customLocations.addAll(Favourite.loadFavouritesSafe(this, null));
-        AutoCompleteTextView startInput = this.findViewById(R.id.startTextView);
-        AutoCompleteTextView endInput = this.findViewById(R.id.endTextView);
+        startInput = this.findViewById(R.id.startTextView);
+        endInput = this.findViewById(R.id.endTextView);
+        stopInputs = new ArrayList<>();
         initializeAutocompleteInput(startInput, R.string.start_point_hint);
         initializeAutocompleteInput(endInput, R.string.end_point_hint);
     }
@@ -80,9 +83,24 @@ public class RouteCreateActivity extends AppCompatActivity {
         initializeAutocompleteInput(stopInput, R.string.stop_hint);
     }
 
+    private boolean validate() {
+        boolean valid = true;
+        List<AutoCompleteTextView> inputs = new ArrayList<>();
+        inputs.add(startInput);
+        inputs.addAll(stopInputs);
+        inputs.add(endInput);
+        for (AutoCompleteTextView input : inputs) {
+            if (ValidationTools.isEmpty(input)) {
+                valid = false;
+                ValidationTools.setInputError(this, input, R.string.autocomplete_empty_error_text);
+            }
+        }
+        return valid;
+    }
+
     public void createRoute(@NonNull View view) {
-        AutoCompleteTextView startInput = this.findViewById(R.id.startTextView);
-        AutoCompleteTextView endInput = this.findViewById(R.id.endTextView);
+        if(!validate())
+            return;
         if (!(startInput.getTag() instanceof Location)) {
             specifyAddress(startInput);
             return;
@@ -156,9 +174,8 @@ public class RouteCreateActivity extends AppCompatActivity {
                 locations.add(new Location(address.getAddressLine(0),
                             address.getLatitude(), address.getLongitude()));
         if(locations.isEmpty()) {
-            String toastMessage = String.format("%s \"%s\"", getString(R.string.no_address_to_specify_message), locationName);
-            Toast toast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
-            toast.show();
+            ValidationTools.setInputError(this, input,
+                    R.string.autocomplete_not_found_error_text);
             return;
         }
         ArrayAdapter<Location> adapter = new ArrayAdapter<>(this,
@@ -172,7 +189,8 @@ public class RouteCreateActivity extends AppCompatActivity {
                 }).show();
     }
 
-    private void assignLocation(@NonNull AutoCompleteTextView input, @NonNull Location location) {
+    private void assignLocation(@NonNull AutoCompleteTextView input,
+                                @NonNull Location location) {
         input.setTag(location);
         if (location instanceof IdentifiedLocation)
             fetchLatLng((IdentifiedLocation) location);
@@ -186,7 +204,8 @@ public class RouteCreateActivity extends AppCompatActivity {
         input.clearFocus();
     }
 
-    private void assignLocationAndHideKeyboard(@NonNull AutoCompleteTextView input, @NonNull Location location) {
+    private void assignLocationAndHideKeyboard(@NonNull AutoCompleteTextView input,
+                                               @NonNull Location location) {
         assignLocation(input, location);
         hideKeyboard(input);
     }
@@ -195,11 +214,13 @@ public class RouteCreateActivity extends AppCompatActivity {
         if(input.getTag() != null) {
             input.setTag(null);
             input.setTextColor(getColor(R.color.black));
-            input.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_autocomplete_unassigned, 0, 0, 0);
+            input.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_autocomplete_unassigned,
+                    0, 0, 0);
         }
     }
 
-    private void initializeAutocompleteInput(@NonNull AutoCompleteTextView input, int hintResourceId) {
+    private void initializeAutocompleteInput(@NonNull AutoCompleteTextView input,
+                                             int hintResourceId) {
         input.setHint(hintResourceId);
         input.addTextChangedListener(new AutoCompleteTextWatcher(this, input, customLocations));
         input.setOnItemClickListener((adapterView, view, i, l) ->

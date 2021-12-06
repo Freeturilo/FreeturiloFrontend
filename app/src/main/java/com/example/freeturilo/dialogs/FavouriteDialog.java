@@ -1,9 +1,11 @@
 package com.example.freeturilo.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import com.example.freeturilo.R;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.FavouriteType;
 import com.example.freeturilo.misc.Callback;
+import com.example.freeturilo.misc.ValidationTools;
 
 public class FavouriteDialog extends DialogFragment {
     protected View view;
@@ -23,11 +26,21 @@ public class FavouriteDialog extends DialogFragment {
         this.positiveCallback = positiveCallback;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.dialog_favourite, null);
+    }
+
+    boolean validate() {
+        EditText nameEditText = view.findViewById(R.id.name);
+        if (ValidationTools.isEmpty(nameEditText)) {
+            ValidationTools.setInputError(requireContext(), nameEditText, R.string.name_empty_text);
+            return false;
+        }
+        return true;
     }
 
     @NonNull

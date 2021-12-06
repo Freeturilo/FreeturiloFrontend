@@ -36,7 +36,9 @@
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/horizontal_line_grey.xml" value="0.20625" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3828125" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_autocomplete_assigned.xml" value="0.3" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_autocomplete_error.xml" value="0.2984375" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_autocomplete_unassigned.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_validation_error.xml" value="0.3828125" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/item_history.xml" value="0.3015625" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/item_history_background.xml" value="0.2984375" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/item_history_title_background.xml" value="0.3828125" />

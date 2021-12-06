@@ -13,6 +13,7 @@ import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.misc.AuthTools;
+import com.example.freeturilo.misc.ValidationTools;
 
 public class LoginActivity extends AppCompatActivity {
     private API api;
@@ -24,12 +25,29 @@ public class LoginActivity extends AppCompatActivity {
         api = new APIMock();
     }
 
-    public void login(@NonNull View view) {
+    private boolean validate() {
+        boolean valid = true;
         EditText emailInput = findViewById(R.id.email);
-        String email = emailInput.getText().toString();
         EditText passwordInput = findViewById(R.id.password);
-        String password = passwordInput.getText().toString();
-        api.postUserAsync(email, password, this::goToAdmin, new APIActivityHandler(this));
+        if (!ValidationTools.hasEmail(emailInput)) {
+            valid = false;
+            ValidationTools.setInputError(this, emailInput, R.string.email_invalid_text);
+        }
+        if (ValidationTools.isEmpty(passwordInput)) {
+            valid = false;
+            ValidationTools.setInputError(this, passwordInput, R.string.password_empty_text);
+        }
+        return valid;
+    }
+
+    public void login(@NonNull View view) {
+        if (validate()) {
+            EditText emailInput = findViewById(R.id.email);
+            String email = emailInput.getText().toString();
+            EditText passwordInput = findViewById(R.id.password);
+            String password = passwordInput.getText().toString();
+            api.postUserAsync(email, password, this::goToAdmin, new APIActivityHandler(this));
+        }
     }
 
     private void goToAdmin(@NonNull String token) {

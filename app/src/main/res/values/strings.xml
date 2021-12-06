@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Freeturilo</string>
     <string name="favourites_filename">favourites.json</string>
     <string name="history_filename">history.json</string>
@@ -39,7 +39,7 @@
     <string name="route_parameters_intent_name">route_parameters</string>
     <string name="google_attribution">Atrybucja Google</string>
     <string name="specify_address_title">Czy chodziło o…</string>
-    <string name="specify_address_message" >Wyberz adres lokalizacji</string>
+    <string name="specify_address_message" tools:ignore="Typos">Wyberz adres lokalizacji</string>
     <string name="no_address_to_specify_message">Nie zlokalizowano punktu</string>
     <string name="no_history_message">Historia tras jest niedostępna</string>
     <string name="history_title">Historia tras</string>
@@ -71,4 +71,10 @@
     <string name="error_stopped_text">System został zatrzymany</string>
     <string name="error_server_text">Wewnętrzny błąd serwera</string>
     <string name="error_type_intent_name">error_type</string>
+    <string name="autocomplete_empty_error_text">Brak lokalizacji</string>
+    <string name="autocomplete_not_found_error_text">Nieznana lokalizacja</string>
+    <string name="password_empty_text">Brak hasła</string>
+    <string name="email_invalid_text" tools:ignore="Typos">Niepoprawny adres email</string>
+    <string name="name_empty_text">Brak nazwy</string>
+    <string name="threshold_invalid_text">Niepoprawna liczba</string>
 </resources>
