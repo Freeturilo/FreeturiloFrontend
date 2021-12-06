@@ -26,7 +26,7 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class APIConnect implements API {
+public class APIConnector implements API {
 
     @NonNull
     private URL createURL(@NonNull String ... pathFragments) throws MalformedURLException {

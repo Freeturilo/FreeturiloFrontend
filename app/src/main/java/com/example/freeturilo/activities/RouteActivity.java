@@ -12,7 +12,6 @@ import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.core.Route;
-import com.example.freeturilo.handlers.ToastExceptionHandler;
 import com.example.freeturilo.misc.ObjectWrapperForBinder;
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.Location;
@@ -46,8 +45,6 @@ public class RouteActivity extends AppCompatActivity {
         ObjectWrapperForBinder parameters_wrapper =
                 (ObjectWrapperForBinder) getIntent().getExtras().getBinder(getString(R.string.route_parameters_intent_name));
         RouteParameters routeParameters = (RouteParameters) parameters_wrapper.getData();
-        RouteParameters.addToHistorySafe(this, routeParameters,
-                new ToastExceptionHandler(this, R.string.no_history_message));
         SupportMapFragment mapFragment = Objects.requireNonNull((SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map));
         Synchronizer createSynchronizer = new Synchronizer(2, this::showRoute);

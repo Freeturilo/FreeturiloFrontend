@@ -15,7 +15,8 @@ import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.dialogs.AddFavouriteDialog;
 import com.example.freeturilo.dialogs.EditFavouriteDialog;
 import com.example.freeturilo.R;
-import com.example.freeturilo.handlers.ToastExceptionHandler;
+import com.example.freeturilo.storage.StorageManager;
+import com.example.freeturilo.storage.ToastStorageHandler;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.Location;
 import com.example.freeturilo.core.Station;
@@ -34,6 +35,7 @@ import java.util.Objects;
 
 public class MapActivity extends AppCompatActivity {
     private API api;
+    private StorageManager storage;
     private GoogleMap map;
     private List<Marker> markers;
     private List<Favourite> favourites;
@@ -44,6 +46,7 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         api = new APIMock();
+        storage = new StorageManager(this);
         SupportMapFragment mapFragment = Objects.requireNonNull((SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map));
         Synchronizer createSynchronizer = new Synchronizer(3, this::showMarkers);
@@ -51,7 +54,9 @@ public class MapActivity extends AppCompatActivity {
         api.getStationsAsync(retrievedStations ->
                 onStationsReadySync(retrievedStations, createSynchronizer),
                 new APIActivityHandler(this));
-        loadFavouritesSync(createSynchronizer);
+        storage.loadFavouritesAsync(loadedFavourites ->
+                onFavouritesReadySync(loadedFavourites, createSynchronizer),
+                new ToastStorageHandler(this));
     }
 
     @Override
@@ -87,13 +92,13 @@ public class MapActivity extends AppCompatActivity {
         synchronizer.decrement();
     }
 
-    private void loadFavourites() {
-        favourites = Favourite.loadFavouritesSafe(this,
-                new ToastExceptionHandler(this, R.string.no_favourites_message));
+    private void onFavouritesReady(@NonNull List<Favourite> loadedFavourites) {
+        favourites = loadedFavourites;
     }
 
-    private void loadFavouritesSync(@NonNull Synchronizer synchronizer) {
-        loadFavourites();
+    private void onFavouritesReadySync(@NonNull List<Favourite> loadedFavourites,
+                                       @NonNull Synchronizer synchronizer) {
+        onFavouritesReady(loadedFavourites);
         synchronizer.decrement();
     }
 
@@ -207,8 +212,7 @@ public class MapActivity extends AppCompatActivity {
         Objects.requireNonNull(marker).setTag(favourite);
         markers.add(marker);
         focus(marker);
-        Favourite.saveFavouritesSafe(this, favourites,
-                new ToastExceptionHandler(this, R.string.no_favourites_message));
+        storage.saveFavouritesAsync(favourites, new ToastStorageHandler(this));
     }
 
     public void showEditFavouriteDialog(@NonNull View view) {
@@ -225,8 +229,7 @@ public class MapActivity extends AppCompatActivity {
         Objects.requireNonNull(marker).setTag(favourite);
         markers.add(marker);
         focus(marker);
-        Favourite.saveFavouritesSafe(this, favourites,
-                new ToastExceptionHandler(this, R.string.no_favourites_message));
+        storage.saveFavouritesAsync(favourites, new ToastStorageHandler(this));
     }
 
     public void showDeleteFavouriteDialog(@NonNull View view) {
@@ -244,8 +247,7 @@ public class MapActivity extends AppCompatActivity {
         Marker favouriteMarker = Objects.requireNonNull(findMarkerByLocation(favourite));
         markers.remove(favouriteMarker);
         favouriteMarker.remove();
-        Favourite.saveFavouritesSafe(this, favourites,
-                new ToastExceptionHandler(this, R.string.no_favourites_message));
+        storage.saveFavouritesAsync(favourites, new ToastStorageHandler(this));
         unfocus(null);
     }
 

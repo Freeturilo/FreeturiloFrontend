@@ -6,24 +6,12 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.freeturilo.handlers.ExceptionHandler;
 import com.example.freeturilo.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class Favourite extends Location {
@@ -73,61 +61,5 @@ public class Favourite extends Location {
         Bitmap smallMarker =
                 Bitmap.createScaledBitmap(markerBitmap, markerWidth, markerHeight, false);
         return BitmapDescriptorFactory.fromBitmap(smallMarker);
-    }
-
-    @NonNull
-    private static List<Favourite> loadFavourites(@NonNull Context context) throws IOException {
-        Gson gson = new Gson();
-        FileInputStream in = context.openFileInput(context.getString(R.string.favourites_filename));
-        JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-        List<Favourite> favourites = new ArrayList<>();
-        reader.beginArray();
-        while (reader.hasNext()) {
-            Favourite favourite = gson.fromJson(reader, Favourite.class);
-            favourites.add(favourite);
-        }
-        reader.endArray();
-        reader.close();
-        return favourites;
-    }
-
-    @NonNull
-    public static List<Favourite> loadFavouritesSafe(@NonNull Context context,
-                                                     @Nullable ExceptionHandler handler) {
-        try {
-            return Favourite.loadFavourites(context);
-        }
-        catch (IOException exception) {
-            if (handler != null)
-                handler.handle();
-            return new ArrayList<>();
-        }
-    }
-
-    private static void saveFavourites(@NonNull Context context,
-                                       @NonNull List<Favourite> favourites)
-            throws IOException {
-        Gson gson = new Gson();
-        FileOutputStream out = context.openFileOutput(context.getString(R.string.favourites_filename), Context.MODE_PRIVATE);
-        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
-        writer.setIndent("  ");
-        writer.beginArray();
-        for (Favourite favourite : favourites)
-            gson.toJson(favourite, Favourite.class, writer);
-        writer.endArray();
-        writer.close();
-    }
-
-    public static void saveFavouritesSafe(@NonNull Context context,
-                                          @NonNull List<Favourite> favourites,
-                                          @Nullable ExceptionHandler handler)
-    {
-        try {
-            saveFavourites(context, favourites);
-        }
-        catch (IOException exception) {
-            if (handler != null)
-                handler.handle();
-        }
     }
 }

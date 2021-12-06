@@ -28,11 +28,12 @@ import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.misc.ObjectWrapperForBinder;
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.Criterion;
-import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.IdentifiedLocation;
 import com.example.freeturilo.core.Location;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.misc.ValidationTools;
+import com.example.freeturilo.storage.StorageManager;
+import com.example.freeturilo.storage.ToastStorageHandler;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -46,6 +47,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class RouteCreateActivity extends AppCompatActivity {
+    private StorageManager storage;
     private AutoCompleteTextView startInput;
     private AutoCompleteTextView endInput;
     private List<AutoCompleteTextView> stopInputs;
@@ -57,10 +59,12 @@ public class RouteCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route_create);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         API api = new APIMock();
+        storage = new StorageManager(this);
         customLocations = new ArrayList<>();
-        api.getStationsAsync((result) -> customLocations.addAll(result),
+        api.getStationsAsync((retrievedStations) -> customLocations.addAll(retrievedStations),
                 new APIActivityHandler(this));
-        customLocations.addAll(Favourite.loadFavouritesSafe(this, null));
+        storage.loadFavouritesAsync((loadedFavourites) -> customLocations.addAll(loadedFavourites),
+                null);
         startInput = this.findViewById(R.id.startTextView);
         endInput = this.findViewById(R.id.endTextView);
         stopInputs = new ArrayList<>();
@@ -121,9 +125,10 @@ public class RouteCreateActivity extends AppCompatActivity {
         }
         RadioGroup radioGroup = this.findViewById(R.id.criterion_buttons);
         Criterion criterion = getCheckedCriterion(radioGroup);
-        RouteParameters parameters = new RouteParameters(start, end, stops, criterion);
+        RouteParameters routeParameters = new RouteParameters(start, end, stops, criterion);
+        storage.addToHistoryAsync(routeParameters, new ToastStorageHandler(this));
         Bundle bundle = new Bundle();
-        bundle.putBinder(getString(R.string.route_parameters_intent_name), new ObjectWrapperForBinder(parameters));
+        bundle.putBinder(getString(R.string.route_parameters_intent_name), new ObjectWrapperForBinder(routeParameters));
         Intent intent = new Intent(this, RouteActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);

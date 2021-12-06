@@ -12,29 +12,31 @@ import android.widget.ListView;
 import com.example.freeturilo.misc.HistoryAdapter;
 import com.example.freeturilo.misc.ObjectWrapperForBinder;
 import com.example.freeturilo.R;
-import com.example.freeturilo.handlers.ToastExceptionHandler;
+import com.example.freeturilo.storage.StorageManager;
+import com.example.freeturilo.storage.ToastStorageHandler;
 import com.example.freeturilo.core.RouteParameters;
 
 import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
+    private StorageManager storage;
     private List<RouteParameters> history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        storage = new StorageManager(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadHistory();
+        storage.loadHistoryAsync(this::onHistoryReady, new ToastStorageHandler(this));
     }
 
-    private void loadHistory() {
-        history = RouteParameters.loadHistorySafe(this,
-                new ToastExceptionHandler(this, R.string.no_history_message));
+    private void onHistoryReady(List<RouteParameters> loadedHistory) {
+        history = loadedHistory;
         HistoryAdapter adapter = new HistoryAdapter(this, history);
         ListView historyListView = findViewById(R.id.history_list);
         historyListView.setAdapter(adapter);
@@ -45,7 +47,8 @@ public class HistoryActivity extends AppCompatActivity {
                                int position, long id) {
         RouteParameters routeParameters = history.get(position);
         history.remove(position);
-        RouteParameters.saveHistorySafe(this, history, null);
+        history.add(0, routeParameters);
+        storage.saveHistoryAsync(history, new ToastStorageHandler(this));
         Bundle bundle = new Bundle();
         bundle.putBinder(getString(R.string.route_parameters_intent_name), new ObjectWrapperForBinder(routeParameters));
         Intent intent = new Intent(this, RouteActivity.class);
