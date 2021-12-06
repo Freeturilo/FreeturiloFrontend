@@ -9,6 +9,7 @@ import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.core.Route;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.core.Station;
+import com.example.freeturilo.core.SystemState;
 import com.example.freeturilo.misc.AuthTools;
 import com.example.freeturilo.misc.Callback;
 import com.google.gson.Gson;
@@ -175,27 +176,27 @@ public class APIConnect implements API {
     }
 
     @NonNull
-    private Integer postStateStop() throws APIException {
-        HttpsURLConnection connection = createConnection("POST", "app", "stop");
+    private SystemState getState() throws APIException {
+        HttpsURLConnection connection = createConnection("GET", "app", "state");
+        SystemState systemState = retrieveResponseJsonObject(connection, SystemState.class);
+        connection.disconnect();
+        return systemState;
+    }
+
+    @NonNull
+    private Integer postState(SystemState systemState) throws APIException {
+        HttpsURLConnection connection = createConnection("POST",
+                "app", "state", String.valueOf(systemState.toInteger()));
         int responseCode = retrieveResponseCode(connection);
         connection.disconnect();
         return responseCode;
     }
 
-    @NonNull
-    private Integer postStateStart() throws APIException {
-        HttpsURLConnection connection = createConnection("POST", "app", "start");
-        int responseCode = retrieveResponseCode(connection);
+    private int getNotifyThreshold() throws APIException {
+        HttpsURLConnection connection = createConnection("GET", "app", "notify");
+        int threshold = retrieveResponseJsonObject(connection, Integer.class);
         connection.disconnect();
-        return responseCode;
-    }
-
-    @NonNull
-    private Integer postStateDemo() throws APIException {
-        HttpsURLConnection connection = createConnection("POST", "app", "demo");
-        int responseCode = retrieveResponseCode(connection);
-        connection.disconnect();
-        return responseCode;
+        return threshold;
     }
 
     @NonNull
@@ -240,18 +241,18 @@ public class APIConnect implements API {
     }
 
     @Override
-    public void postStateStopAsync(@Nullable APIHandler handler) {
-        APIRunnable.create(this::postStateStop).setHandler(handler).startThread();
+    public void getStateAsync(@Nullable Callback<SystemState> callback, @Nullable APIHandler handler) {
+        APIRunnable.create(this::getState).setCallback(callback).setHandler(handler).startThread();
     }
 
     @Override
-    public void postStateStartAsync(@Nullable APIHandler handler) {
-        APIRunnable.create(this::postStateStart).setHandler(handler).startThread();
+    public void postStateAsync(@NonNull SystemState systemState, @Nullable APIHandler handler) {
+        APIRunnable.create(() -> postState(systemState)).setHandler(handler).startThread();
     }
 
     @Override
-    public void postStateDemoAsync(@Nullable APIHandler handler) {
-        APIRunnable.create(this::postStateDemo).setHandler(handler).startThread();
+    public void getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
+        APIRunnable.create(this::getNotifyThreshold).setCallback(callback).setHandler(handler).startThread();
     }
 
     @Override

@@ -13,6 +13,8 @@ import com.example.freeturilo.R;
 import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
+import com.example.freeturilo.core.SystemState;
+import com.example.freeturilo.core.SystemStateTools;
 import com.example.freeturilo.dialogs.MailNotifyDialog;
 
 public class AdminActivity extends AppCompatActivity {
@@ -24,9 +26,25 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         api = new APIMock();
-        checkedButtonId = R.id.start_state_button;
+        api.getStateAsync(this::onSystemStateReady, new APIActivityHandler(this));
+    }
+
+    private void onSystemStateReady(@NonNull SystemState systemState) {
+        checkedButtonId = SystemStateTools.getButtonId(systemState);
+        RadioButton checkedButton = findViewById(checkedButtonId);
+        checkedButton.setChecked(true);
         RadioGroup systemStateButtons = findViewById(R.id.system_state_buttons);
         systemStateButtons.setOnCheckedChangeListener(this::showChangeSystemStateDialog);
+        enableStateButtons();
+    }
+
+    private void enableStateButtons() {
+        RadioButton startedStateButton = findViewById(R.id.started_state_button);
+        startedStateButton.setEnabled(true);
+        RadioButton demoStateButton = findViewById(R.id.demo_state_button);
+        demoStateButton.setEnabled(true);
+        RadioButton stoppedStateButton = findViewById(R.id.stopped_state_button);
+        stoppedStateButton.setEnabled(true);
     }
 
     private void showChangeSystemStateDialog(@NonNull RadioGroup radioGroup, int checkedButtonId) {
@@ -47,24 +65,12 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void changeSystemState(int stateButtonId) {
-        final int startStateButton = R.id.start_state_button;
-        final int demoStateButton = R.id.demo_state_button;
-        final int stopStateButton = R.id.stop_state_button;
-        switch (stateButtonId) {
-            case startStateButton:
-                api.postStateStartAsync(new APIActivityHandler(this));
-                break;
-            case demoStateButton:
-                api.postStateDemoAsync(new APIActivityHandler(this));
-                break;
-            case stopStateButton:
-                api.postStateStopAsync(new APIActivityHandler(this));
-                break;
-        }
+        api.postStateAsync(SystemStateTools.getState(stateButtonId),
+                new APIActivityHandler(this));
     }
 
     public void showMailNotifyDialog(@NonNull View view) {
-        MailNotifyDialog dialog = new MailNotifyDialog(this::setNotifyThreshold);
+        MailNotifyDialog dialog = new MailNotifyDialog(api, this::setNotifyThreshold);
         dialog.show(getSupportFragmentManager(), null);
     }
 

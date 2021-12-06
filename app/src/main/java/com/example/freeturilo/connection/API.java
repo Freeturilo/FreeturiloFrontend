@@ -3,6 +3,7 @@ package com.example.freeturilo.connection;
 import com.example.freeturilo.core.Route;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.core.Station;
+import com.example.freeturilo.core.SystemState;
 import com.example.freeturilo.misc.Callback;
 
 import java.util.List;
@@ -20,11 +21,11 @@ public interface API {
 
     void getRouteAsync(RouteParameters routeParameters, Callback<Route> callback, APIHandler handler);
 
-    void postStateStopAsync(APIHandler handler);
+    void getStateAsync(Callback<SystemState> callback, APIHandler handler);
 
-    void postStateStartAsync(APIHandler handler);
+    void postStateAsync(SystemState systemState, APIHandler handler);
 
-    void postStateDemoAsync(APIHandler handler);
+    void getNotifyThresholdAsync(Callback<Integer> callback, APIHandler handler);
 
     void postNotifyThresholdAsync(int threshold, APIHandler handler);
 }

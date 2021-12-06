@@ -19,14 +19,18 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.freeturilo.R;
+import com.example.freeturilo.connection.API;
+import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.misc.Callback;
 import com.example.freeturilo.misc.ValidationTools;
 
 public class MailNotifyDialog extends DialogFragment {
     private View view;
+    final private API api;
     final private Callback<Integer> positiveCallback;
 
-    public MailNotifyDialog(Callback<Integer> positiveCallback) {
+    public MailNotifyDialog(API api, Callback<Integer> positiveCallback) {
+        this.api = api;
         this.positiveCallback = positiveCallback;
     }
 
@@ -41,6 +45,7 @@ public class MailNotifyDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        api.getNotifyThresholdAsync(this::onThresholdReady, new APIActivityHandler(requireContext()));
         SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
         notifySwitch.setOnCheckedChangeListener(this::onSwitchChange);
         Dialog dialog = new AlertDialog.Builder(requireContext(), R.style.FreeturiloDialogTheme)
@@ -53,23 +58,33 @@ public class MailNotifyDialog extends DialogFragment {
         return dialog;
     }
 
+    private void onThresholdReady(int threshold) {
+        EditText notifyThresholdInput = view.findViewById(R.id.notify_threshold_input);
+        SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
+        if (threshold > 0) {
+            notifySwitch.setChecked(true);
+            notifyThresholdInput.setText(String.valueOf(threshold));
+        }
+        notifySwitch.setEnabled(true);
+    }
+
     private void onShow(@NonNull DialogInterface dialog) {
         Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener((view) -> onPositiveButton(dialog));
     }
 
     private void onSwitchChange(@NonNull CompoundButton buttonView, boolean isChecked) {
-        TextView notifyNumberText = view.findViewById(R.id.notify_number_text);
-        EditText notifyNumberInput = view.findViewById(R.id.notify_number_input);
+        TextView notifyThresholdText = view.findViewById(R.id.notify_threshold_text);
+        EditText notifyThresholdInput = view.findViewById(R.id.notify_threshold_input);
         if(!isChecked) {
-            notifyNumberText.setTextColor(requireContext().getColor(R.color.grey));
-            notifyNumberInput.setTextColor(requireContext().getColor(R.color.grey));
-            notifyNumberInput.setEnabled(false);
+            notifyThresholdText.setTextColor(requireContext().getColor(R.color.grey));
+            notifyThresholdInput.setTextColor(requireContext().getColor(R.color.grey));
+            notifyThresholdInput.setEnabled(false);
         }
         else {
-            notifyNumberText.setTextColor(requireContext().getColor(R.color.black));
-            notifyNumberInput.setTextColor(requireContext().getColor(R.color.black));
-            notifyNumberInput.setEnabled(true);
+            notifyThresholdText.setTextColor(requireContext().getColor(R.color.black));
+            notifyThresholdInput.setTextColor(requireContext().getColor(R.color.black));
+            notifyThresholdInput.setEnabled(true);
         }
     }
 
@@ -77,8 +92,8 @@ public class MailNotifyDialog extends DialogFragment {
         if (validate()) {
             SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
             if (notifySwitch.isChecked()) {
-                EditText notifyNumberInput = view.findViewById(R.id.notify_number_input);
-                positiveCallback.call(Integer.parseInt(notifyNumberInput.getText().toString()));
+                EditText notifyThresholdInput = view.findViewById(R.id.notify_threshold_input);
+                positiveCallback.call(Integer.parseInt(notifyThresholdInput.getText().toString()));
             } else {
                 positiveCallback.call(0);
             }
@@ -88,9 +103,9 @@ public class MailNotifyDialog extends DialogFragment {
 
     private boolean validate() {
         SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
-        EditText notifyNumberInput = view.findViewById(R.id.notify_number_input);
-        if (!notifySwitch.isChecked() || ValidationTools.hasInteger(notifyNumberInput)) return true;
-        ValidationTools.setInputError(requireContext(), notifyNumberInput, R.string.threshold_invalid_text);
+        EditText notifyThresholdInput = view.findViewById(R.id.notify_threshold_input);
+        if (!notifySwitch.isChecked() || ValidationTools.hasInteger(notifyThresholdInput)) return true;
+        ValidationTools.setInputError(requireContext(), notifyThresholdInput, R.string.threshold_invalid_text);
         return false;
     }
 }

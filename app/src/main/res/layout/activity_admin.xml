@@ -34,11 +34,10 @@
         app:layout_constraintBottom_toTopOf="@id/mail_notify_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_weight="5"
-        android:checkedButton="@id/start_state_button">
+        app:layout_constraintVertical_weight="5">
 
         <RadioButton
-            android:id="@+id/start_state_button"
+            android:id="@+id/started_state_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -50,7 +49,8 @@
             android:paddingBottom="@dimen/purple_border_height"
             android:text="@string/start_state_text"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_big"/>
+            android:textSize="@dimen/text_size_big"
+            android:enabled="false"/>
 
         <RadioButton
             android:id="@+id/demo_state_button"
@@ -65,10 +65,11 @@
             android:paddingBottom="@dimen/purple_border_height"
             android:text="@string/demo_state_text"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_big"/>
+            android:textSize="@dimen/text_size_big"
+            android:enabled="false"/>
 
         <RadioButton
-            android:id="@+id/stop_state_button"
+            android:id="@+id/stopped_state_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -80,7 +81,8 @@
             android:paddingBottom="@dimen/purple_border_height"
             android:text="@string/stop_state_text"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_big"/>
+            android:textSize="@dimen/text_size_big"
+            android:enabled="false"/>
 
     </RadioGroup>
 

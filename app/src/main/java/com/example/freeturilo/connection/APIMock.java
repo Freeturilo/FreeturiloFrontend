@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.freeturilo.core.Route;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.core.Station;
+import com.example.freeturilo.core.SystemState;
 import com.example.freeturilo.misc.AuthTools;
 import com.example.freeturilo.misc.Callback;
 import com.google.maps.model.Bounds;
@@ -75,7 +76,7 @@ public class APIMock implements API {
         return "API_MOCK_TOKEN";
     }
 
-    private Route getRoute(RouteParameters routeParameters) throws APIException {
+    private Route getRoute(RouteParameters routeParameters) {
         randomWait();
         Log.d("MockAPI", "getRoute");
         Route route = new Route();
@@ -112,27 +113,27 @@ public class APIMock implements API {
         return route;
     }
 
-    private Integer postStateStop() throws APIException {
+    private SystemState getState() {
         randomWait();
-        Log.d("MockAPI", "postStateStop");
+        Log.d("MockAPI", "getState");
+        return SystemState.DEMO;
+    }
+
+    private Integer postState(SystemState systemState) throws APIException {
+        randomWait();
+        Log.d("MockAPI", "postState " + systemState.toString());
         return responseAuthorized();
     }
 
-    private Integer postStateStart() throws APIException {
+    private int getNotifyThreshold() {
         randomWait();
-        Log.d("MockAPI", "postStateStart");
-        return responseAuthorized();
-    }
-
-    private Integer postStateDemo() throws APIException {
-        randomWait();
-        Log.d("MockAPI", "postStateDemo");
-        return responseAuthorized();
+        Log.d("MockAPI", "getNotifyThreshold");
+        return 10;
     }
 
     private Integer postNotifyThreshold(int threshold) throws APIException {
         randomWait();
-        Log.d("MockAPI", "postNotifyThreshold");
+        Log.d("MockAPI", "postNotifyThreshold " + threshold);
         return responseAuthorized();
     }
 
@@ -167,18 +168,18 @@ public class APIMock implements API {
     }
 
     @Override
-    public void postStateStopAsync(APIHandler handler) {
-        APIRunnable.create(this::postStateStop).setHandler(handler).startThread();
+    public void getStateAsync(Callback<SystemState> callback, APIHandler handler) {
+        APIRunnable.create(this::getState).setCallback(callback).setHandler(handler).startThread();
     }
 
     @Override
-    public void postStateStartAsync(APIHandler handler) {
-        APIRunnable.create(this::postStateStart).setHandler(handler).startThread();
+    public void postStateAsync(SystemState systemState, APIHandler handler) {
+        APIRunnable.create(() -> postState(systemState)).setHandler(handler).startThread();
     }
 
     @Override
-    public void postStateDemoAsync(APIHandler handler) {
-        APIRunnable.create(this::postStateDemo).setHandler(handler).startThread();
+    public void getNotifyThresholdAsync(Callback<Integer> callback, APIHandler handler) {
+        APIRunnable.create(this::getNotifyThreshold).setCallback(callback).setHandler(handler).startThread();
     }
 
     @Override
