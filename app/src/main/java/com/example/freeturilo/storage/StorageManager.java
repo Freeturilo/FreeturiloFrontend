@@ -114,7 +114,9 @@ public class StorageManager {
 
     @NonNull
     private Boolean addToHistory(@NonNull RouteParameters routeParameters) throws StorageException {
-        List<RouteParameters> history = loadHistory();
+        List<RouteParameters> history = new ArrayList<>();
+        try { history = loadHistory(); }
+        catch (StorageException ignored) {}
         history.add(0, routeParameters);
         saveHistory(history);
         return true;

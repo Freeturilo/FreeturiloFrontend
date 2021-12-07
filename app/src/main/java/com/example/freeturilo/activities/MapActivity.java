@@ -49,13 +49,18 @@ public class MapActivity extends AppCompatActivity {
         storage = new StorageManager(this);
         SupportMapFragment mapFragment = Objects.requireNonNull((SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map));
-        Synchronizer createSynchronizer = new Synchronizer(3, this::showMarkers);
-        mapFragment.getMapAsync(googleMap -> onMapReadySync(googleMap, createSynchronizer));
+        markers = new ArrayList<>();
+        favourites = new ArrayList<>();
+        stations = new ArrayList<>();
+        Synchronizer stationsSynchronizer = new Synchronizer(2, this::showStationMarkers);
+        Synchronizer favouritesSynchronizer = new Synchronizer(2, this::showFavouriteMarkers);
+        mapFragment.getMapAsync(googleMap ->
+                onMapReadySync(googleMap, stationsSynchronizer, favouritesSynchronizer));
         api.getStationsAsync(retrievedStations ->
-                onStationsReadySync(retrievedStations, createSynchronizer),
+                onStationsReadySync(retrievedStations, stationsSynchronizer),
                 new APIActivityHandler(this));
         storage.loadFavouritesAsync(loadedFavourites ->
-                onFavouritesReadySync(loadedFavourites, createSynchronizer),
+                onFavouritesReadySync(loadedFavourites, favouritesSynchronizer),
                 new ToastStorageHandler(this));
     }
 
@@ -72,14 +77,16 @@ public class MapActivity extends AppCompatActivity {
                 "raw", getPackageName())));
         LatLng warsaw = new LatLng(52.23, 21);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(warsaw, 12));
-        map.setOnMapClickListener(this::unfocus);
         map.setOnMapLongClickListener(this::showAddFavouriteDialog);
+        map.setOnMapClickListener(this::unfocus);
         map.setOnMarkerClickListener(this::focus);
     }
 
-    private void onMapReadySync(@NonNull GoogleMap googleMap, @NonNull Synchronizer synchronizer) {
+    private void onMapReadySync(@NonNull GoogleMap googleMap,
+                                @NonNull Synchronizer ... synchronizers) {
         onMapReady(googleMap);
-        synchronizer.decrement();
+        for (Synchronizer synchronizer : synchronizers)
+            synchronizer.decrement();
     }
 
     private void onStationsReady(@NonNull List<Station> retrievedStations) {
@@ -102,16 +109,18 @@ public class MapActivity extends AppCompatActivity {
         synchronizer.decrement();
     }
 
-    private void showMarkers() {
-        markers = new ArrayList<>();
-        for(Favourite favourite : favourites) {
-            Marker marker = map.addMarker(favourite.createMarkerOptions(this));
-            Objects.requireNonNull(marker).setTag(favourite);
-            markers.add(marker);
-        }
+    private void showStationMarkers() {
         for (Station station : stations) {
             Marker marker = map.addMarker(station.createMarkerOptions(this));
             Objects.requireNonNull(marker).setTag(station);
+            markers.add(marker);
+        }
+    }
+
+    private void showFavouriteMarkers() {
+        for(Favourite favourite : favourites) {
+            Marker marker = map.addMarker(favourite.createMarkerOptions(this));
+            Objects.requireNonNull(marker).setTag(favourite);
             markers.add(marker);
         }
     }
