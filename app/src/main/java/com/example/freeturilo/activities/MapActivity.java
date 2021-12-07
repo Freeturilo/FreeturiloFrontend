@@ -1,10 +1,21 @@
 package com.example.freeturilo.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.location.LocationManagerCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -22,15 +33,20 @@ import com.example.freeturilo.core.Location;
 import com.example.freeturilo.core.Station;
 import com.example.freeturilo.misc.AuthTools;
 import com.example.freeturilo.misc.Synchronizer;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class MapActivity extends AppCompatActivity {
@@ -40,11 +56,15 @@ public class MapActivity extends AppCompatActivity {
     private GoogleMap map;
     private List<Favourite> favourites = new ArrayList<>();
     private List<Station> stations = new ArrayList<>();
+    private ActivityResultLauncher<String[]> locationPermissionRequest;
+    private Marker deviceLocationMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        locationPermissionRequest = registerForActivityResult(new ActivityResultContracts
+                .RequestMultiplePermissions(), this::processLocationPermissionsRequestResult);
     }
 
     @Override
@@ -85,6 +105,7 @@ public class MapActivity extends AppCompatActivity {
         map.setOnMapLongClickListener(this::showAddFavouriteDialog);
         map.setOnMapClickListener(this::unfocus);
         map.setOnMarkerClickListener(this::focus);
+        showActionButtons(null);
     }
 
     private void onMapReadySync(@NonNull GoogleMap googleMap,
@@ -144,6 +165,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void hideActionButtons() {
+        hideActionButton(R.id.device_location_button);
         hideActionButton(R.id.set_broken_station_button);
         hideActionButton(R.id.set_working_station_button);
         hideActionButton(R.id.report_station_button);
@@ -151,43 +173,51 @@ public class MapActivity extends AppCompatActivity {
         hideActionButton(R.id.delete_favourite_button);
     }
 
-    private void showActionButtonFocused(int buttonId, @NonNull Location location) {
+    private void showActionButton(int buttonId, @Nullable Location location) {
         findViewById(buttonId).setVisibility(View.VISIBLE);
         findViewById(buttonId).setTag(location);
     }
 
-    private void showActionButtonsFocused(@NonNull Location location) {
-        if (location instanceof Favourite) {
-            showActionButtonFocused(R.id.edit_favourite_button, location);
-            showActionButtonFocused(R.id.delete_favourite_button, location);
+    private void showActionButtons(@Nullable Location location) {
+        if (location == null) {
+            showActionButton(R.id.device_location_button, null);
+        }
+        else if (location instanceof Favourite) {
+            showActionButton(R.id.edit_favourite_button, location);
+            showActionButton(R.id.delete_favourite_button, location);
         }
         else if (location instanceof Station) {
             if (AuthTools.isLoggedIn()) {
                 Station station = (Station) location;
                 if (station.state != 0)
-                    showActionButtonFocused(R.id.set_working_station_button, location);
+                    showActionButton(R.id.set_working_station_button, location);
                 if (station.state != 2)
-                    showActionButtonFocused(R.id.set_broken_station_button, location);
+                    showActionButton(R.id.set_broken_station_button, location);
             }
             else
-                showActionButtonFocused(R.id.report_station_button, location);
+                showActionButton(R.id.report_station_button, location);
         }
     }
 
     private void unfocus(@Nullable LatLng latLng) {
         updateBottomPanel(getString(R.string.map_caption_text), null, null);
         hideActionButtons();
+        showActionButtons(null);
     }
 
     private boolean focus(@NonNull Marker marker) {
-        Location location = Objects.requireNonNull((Location) marker.getTag());
-        LatLng latLng = new LatLng(location.latitude, location.longitude);
-        map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        updateBottomPanel(location.getPrimaryText(),
-                location.getSecondaryText(this), location.getTertiaryText(this));
-        hideActionButtons();
-        showActionButtonsFocused(location);
-        return true;
+        map.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+        if (marker.getTag() == null) {
+            unfocus(null);
+            return false;
+        } else {
+            Location location = (Location) marker.getTag();
+            updateBottomPanel(location.getPrimaryText(),
+                    location.getSecondaryText(this), location.getTertiaryText(this));
+            hideActionButtons();
+            showActionButtons(location);
+            return true;
+        }
     }
 
     private void updateBottomPanel(@NonNull String textPrimary, @Nullable String textSecondary,
@@ -216,6 +246,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void showAddFavouriteDialog(@NonNull LatLng latLng) {
+        map.stopAnimation();
         AddFavouriteDialog dialog = new AddFavouriteDialog(latLng, this::addFavourite);
         dialog.show(getSupportFragmentManager(), null);
     }
@@ -230,6 +261,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void showEditFavouriteDialog(@NonNull View view) {
+        map.stopAnimation();
         Favourite favourite = Objects.requireNonNull((Favourite) view.getTag());
         EditFavouriteDialog dialog = new EditFavouriteDialog(favourite, this::editFavourite);
         dialog.show(getSupportFragmentManager(), null);
@@ -247,6 +279,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void showDeleteFavouriteDialog(@NonNull View view) {
+        map.stopAnimation();
         Favourite favourite = Objects.requireNonNull((Favourite) view.getTag());
         new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
                 .setMessage(String.format("%s \"%s\"?",
@@ -266,6 +299,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void showReportStationDialog(@NonNull View view) {
+        map.stopAnimation();
         Station station = Objects.requireNonNull((Station) view.getTag());
         new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
                 .setMessage(String.format("%s \"%s\"?", getString(R.string.report_station_message), station.name))
@@ -279,6 +313,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void showSetBrokenStationDialog(@NonNull View view) {
+        map.stopAnimation();
         Station station = Objects.requireNonNull((Station) view.getTag());
         new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
                 .setMessage(String.format("%s \"%s\"?",
@@ -304,5 +339,72 @@ public class MapActivity extends AppCompatActivity {
 
     private void setWorkingStation(@NonNull Station station) {
         api.setWorkingStationAsync(station, new APIActivityHandler(this));
+    }
+
+    public void showLocationPermissionsDialog(@NonNull View view) {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            showLocationServicesDialog();
+        }
+        else {
+            locationPermissionRequest.launch(new String[] {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            });
+        }
+    }
+
+    private void processLocationPermissionsRequestResult(Map<String, Boolean> result) {
+        Boolean fineLocationGranted =
+                result.get(Manifest.permission.ACCESS_FINE_LOCATION);
+        Boolean coarseLocationGranted =
+                result.get(Manifest.permission.ACCESS_COARSE_LOCATION);
+        if ((fineLocationGranted != null && fineLocationGranted) ||
+                (coarseLocationGranted != null && coarseLocationGranted)) {
+            showLocationServicesDialog();
+        }
+    }
+
+    private void showLocationServicesDialog() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (LocationManagerCompat.isLocationEnabled(locationManager))
+            locateDevice();
+        else {
+            map.stopAnimation();
+            new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
+                    .setMessage(R.string.start_location_services_message)
+                    .setPositiveButton(R.string.ok_text, (dialog, id) -> locateDevice())
+                    .setNegativeButton(R.string.cancel_text, null)
+                    .show();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void locateDevice() {
+        FusedLocationProviderClient fusedLocationClient =
+                LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, this::showDeviceLocation);
+    }
+
+    private void showDeviceLocation(@Nullable android.location.Location location) {
+        if (location != null) {
+            LatLng markerPosition = new LatLng(location.getLatitude(), location.getLongitude());
+            Bitmap markerBitmap =
+                    BitmapFactory.decodeResource(getResources(), R.drawable.marker_device_location);
+            int markerSize = getResources().getDimensionPixelSize(R.dimen.small_marker_size);
+            Bitmap smallMarker =
+                    Bitmap.createScaledBitmap(markerBitmap, markerSize, markerSize, false);
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
+                    .anchor((float) 0.5, (float) 0.5)
+                    .position(markerPosition);
+            if (deviceLocationMarker != null)
+                deviceLocationMarker.remove();
+            deviceLocationMarker = map.addMarker(markerOptions);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 16));
+        }
     }
 }

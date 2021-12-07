@@ -73,4 +73,5 @@
     <string name="email_invalid_text" tools:ignore="Typos">Niepoprawny adres email</string>
     <string name="name_empty_text">Brak nazwy</string>
     <string name="threshold_invalid_text">Niepoprawna liczba</string>
+    <string name="start_location_services_message">Aby kontynuować, włącz lokalizację urządzenia</string>
 </resources>

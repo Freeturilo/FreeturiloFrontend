@@ -4,6 +4,7 @@
     <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="toolbar_height">60dp</dimen>
+    <dimen name="small_marker_size">15dp</dimen>
     <dimen name="marker_height">48dp</dimen>
     <dimen name="marker_width">29dp</dimen>
     <dimen name="purple_border_height">10dp</dimen>

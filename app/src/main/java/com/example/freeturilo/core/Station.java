@@ -47,7 +47,12 @@ public class Station extends Location {
     @Nullable
     @Override
     public String getSecondaryText(@NonNull Context context) {
-        return context.getString(R.string.station_helper_text).toLowerCase(Locale.ROOT);
+        String stationHelperText = context.getString(R.string.station_helper_text).toLowerCase(Locale.ROOT);
+        String stateText = StationState.getStateText(context, state);
+        if (state == 0)
+            return stationHelperText;
+        else
+            return String.format("%s (%s)", stationHelperText, stateText);
     }
 
     @Nullable
@@ -55,11 +60,7 @@ public class Station extends Location {
     public String getTertiaryText(@NonNull Context context) {
         String availabilityHelperText = context.getString(R.string.bikes_availability_text);
         String availabilityText = String.format(Locale.ROOT, "%d/%d", bikes, bikeRacks);
-        String stateText = String.format("(%s)", StationState.getStateText(context, state));
-        if (state == 0)
-            return String.format("%s: %s", availabilityHelperText, availabilityText);
-        else
-            return String.format("%s: %s\n%s", availabilityHelperText, availabilityText, stateText);
+        return String.format("%s: %s", availabilityHelperText, availabilityText);
     }
 
     @NonNull

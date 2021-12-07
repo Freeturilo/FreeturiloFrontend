@@ -71,7 +71,8 @@ public class RouteActivity extends AppCompatActivity {
         for(Marker marker : markers)
             marker.remove();
         markers.clear();
-        polyline.remove();
+        if (polyline != null)
+            polyline.remove();
     }
 
     private void onMapReady(@NonNull GoogleMap googleMap) {
@@ -111,12 +112,6 @@ public class RouteActivity extends AppCompatActivity {
         PolylineOptions opts = new PolylineOptions()
                 .addAll(path).color(getColor(R.color.purple_first));
         polyline = map.addPolyline(opts);
-        LatLng southwest = new LatLng(route.directionsRoute.bounds.southwest.lat,
-                route.directionsRoute.bounds.southwest.lng);
-        LatLng northeast = new LatLng(route.directionsRoute.bounds.northeast.lat,
-                route.directionsRoute.bounds.northeast.lng);
-        LatLngBounds bounds = new LatLngBounds(southwest, northeast);
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
         for (Location location : route.waypoints) {
             Marker marker = map.addMarker(location.createMarkerOptions(this));
             Objects.requireNonNull(marker).setTag(location);
@@ -124,6 +119,12 @@ public class RouteActivity extends AppCompatActivity {
         }
         updateBottomPanel(route.getPrimaryText(this),
                 route.getSecondaryText(this), route.getTertiaryText());
+        LatLng southwest = new LatLng(route.directionsRoute.bounds.southwest.lat,
+                route.directionsRoute.bounds.southwest.lng);
+        LatLng northeast = new LatLng(route.directionsRoute.bounds.northeast.lat,
+                route.directionsRoute.bounds.northeast.lng);
+        LatLngBounds bounds = new LatLngBounds(southwest, northeast);
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
     }
 
     private void unfocus(@Nullable LatLng latLng) {

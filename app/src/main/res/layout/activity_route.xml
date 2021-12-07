@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_panel"
         android:paddingVertical="@dimen/purple_border_height"
+        android:animateLayoutChanges="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
