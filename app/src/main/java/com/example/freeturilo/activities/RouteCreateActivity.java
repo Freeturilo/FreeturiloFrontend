@@ -24,7 +24,6 @@ import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.misc.AutoCompleteTextWatcher;
-import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.misc.ObjectWrapperForBinder;
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.Criterion;
@@ -47,29 +46,49 @@ import java.util.List;
 import java.util.Objects;
 
 public class RouteCreateActivity extends AppCompatActivity {
-    private StorageManager storage;
+    private final StorageManager storage = new StorageManager(this);
+    private final API api = new APIMock();
     private AutoCompleteTextView startInput;
     private AutoCompleteTextView endInput;
-    private List<AutoCompleteTextView> stopInputs;
-    private List<Location> customLocations;
+    private final List<AutoCompleteTextView> stopInputs = new ArrayList<>();
+    private final List<Location> customLocations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_create);
-        Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
-        API api = new APIMock();
-        storage = new StorageManager(this);
-        customLocations = new ArrayList<>();
-        api.getStationsAsync((retrievedStations) -> customLocations.addAll(retrievedStations),
-                new APIActivityHandler(this));
-        storage.loadFavouritesAsync((loadedFavourites) -> customLocations.addAll(loadedFavourites),
-                null);
         startInput = this.findViewById(R.id.startTextView);
         endInput = this.findViewById(R.id.endTextView);
-        stopInputs = new ArrayList<>();
         initializeAutocompleteInput(startInput, R.string.start_point_hint);
         initializeAutocompleteInput(endInput, R.string.end_point_hint);
+    }
+
+    private void initializeAutocompleteInput(@NonNull AutoCompleteTextView input,
+                                             int hintResourceId) {
+        input.setHint(hintResourceId);
+        input.addTextChangedListener(new AutoCompleteTextWatcher(this, input, customLocations));
+        input.setOnItemClickListener((adapterView, view, i, l) ->
+                assignLocationAndHideKeyboard(input, (Location) adapterView.getItemAtPosition(i)));
+        input.setOnEditorActionListener((TextView v, int actionId, KeyEvent event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard((AutoCompleteTextView) v);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        api.getStationsAsync(customLocations::addAll, new APIActivityHandler(this));
+        storage.loadFavouritesAsync(customLocations::addAll, null);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        customLocations.clear();
     }
 
     public void addStop(@NonNull View view) {
@@ -128,7 +147,7 @@ public class RouteCreateActivity extends AppCompatActivity {
         RouteParameters routeParameters = new RouteParameters(start, end, stops, criterion);
         storage.addToHistoryAsync(routeParameters, new ToastStorageHandler(this));
         Bundle bundle = new Bundle();
-        bundle.putBinder(getString(R.string.route_parameters_intent_name), new ObjectWrapperForBinder(routeParameters));
+        bundle.putBinder(RouteActivity.ROUTE_PARAMETERS_INTENT, new ObjectWrapperForBinder(routeParameters));
         Intent intent = new Intent(this, RouteActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
@@ -222,20 +241,5 @@ public class RouteCreateActivity extends AppCompatActivity {
             input.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_autocomplete_unassigned,
                     0, 0, 0);
         }
-    }
-
-    private void initializeAutocompleteInput(@NonNull AutoCompleteTextView input,
-                                             int hintResourceId) {
-        input.setHint(hintResourceId);
-        input.addTextChangedListener(new AutoCompleteTextWatcher(this, input, customLocations));
-        input.setOnItemClickListener((adapterView, view, i, l) ->
-                assignLocationAndHideKeyboard(input, (Location) adapterView.getItemAtPosition(i)));
-        input.setOnEditorActionListener((TextView v, int actionId, KeyEvent event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                hideKeyboard((AutoCompleteTextView) v);
-                return true;
-            }
-            return false;
-        });
     }
 }

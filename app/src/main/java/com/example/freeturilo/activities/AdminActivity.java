@@ -17,24 +17,43 @@ import com.example.freeturilo.core.SystemState;
 import com.example.freeturilo.dialogs.MailNotifyDialog;
 
 public class AdminActivity extends AppCompatActivity {
-    private API api;
+    private final API api = new APIMock();
     private int checkedButtonId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        api = new APIMock();
+        RadioGroup systemStateButtons = findViewById(R.id.system_state_buttons);
+        systemStateButtons.setOnCheckedChangeListener(this::showChangeSystemStateDialog);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         api.getStateAsync(this::onSystemStateReady, new APIActivityHandler(this));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        disableStateButtons();
     }
 
     private void onSystemStateReady(@NonNull SystemState systemState) {
         checkedButtonId = SystemState.getButtonId(systemState);
         RadioButton checkedButton = findViewById(checkedButtonId);
         checkedButton.setChecked(true);
-        RadioGroup systemStateButtons = findViewById(R.id.system_state_buttons);
-        systemStateButtons.setOnCheckedChangeListener(this::showChangeSystemStateDialog);
         enableStateButtons();
+    }
+
+    private void disableStateButtons() {
+        RadioButton startedStateButton = findViewById(R.id.started_state_button);
+        startedStateButton.setEnabled(false);
+        RadioButton demoStateButton = findViewById(R.id.demo_state_button);
+        demoStateButton.setEnabled(false);
+        RadioButton stoppedStateButton = findViewById(R.id.stopped_state_button);
+        stoppedStateButton.setEnabled(false);
     }
 
     private void enableStateButtons() {

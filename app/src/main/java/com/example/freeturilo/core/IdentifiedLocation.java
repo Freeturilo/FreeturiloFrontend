@@ -7,9 +7,9 @@ import androidx.annotation.NonNull;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 
 public class IdentifiedLocation extends Location {
-    final public String details;
-    final public String placeId;
-    final public AutocompleteSessionToken token;
+    public final String details;
+    public final String placeId;
+    public final AutocompleteSessionToken token;
 
     public IdentifiedLocation(@NonNull String name, @NonNull String details,
                               @NonNull String placeId, @NonNull AutocompleteSessionToken token) {

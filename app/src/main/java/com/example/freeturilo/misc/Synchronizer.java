@@ -5,8 +5,8 @@ import androidx.annotation.NonNull;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Synchronizer {
-    final private AtomicInteger counter;
-    final private VoidCallback callback;
+    private final AtomicInteger counter;
+    private final VoidCallback callback;
 
     public Synchronizer(int initialCounter, @NonNull VoidCallback callback) {
         counter = new AtomicInteger(initialCounter);

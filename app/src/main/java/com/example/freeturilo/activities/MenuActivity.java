@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.R;
 import com.example.freeturilo.misc.AuthTools;
+import com.google.android.libraries.places.api.Places;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -17,6 +19,7 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         ImageView logo = findViewById(R.id.toolbar).findViewById(R.id.logo);
         logo.setOnLongClickListener(this::goToAdmin);
     }

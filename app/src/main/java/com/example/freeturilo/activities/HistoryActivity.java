@@ -19,14 +19,16 @@ import com.example.freeturilo.core.RouteParameters;
 import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
-    private StorageManager storage;
+    private final StorageManager storage = new StorageManager(this);
+    private ListView historyListView;
     private List<RouteParameters> history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        storage = new StorageManager(this);
+        historyListView = findViewById(R.id.history_list);
+        historyListView.setOnItemClickListener(this::recreateRoute);
     }
 
     @Override
@@ -35,12 +37,15 @@ public class HistoryActivity extends AppCompatActivity {
         storage.loadHistoryAsync(this::onHistoryReady, new ToastStorageHandler(this));
     }
 
-    private void onHistoryReady(List<RouteParameters> loadedHistory) {
+    @Override
+    protected void onPause() {
+        super.onPause();
+        historyListView.setAdapter(null);
+    }
+
+    private void onHistoryReady(@NonNull List<RouteParameters> loadedHistory) {
         history = loadedHistory;
-        HistoryAdapter adapter = new HistoryAdapter(this, history);
-        ListView historyListView = findViewById(R.id.history_list);
-        historyListView.setAdapter(adapter);
-        historyListView.setOnItemClickListener(this::recreateRoute);
+        historyListView.setAdapter(new HistoryAdapter(this, history));
     }
 
     private void recreateRoute(@NonNull AdapterView<?> adapterView, @NonNull View view,
@@ -49,9 +54,9 @@ public class HistoryActivity extends AppCompatActivity {
         history.remove(position);
         history.add(0, routeParameters);
         storage.saveHistoryAsync(history, new ToastStorageHandler(this));
-        Bundle bundle = new Bundle();
-        bundle.putBinder(getString(R.string.route_parameters_intent_name), new ObjectWrapperForBinder(routeParameters));
         Intent intent = new Intent(this, RouteActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putBinder(RouteActivity.ROUTE_PARAMETERS_INTENT, new ObjectWrapperForBinder(routeParameters));
         intent.putExtras(bundle);
         startActivity(intent);
     }

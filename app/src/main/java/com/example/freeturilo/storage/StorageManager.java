@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StorageManager {
-    static final private String FAVOURITES_FILE = "favourites.json";
-    static final private String HISTORY_FILE = "history.json";
-    final private Context context;
+    private static final String FAVOURITES_FILE = "favourites.json";
+    private static final String HISTORY_FILE = "history.json";
+    private final Context context;
 
     public StorageManager(Context context) {
         this.context = context;

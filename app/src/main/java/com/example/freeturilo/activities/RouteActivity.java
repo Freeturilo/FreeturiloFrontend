@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsStep;
@@ -33,31 +34,44 @@ import java.util.List;
 import java.util.Objects;
 
 public class RouteActivity extends AppCompatActivity {
+    public static final String ROUTE_PARAMETERS_INTENT = "route_parameters";
+    private final API api = new APIMock();
+    private final List<LatLng> path = new ArrayList<>();
+    private final List<Marker> markers = new ArrayList<>();
     private GoogleMap map;
+    private RouteParameters routeParameters;
     private Route route;
-    private List<LatLng> path;
+    private Polyline polyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
-        API api = new APIMock();
         ObjectWrapperForBinder parameters_wrapper =
-                (ObjectWrapperForBinder) getIntent().getExtras().getBinder(getString(R.string.route_parameters_intent_name));
-        RouteParameters routeParameters = (RouteParameters) parameters_wrapper.getData();
-        SupportMapFragment mapFragment = Objects.requireNonNull((SupportMapFragment)
-                getSupportFragmentManager().findFragmentById(R.id.map));
-        Synchronizer createSynchronizer = new Synchronizer(2, this::showRoute);
-        mapFragment.getMapAsync(googleMap -> onMapReadySync(googleMap, createSynchronizer));
-        api.getRouteAsync(routeParameters,
-                retrievedRoute -> onRouteReadySync(retrievedRoute, createSynchronizer),
-                new APIActivityHandler(this));
+                (ObjectWrapperForBinder) getIntent().getExtras().getBinder(ROUTE_PARAMETERS_INTENT);
+        routeParameters = (RouteParameters) parameters_wrapper.getData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        SupportMapFragment mapFragment = Objects.requireNonNull((SupportMapFragment)
+                getSupportFragmentManager().findFragmentById(R.id.map));
+        Synchronizer routeSynchronizer = new Synchronizer(2, this::showRoute);
+        mapFragment.getMapAsync(googleMap -> onMapReadySync(googleMap, routeSynchronizer));
+        api.getRouteAsync(routeParameters,
+                retrievedRoute -> onRouteReadySync(retrievedRoute, routeSynchronizer),
+                new APIActivityHandler(this));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         unfocus(null);
+        for(Marker marker : markers)
+            marker.remove();
+        markers.clear();
+        polyline.remove();
     }
 
     private void onMapReady(@NonNull GoogleMap googleMap) {
@@ -71,14 +85,14 @@ public class RouteActivity extends AppCompatActivity {
         map.setOnMarkerClickListener(this::focus);
     }
 
-    private void onMapReadySync(@NonNull GoogleMap googleMap, @NonNull Synchronizer synchronizer) {
+    private void onMapReadySync(@NonNull GoogleMap googleMap,
+                                @NonNull Synchronizer synchronizer) {
         onMapReady(googleMap);
         synchronizer.decrement();
     }
 
     private void onRouteReady(@NonNull Route retrievedRoute) {
         route = retrievedRoute;
-        path = new ArrayList<>();
         for (DirectionsLeg leg : route.directionsRoute.legs)
             for (DirectionsStep step : leg.steps) {
                 List<com.google.maps.model.LatLng> decodedPath = step.polyline.decodePath();
@@ -87,21 +101,26 @@ public class RouteActivity extends AppCompatActivity {
             }
     }
 
-    private void onRouteReadySync(@NonNull Route retrievedRoute, @NonNull Synchronizer synchronizer) {
+    private void onRouteReadySync(@NonNull Route retrievedRoute,
+                                  @NonNull Synchronizer synchronizer) {
         onRouteReady(retrievedRoute);
         synchronizer.decrement();
     }
 
     private void showRoute() {
-        PolylineOptions opts = new PolylineOptions().addAll(path).color(getColor(R.color.purple_first));
-        map.addPolyline(opts);
-        LatLng southwest = new LatLng(route.directionsRoute.bounds.southwest.lat, route.directionsRoute.bounds.southwest.lng);
-        LatLng northeast = new LatLng(route.directionsRoute.bounds.northeast.lat, route.directionsRoute.bounds.northeast.lng);
+        PolylineOptions opts = new PolylineOptions()
+                .addAll(path).color(getColor(R.color.purple_first));
+        polyline = map.addPolyline(opts);
+        LatLng southwest = new LatLng(route.directionsRoute.bounds.southwest.lat,
+                route.directionsRoute.bounds.southwest.lng);
+        LatLng northeast = new LatLng(route.directionsRoute.bounds.northeast.lat,
+                route.directionsRoute.bounds.northeast.lng);
         LatLngBounds bounds = new LatLngBounds(southwest, northeast);
         map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
         for (Location location : route.waypoints) {
             Marker marker = map.addMarker(location.createMarkerOptions(this));
             Objects.requireNonNull(marker).setTag(location);
+            markers.add(marker);
         }
         updateBottomPanel(route.getPrimaryText(this),
                 route.getSecondaryText(this), route.getTertiaryText());
@@ -124,7 +143,8 @@ public class RouteActivity extends AppCompatActivity {
         return true;
     }
 
-    private void updateBottomPanel(@NonNull String textPrimary, @Nullable String textSecondary, @Nullable String textTertiary) {
+    private void updateBottomPanel(@NonNull String textPrimary, @Nullable String textSecondary,
+                                   @Nullable String textTertiary) {
         TextView bottomTextPrimary = findViewById(R.id.bottom_panel_primary);
         View bottomPanelHorizontalLine = findViewById(R.id.bottom_panel_horizontal_line);
         TextView bottomTextSecondary = findViewById(R.id.bottom_panel_secondary);

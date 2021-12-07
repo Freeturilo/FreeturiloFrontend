@@ -34,7 +34,6 @@
     <string name="hybrid_criterion_text">optymalna</string>
     <string name="time_criterion_text">najszybsza</string>
     <string name="submit_route_text">Wyznacz</string>
-    <string name="route_parameters_intent_name">route_parameters</string>
     <string name="google_attribution">Atrybucja Google</string>
     <string name="specify_address_title">Czy chodziło o…</string>
     <string name="specify_address_message" tools:ignore="Typos">Wyberz adres lokalizacji</string>
@@ -68,7 +67,6 @@
     <string name="error_auth_text">Nieudane uwierzytelnienie</string>
     <string name="error_stopped_text">System został zatrzymany</string>
     <string name="error_server_text">Wewnętrzny błąd serwera</string>
-    <string name="error_type_intent_name">error_type</string>
     <string name="autocomplete_empty_error_text">Brak lokalizacji</string>
     <string name="autocomplete_not_found_error_text">Nieznana lokalizacja</string>
     <string name="password_empty_text">Brak hasła</string>

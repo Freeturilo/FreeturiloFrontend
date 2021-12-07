@@ -6,7 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 public class ToastStorageHandler implements StorageHandler {
-    final private Context context;
+    private final Context context;
 
     public ToastStorageHandler(@NonNull Context context) {
         this.context = context;

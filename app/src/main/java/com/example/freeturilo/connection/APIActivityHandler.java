@@ -8,7 +8,7 @@ import com.example.freeturilo.activities.ErrorActivity;
 import com.example.freeturilo.core.ErrorType;
 
 public class APIActivityHandler implements APIHandler {
-    final private Context context;
+    private final Context context;
 
     public APIActivityHandler(Context context) {
         this.context = context;
@@ -18,7 +18,7 @@ public class APIActivityHandler implements APIHandler {
     public void handle(APIException e) {
         ErrorType errorType = ErrorType.getType(e.responseCode);
         Intent intent = new Intent(context, ErrorActivity.class);
-        intent.putExtra(context.getString(R.string.error_type_intent_name), errorType);
+        intent.putExtra(ErrorActivity.ERROR_TYPE_INTENT, errorType);
         context.startActivity(intent);
     }
 }

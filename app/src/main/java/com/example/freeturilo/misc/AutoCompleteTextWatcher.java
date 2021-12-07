@@ -23,10 +23,10 @@ import java.util.Locale;
 
 public class AutoCompleteTextWatcher implements TextWatcher {
 
-    final private RouteCreateActivity activity;
-    final private AutocompleteSessionToken token;
-    final private AutoCompleteTextView input;
-    final private List<Location> customLocations;
+    private final RouteCreateActivity activity;
+    private final AutocompleteSessionToken token;
+    private final AutoCompleteTextView input;
+    private final List<Location> customLocations;
 
     public AutoCompleteTextWatcher(@NonNull RouteCreateActivity activity,
                                    @NonNull AutoCompleteTextView input,

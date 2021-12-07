@@ -34,40 +34,45 @@ import java.util.List;
 import java.util.Objects;
 
 public class MapActivity extends AppCompatActivity {
-    private API api;
-    private StorageManager storage;
+    private final API api = new APIMock();
+    private final StorageManager storage = new StorageManager(this);
+    private final List<Marker> markers = new ArrayList<>();
     private GoogleMap map;
-    private List<Marker> markers;
-    private List<Favourite> favourites;
-    private List<Station> stations;
+    private List<Favourite> favourites = new ArrayList<>();
+    private List<Station> stations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        api = new APIMock();
-        storage = new StorageManager(this);
-        SupportMapFragment mapFragment = Objects.requireNonNull((SupportMapFragment)
-                getSupportFragmentManager().findFragmentById(R.id.map));
-        markers = new ArrayList<>();
-        favourites = new ArrayList<>();
-        stations = new ArrayList<>();
-        Synchronizer stationsSynchronizer = new Synchronizer(2, this::showStationMarkers);
-        Synchronizer favouritesSynchronizer = new Synchronizer(2, this::showFavouriteMarkers);
-        mapFragment.getMapAsync(googleMap ->
-                onMapReadySync(googleMap, stationsSynchronizer, favouritesSynchronizer));
-        api.getStationsAsync(retrievedStations ->
-                onStationsReadySync(retrievedStations, stationsSynchronizer),
-                new APIActivityHandler(this));
-        storage.loadFavouritesAsync(loadedFavourites ->
-                onFavouritesReadySync(loadedFavourites, favouritesSynchronizer),
-                new ToastStorageHandler(this));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Synchronizer stationsSynchronizer =
+                new Synchronizer(2, this::showStationMarkers);
+        Synchronizer favouritesSynchronizer =
+                new Synchronizer(2, this::showFavouriteMarkers);
+        SupportMapFragment mapFragment = Objects.requireNonNull((SupportMapFragment)
+                getSupportFragmentManager().findFragmentById(R.id.map));
+        mapFragment.getMapAsync(googleMap ->
+                onMapReadySync(googleMap, stationsSynchronizer, favouritesSynchronizer));
+        api.getStationsAsync(retrievedStations ->
+                        onStationsReadySync(retrievedStations, stationsSynchronizer),
+                new APIActivityHandler(this));
+        storage.loadFavouritesAsync(loadedFavourites ->
+                        onFavouritesReadySync(loadedFavourites, favouritesSynchronizer),
+                new ToastStorageHandler(this));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         unfocus(null);
+        for (Marker marker : markers)
+            marker.remove();
+        markers.clear();
     }
 
     private void onMapReady(@NonNull GoogleMap googleMap) {
