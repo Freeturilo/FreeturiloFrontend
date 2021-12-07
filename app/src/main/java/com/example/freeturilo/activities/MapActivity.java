@@ -90,12 +90,10 @@ public class MapActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unfocus(null);
-        for (Marker marker : markers)
-            marker.remove();
-        markers.clear();
     }
 
     private void onMapReady(@NonNull GoogleMap googleMap) {
+        markers.clear();
         map = googleMap;
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,
                 getResources().getIdentifier("google_map_style",
@@ -227,7 +225,7 @@ public class MapActivity extends AppCompatActivity {
         TextView bottomTextSecondary = findViewById(R.id.bottom_panel_secondary);
         TextView bottomTextTertiary = findViewById(R.id.bottom_panel_tertiary);
         bottomTextPrimary.setText(textPrimary);
-        if (textSecondary != null || textTertiary != null )
+        if (textSecondary != null || textTertiary != null)
             bottomPanelHorizontalLine.setVisibility(View.VISIBLE);
         else
             bottomPanelHorizontalLine.setVisibility(View.GONE);
@@ -404,7 +402,7 @@ public class MapActivity extends AppCompatActivity {
             if (deviceLocationMarker != null)
                 deviceLocationMarker.remove();
             deviceLocationMarker = map.addMarker(markerOptions);
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 16));
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 14));
         }
     }
 }

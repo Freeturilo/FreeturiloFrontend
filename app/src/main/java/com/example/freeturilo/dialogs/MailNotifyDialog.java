@@ -59,6 +59,7 @@ public class MailNotifyDialog extends DialogFragment {
     }
 
     private void onThresholdReady(int threshold) {
+        if (getContext() == null) return;
         EditText notifyThresholdInput = view.findViewById(R.id.notify_threshold_input);
         SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
         if (threshold > 0) {

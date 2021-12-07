@@ -34,13 +34,8 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        storage.loadHistoryAsync(this::onHistoryReady, new ToastStorageHandler(this));
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
         historyListView.setAdapter(null);
+        storage.loadHistoryAsync(this::onHistoryReady, new ToastStorageHandler(this));
     }
 
     private void onHistoryReady(@NonNull List<RouteParameters> loadedHistory) {
