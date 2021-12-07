@@ -20,7 +20,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.freeturilo.R;
 import com.example.freeturilo.connection.API;
-import com.example.freeturilo.connection.APIActivityHandler;
+import com.example.freeturilo.connection.APIDialogHandler;
 import com.example.freeturilo.misc.Callback;
 import com.example.freeturilo.misc.ValidationTools;
 
@@ -45,7 +45,7 @@ public class MailNotifyDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        api.getNotifyThresholdAsync(this::onThresholdReady, new APIActivityHandler(requireContext()));
+        api.getNotifyThresholdAsync(this::onThresholdReady, new APIDialogHandler(this, true));
         SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
         notifySwitch.setOnCheckedChangeListener(this::onSwitchChange);
         Dialog dialog = new AlertDialog.Builder(requireContext(), R.style.FreeturiloDialogTheme)

@@ -31,7 +31,7 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        api.getStateAsync(this::onSystemStateReady, new APIActivityHandler(this));
+        api.getStateAsync(this::onSystemStateReady, new APIActivityHandler(this, true));
     }
 
     @Override
@@ -83,8 +83,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void changeSystemState(int stateButtonId) {
-        api.postStateAsync(SystemState.getState(stateButtonId),
-                new APIActivityHandler(this));
+        api.postStateAsync(SystemState.getState(stateButtonId), new APIActivityHandler(this));
     }
 
     public void showMailNotifyDialog(@NonNull View view) {

@@ -1,24 +1,32 @@
 package com.example.freeturilo.connection;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 
-import com.example.freeturilo.R;
 import com.example.freeturilo.activities.ErrorActivity;
 import com.example.freeturilo.core.ErrorType;
 
 public class APIActivityHandler implements APIHandler {
-    private final Context context;
+    private final Activity activity;
+    private final boolean finishActivity;
 
-    public APIActivityHandler(Context context) {
-        this.context = context;
+    public APIActivityHandler(Activity activity) {
+        this.activity = activity;
+        this.finishActivity = false;
+    }
+
+    public APIActivityHandler(Activity activity, boolean finishActivity) {
+        this.activity = activity;
+        this.finishActivity = finishActivity;
     }
 
     @Override
     public void handle(APIException e) {
         ErrorType errorType = ErrorType.getType(e.responseCode);
-        Intent intent = new Intent(context, ErrorActivity.class);
+        Intent intent = new Intent(activity, ErrorActivity.class);
         intent.putExtra(ErrorActivity.ERROR_TYPE_INTENT, errorType);
-        context.startActivity(intent);
+        activity.startActivity(intent);
+        if (finishActivity)
+            activity.finish();
     }
 }

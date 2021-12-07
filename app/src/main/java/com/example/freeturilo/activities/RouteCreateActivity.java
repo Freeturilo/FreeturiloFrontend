@@ -21,7 +21,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.freeturilo.connection.API;
-import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.misc.AutoCompleteTextWatcher;
 import com.example.freeturilo.misc.ObjectWrapperForBinder;
@@ -81,7 +80,7 @@ public class RouteCreateActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        api.getStationsAsync(customLocations::addAll, new APIActivityHandler(this));
+        api.getStationsAsync(customLocations::addAll, null);
         storage.loadFavouritesAsync(customLocations::addAll, null);
     }
 

@@ -61,7 +61,7 @@ public class RouteActivity extends AppCompatActivity {
         mapFragment.getMapAsync(googleMap -> onMapReadySync(googleMap, routeSynchronizer));
         api.getRouteAsync(routeParameters,
                 retrievedRoute -> onRouteReadySync(retrievedRoute, routeSynchronizer),
-                new APIActivityHandler(this));
+                new APIActivityHandler(this, true));
     }
 
     @Override

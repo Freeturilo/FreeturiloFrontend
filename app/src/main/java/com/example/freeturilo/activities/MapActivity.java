@@ -60,7 +60,7 @@ public class MapActivity extends AppCompatActivity {
                 onMapReadySync(googleMap, stationsSynchronizer, favouritesSynchronizer));
         api.getStationsAsync(retrievedStations ->
                         onStationsReadySync(retrievedStations, stationsSynchronizer),
-                new APIActivityHandler(this));
+                new APIActivityHandler(this, true));
         storage.loadFavouritesAsync(loadedFavourites ->
                         onFavouritesReadySync(loadedFavourites, favouritesSynchronizer),
                 new ToastStorageHandler(this));
