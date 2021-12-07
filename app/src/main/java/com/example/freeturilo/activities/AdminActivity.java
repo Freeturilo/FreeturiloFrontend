@@ -14,7 +14,6 @@ import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIMock;
 import com.example.freeturilo.core.SystemState;
-import com.example.freeturilo.core.SystemStateTools;
 import com.example.freeturilo.dialogs.MailNotifyDialog;
 
 public class AdminActivity extends AppCompatActivity {
@@ -30,7 +29,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void onSystemStateReady(@NonNull SystemState systemState) {
-        checkedButtonId = SystemStateTools.getButtonId(systemState);
+        checkedButtonId = SystemState.getButtonId(systemState);
         RadioButton checkedButton = findViewById(checkedButtonId);
         checkedButton.setChecked(true);
         RadioGroup systemStateButtons = findViewById(R.id.system_state_buttons);
@@ -65,7 +64,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void changeSystemState(int stateButtonId) {
-        api.postStateAsync(SystemStateTools.getState(stateButtonId),
+        api.postStateAsync(SystemState.getState(stateButtonId),
                 new APIActivityHandler(this));
     }
 

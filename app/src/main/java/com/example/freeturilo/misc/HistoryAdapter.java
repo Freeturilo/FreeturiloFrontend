@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.freeturilo.R;
-import com.example.freeturilo.core.CriterionTools;
+import com.example.freeturilo.core.Criterion;
 import com.example.freeturilo.core.RouteParameters;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class HistoryAdapter extends ArrayAdapter<RouteParameters> {
         TextView endText = convertView.findViewById(R.id.end_text);
         endText.setText(routeParameters.end.name);
         TextView criterionText = convertView.findViewById(R.id.criterion_text);
-        criterionText.setText(CriterionTools.getCriterionText(getContext(), routeParameters.criterion));
+        criterionText.setText(Criterion.getCriterionText(getContext(), routeParameters.criterion));
         return convertView;
     }
 

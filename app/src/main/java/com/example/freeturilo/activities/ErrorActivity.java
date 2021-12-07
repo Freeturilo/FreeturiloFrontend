@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.ErrorType;
-import com.example.freeturilo.core.ErrorTypeTools;
 
 public class ErrorActivity extends AppCompatActivity {
 
@@ -19,8 +18,8 @@ public class ErrorActivity extends AppCompatActivity {
         ErrorType errorType = (ErrorType) getIntent()
                 .getSerializableExtra(getString(R.string.error_type_intent_name));
         ImageView errorImage = findViewById(R.id.error_image);
-        errorImage.setImageBitmap(ErrorTypeTools.getTypeImage(this, errorType));
+        errorImage.setImageBitmap(ErrorType.getTypeImage(this, errorType));
         TextView errorSecondaryText = findViewById(R.id.error_secondary_text);
-        errorSecondaryText.setText(ErrorTypeTools.getTypeText(this, errorType));
+        errorSecondaryText.setText(ErrorType.getTypeText(this, errorType));
     }
 }

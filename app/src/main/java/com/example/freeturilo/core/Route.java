@@ -19,7 +19,7 @@ public class Route {
 
     @NonNull
     public String getPrimaryText(@NonNull Context context) {
-        String criterionText = CriterionTools.getCriterionText(context, parameters.criterion);
+        String criterionText = Criterion.getCriterionText(context, parameters.criterion);
         return String.format("%s%s %s",
                 criterionText.substring(0, 1).toUpperCase(Locale.ROOT), criterionText.substring(1),
                 context.getString(R.string.route_caption_text).toLowerCase(Locale.ROOT));

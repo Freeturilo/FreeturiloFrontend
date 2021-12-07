@@ -36,7 +36,7 @@ public class Favourite extends Location {
     @Override
     public String getSecondaryText(@NonNull Context context) {
         String helperText = context.getString(R.string.favourite_helper_text).toLowerCase(Locale.ROOT);
-        String typeText = FavouriteTypeTools.getTypeText(context, type);
+        String typeText = FavouriteType.getTypeText(context, type);
         return String.format("%s - %s", helperText, typeText);
     }
 
@@ -50,12 +50,12 @@ public class Favourite extends Location {
     @Override
     public String getInlineSecondaryText(@NonNull Context context) {
         return String.format("%s, %s", context.getString(R.string.favourite_helper_text),
-                FavouriteTypeTools.getTypeText(context, type));
+                FavouriteType.getTypeText(context, type));
     }
 
     @NonNull
     private BitmapDescriptor createMarkerIcon(@NonNull Context context) {
-        Bitmap markerBitmap = FavouriteTypeTools.getMarkerIcon(context, type);
+        Bitmap markerBitmap = FavouriteType.getMarkerIcon(context, type);
         int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
         int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
         Bitmap smallMarker =

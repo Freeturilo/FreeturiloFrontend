@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.freeturilo.R;
 
-public class StationStateTools {
+public class StationState {
 
     @NonNull
     public static String getStateText(@NonNull Context context, int state) {
