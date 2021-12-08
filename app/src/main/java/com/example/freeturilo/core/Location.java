@@ -8,9 +8,7 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.Serializable;
-
-public class Location implements Serializable {
+public class Location {
     public String name;
     public Double latitude;
     public Double longitude;

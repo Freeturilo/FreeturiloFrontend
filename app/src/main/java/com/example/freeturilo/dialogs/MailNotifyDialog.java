@@ -26,8 +26,8 @@ import com.example.freeturilo.misc.ValidationTools;
 
 public class MailNotifyDialog extends DialogFragment {
     private View view;
-    final private API api;
-    final private Callback<Integer> positiveCallback;
+    private final API api;
+    private final Callback<Integer> positiveCallback;
 
     public MailNotifyDialog(API api, Callback<Integer> positiveCallback) {
         this.api = api;

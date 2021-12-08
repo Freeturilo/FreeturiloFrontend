@@ -2,11 +2,10 @@ package com.example.freeturilo.core;
 
 import androidx.annotation.NonNull;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RouteParameters implements Serializable {
+public class RouteParameters {
     public final Location start;
     public final Location end;
     public final List<Location> stops;

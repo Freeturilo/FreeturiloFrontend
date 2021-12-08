@@ -11,21 +11,25 @@ import com.example.freeturilo.R;
 public enum FavouriteType {
     HOME, SCHOOL, WORK, OTHER;
 
-    @NonNull
-    public static String getTypeText(@NonNull Context context, @NonNull FavouriteType favouriteType) {
+    private static int getTypeTextId(@NonNull FavouriteType favouriteType) {
         switch (favouriteType) {
             case HOME:
-                return context.getString(R.string.favourite_home_text);
+                return R.string.favourite_home_text;
             case SCHOOL:
-                return context.getString(R.string.favourite_school_text);
+                return R.string.favourite_school_text;
             case WORK:
-                return context.getString(R.string.favourite_work_text);
+                return R.string.favourite_work_text;
             default:
-                return context.getString(R.string.favourite_other_text);
+                return R.string.favourite_other_text;
         }
     }
 
-    public static int getMarkerIconId(@NonNull FavouriteType favouriteType) {
+    @NonNull
+    public static String getTypeText(@NonNull Context context, @NonNull FavouriteType favouriteType) {
+        return context.getString(getTypeTextId(favouriteType));
+    }
+
+    private static int getMarkerIconId(@NonNull FavouriteType favouriteType) {
         switch (favouriteType) {
             case HOME:
                 return R.drawable.marker_home;

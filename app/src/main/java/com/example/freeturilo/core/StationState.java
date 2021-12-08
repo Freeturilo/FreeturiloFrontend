@@ -10,19 +10,23 @@ import com.example.freeturilo.R;
 
 public class StationState {
 
-    @NonNull
-    public static String getStateText(@NonNull Context context, int state) {
+    private static int getStateTextId(int state) {
         switch (state) {
             case 1:
-                return context.getString(R.string.station_reported_text);
+                return R.string.station_reported_text;
             case 2:
-                return context.getString(R.string.station_broken_text);
+                return R.string.station_broken_text;
             default:
-                return context.getString(R.string.station_working_text);
+                return R.string.station_working_text;
         }
     }
 
-    public static int getMarkerIconId(int state) {
+    @NonNull
+    public static String getStateText(@NonNull Context context, int state) {
+        return context.getString(getStateTextId(state));
+    }
+
+    private static int getMarkerIconId(int state) {
         switch (state) {
             case 0:
                 return R.drawable.marker_station;

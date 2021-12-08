@@ -19,7 +19,7 @@ import com.example.freeturilo.misc.ValidationTools;
 
 public class FavouriteDialog extends DialogFragment {
     protected View view;
-    final protected Callback<Favourite> positiveCallback;
+    protected final Callback<Favourite> positiveCallback;
 
     public FavouriteDialog(@NonNull Callback<Favourite> positiveCallback) {
         super();

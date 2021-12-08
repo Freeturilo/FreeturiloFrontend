@@ -18,7 +18,7 @@ import com.example.freeturilo.misc.Callback;
 import com.google.android.gms.maps.model.LatLng;
 
 public class AddFavouriteDialog extends FavouriteDialog {
-    final LatLng latLng;
+    private final LatLng latLng;
 
     public AddFavouriteDialog(@NonNull LatLng latLng, @NonNull Callback<Favourite> positiveCallback) {
         super(positiveCallback);

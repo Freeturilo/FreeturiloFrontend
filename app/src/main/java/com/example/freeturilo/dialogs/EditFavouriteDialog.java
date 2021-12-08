@@ -17,7 +17,7 @@ import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.misc.Callback;
 
 public class EditFavouriteDialog extends FavouriteDialog {
-    final Favourite favourite;
+    private final Favourite favourite;
 
     public EditFavouriteDialog(@NonNull Favourite favourite, @NonNull Callback<Favourite> positiveCallback) {
         super(positiveCallback);

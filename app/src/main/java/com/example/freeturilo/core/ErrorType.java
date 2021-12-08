@@ -13,21 +13,25 @@ import javax.net.ssl.HttpsURLConnection;
 public enum ErrorType {
     NETWORK, AUTH, STOPPED, SERVER;
 
-    @NonNull
-    public static String getTypeText(@NonNull Context context, @NonNull ErrorType errorType) {
+    private static int getTypeTextId(@NonNull ErrorType errorType) {
         switch (errorType) {
             case NETWORK:
-                return context.getString(R.string.error_network_text);
+                return R.string.error_network_text;
             case AUTH:
-                return context.getString(R.string.error_auth_text);
+                return R.string.error_auth_text;
             case STOPPED:
-                return context.getString(R.string.error_stopped_text);
+                return R.string.error_stopped_text;
             default:
-                return context.getString(R.string.error_server_text);
+                return R.string.error_server_text;
         }
     }
 
-    public static int getTypeImageId(@NonNull ErrorType errorType) {
+    @NonNull
+    public static String getTypeText(@NonNull Context context, @NonNull ErrorType errorType) {
+        return context.getString(getTypeTextId(errorType));
+    }
+
+    private static int getTypeImageId(@NonNull ErrorType errorType) {
         switch (errorType) {
             case NETWORK:
                 return R.drawable.image_error_network;
