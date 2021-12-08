@@ -185,15 +185,17 @@ public class MapActivity extends AppCompatActivity {
             showActionButton(R.id.delete_favourite_button, location);
         }
         else if (location instanceof Station) {
+            Station station = (Station) location;
             if (AuthTools.isLoggedIn()) {
-                Station station = (Station) location;
                 if (station.state != 0)
                     showActionButton(R.id.set_working_station_button, location);
                 if (station.state != 2)
                     showActionButton(R.id.set_broken_station_button, location);
             }
-            else
-                showActionButton(R.id.report_station_button, location);
+            else {
+                if (station.state != 2)
+                    showActionButton(R.id.report_station_button, location);
+            }
         }
     }
 
@@ -308,6 +310,14 @@ public class MapActivity extends AppCompatActivity {
 
     private void reportStation(@NonNull Station station) {
         api.reportStationAsync(station, new APIActivityHandler(this));
+        Marker stationMarker = Objects.requireNonNull(findMarkerByLocation(station));
+        markers.remove(stationMarker);
+        stationMarker.remove();
+        station.state = 1;
+        Marker marker = map.addMarker(station.createMarkerOptions(this));
+        Objects.requireNonNull(marker).setTag(station);
+        markers.add(marker);
+        focus(marker);
     }
 
     public void showSetBrokenStationDialog(@NonNull View view) {
@@ -323,6 +333,14 @@ public class MapActivity extends AppCompatActivity {
 
     private void setBrokenStation(@NonNull Station station) {
         api.setBrokenStationAsync(station, new APIActivityHandler(this));
+        Marker stationMarker = Objects.requireNonNull(findMarkerByLocation(station));
+        markers.remove(stationMarker);
+        stationMarker.remove();
+        station.state = 2;
+        Marker marker = map.addMarker(station.createMarkerOptions(this));
+        Objects.requireNonNull(marker).setTag(station);
+        markers.add(marker);
+        focus(marker);
     }
 
     public void showSetWorkingStationDialog(@NonNull View view) {
@@ -337,6 +355,14 @@ public class MapActivity extends AppCompatActivity {
 
     private void setWorkingStation(@NonNull Station station) {
         api.setWorkingStationAsync(station, new APIActivityHandler(this));
+        Marker stationMarker = Objects.requireNonNull(findMarkerByLocation(station));
+        markers.remove(stationMarker);
+        stationMarker.remove();
+        station.state = 0;
+        Marker marker = map.addMarker(station.createMarkerOptions(this));
+        Objects.requireNonNull(marker).setTag(station);
+        markers.add(marker);
+        focus(marker);
     }
 
     public void showLocationPermissionsDialog(@NonNull View view) {

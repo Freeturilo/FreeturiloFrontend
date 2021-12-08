@@ -1,12 +1,9 @@
 package com.example.freeturilo.connection;
 
-import android.util.Log;
-
 import com.example.freeturilo.core.Route;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.core.Station;
 import com.example.freeturilo.core.SystemState;
-import com.example.freeturilo.misc.AuthTools;
 import com.example.freeturilo.misc.Callback;
 import com.google.maps.model.Bounds;
 import com.google.maps.model.DirectionsLeg;
@@ -25,6 +22,10 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class APIMock implements API {
 
+    private static int MOCK_THRESHOLD = 10;
+    private static ArrayList<Station> MOCK_STATIONS = null;
+    private static SystemState MOCK_SYSTEM_STATE = SystemState.STARTED;
+
     private void randomWait() {
         Random random = new Random();
         try {
@@ -32,58 +33,51 @@ public class APIMock implements API {
         } catch (InterruptedException ignored) {}
     }
 
-    private Integer responseAuthorized() throws APIException {
-        if(AuthTools.isLoggedIn())
-            return HttpsURLConnection.HTTP_OK;
-        else
-            throw new APIException(HttpsURLConnection.HTTP_UNAUTHORIZED);
-    }
-
     private List<Station> getStations() {
         randomWait();
-        ArrayList<Station> stations = new ArrayList<>();
-        stations.add(new Station("Dewajtis - UKSW", 52.296298, 20.958358,
-                1, 30, 28, 0));
-        stations.add(new Station("Metro Młociny", 52.290974, 20.929556,
-                2, 30, 18, 1));
-        stations.add(new Station("Rondo ONZ", 52.232628, 20.997123,
-                3, 29, 24, 2));
-        Log.d("MockAPI", "getStations");
-        return stations;
+        if(MOCK_STATIONS == null) {
+            MOCK_STATIONS = new ArrayList<>();
+            MOCK_STATIONS.add(new Station("Dewajtis - UKSW", 52.296298, 20.958358,
+                    1, 30, 28, 0));
+            MOCK_STATIONS.add(new Station("Metro Młociny", 52.290974, 20.929556,
+                    2, 30, 18, 1));
+            MOCK_STATIONS.add(new Station("Rondo ONZ", 52.232628, 20.997123,
+                    3, 29, 24, 2));
+        }
+        return MOCK_STATIONS;
     }
 
     private Integer reportStation(Station station) {
         randomWait();
-        Log.d("MockAPI", "reportStation");
+        station.state = 1;
         return HttpsURLConnection.HTTP_OK;
     }
 
-    private Integer setBrokenStation(Station station) throws APIException {
+    private Integer setBrokenStation(Station station) {
         randomWait();
-        Log.d("MockAPI", "setBrokenStation");
-        return responseAuthorized();
+        station.state = 2;
+        return HttpsURLConnection.HTTP_OK;
     }
 
-    private Integer setWorkingStation(Station station) throws APIException {
+    private Integer setWorkingStation(Station station) {
         randomWait();
-        Log.d("MockAPI", "setWorkingStation");
-        return responseAuthorized();
+        station.state = 0;
+        return HttpsURLConnection.HTTP_OK;
     }
 
     private String postUser(String email, String password) {
         randomWait();
-        Log.d("MockAPI", "postUser");
-        return "API_MOCK_TOKEN";
+        return email + password + "_TOKEN";
     }
 
     private Route getRoute(RouteParameters routeParameters) {
         randomWait();
-        Log.d("MockAPI", "getRoute");
         Route route = new Route();
         route.cost = 0;
         route.parameters = routeParameters;
         route.waypoints = new ArrayList<>();
         route.waypoints.add(routeParameters.start);
+        route.waypoints.addAll(routeParameters.stops);
         route.waypoints.add(routeParameters.end);
         route.directionsRoute = new DirectionsRoute();
         route.directionsRoute.bounds = new Bounds();
@@ -93,48 +87,48 @@ public class APIMock implements API {
         double northLongitude = Math.max(routeParameters.start.longitude, routeParameters.end.longitude);
         route.directionsRoute.bounds.southwest = new LatLng(westLatitude, southLongitude);
         route.directionsRoute.bounds.northeast = new LatLng(eastLatitude, northLongitude);
-        route.directionsRoute.legs = new DirectionsLeg[1];
-        route.directionsRoute.legs[0] = new DirectionsLeg();
-        route.directionsRoute.legs[0].distance = new Distance();
-        route.directionsRoute.legs[0].distance.inMeters = Math.round(Math.sqrt(
-                Math.pow((eastLatitude - westLatitude) * 111000, 2)
-                + Math.pow((northLongitude - southLongitude) * 111000, 2)));
-        route.directionsRoute.legs[0].duration = new Duration();
-        route.directionsRoute.legs[0].duration.inSeconds = Math.round(
-                route.directionsRoute.legs[0].distance.inMeters / 5.55);
-        route.directionsRoute.legs[0].steps = new DirectionsStep[1];
-        route.directionsRoute.legs[0].steps[0] = new DirectionsStep();
-        route.directionsRoute.legs[0].steps[0].distance = route.directionsRoute.legs[0].distance;
-        route.directionsRoute.legs[0].steps[0].duration = route.directionsRoute.legs[0].duration;
-        List<LatLng> startAndEnd = new ArrayList<>();
-        startAndEnd.add(new LatLng(routeParameters.start.latitude, routeParameters.start.longitude));
-        startAndEnd.add(new LatLng(routeParameters.end.latitude, routeParameters.end.longitude));
-        route.directionsRoute.legs[0].steps[0].polyline = new EncodedPolyline(startAndEnd);
+        route.directionsRoute.legs = new DirectionsLeg[route.waypoints.size() - 1];
+        for (int i = 0; i < route.waypoints.size() - 1; i++) {
+            route.directionsRoute.legs[i] = new DirectionsLeg();
+            route.directionsRoute.legs[i].distance = new Distance();
+            route.directionsRoute.legs[i].distance.inMeters =
+                    Math.round(Math.sqrt(Math.pow((route.waypoints.get(i + 1).latitude - route.waypoints.get(i).latitude) * 111000, 2)
+                            + Math.pow((route.waypoints.get(i + 1).longitude - route.waypoints.get(i).longitude) * 111000, 2)));
+            route.directionsRoute.legs[i].duration = new Duration();
+            route.directionsRoute.legs[i].duration.inSeconds =
+                    Math.round(route.directionsRoute.legs[i].distance.inMeters / 5.55);
+            route.directionsRoute.legs[i].steps = new DirectionsStep[1];
+            route.directionsRoute.legs[i].steps[0] = new DirectionsStep();
+            route.directionsRoute.legs[i].steps[0].distance = route.directionsRoute.legs[i].distance;
+            route.directionsRoute.legs[i].steps[0].duration = route.directionsRoute.legs[i].duration;
+            List<LatLng> startAndEnd = new ArrayList<>();
+            startAndEnd.add(new LatLng(route.waypoints.get(i).latitude, route.waypoints.get(i).longitude));
+            startAndEnd.add(new LatLng(route.waypoints.get(i + 1).latitude, route.waypoints.get(i + 1).longitude));
+            route.directionsRoute.legs[i].steps[0].polyline = new EncodedPolyline(startAndEnd);
+        }
         return route;
     }
 
     private SystemState getState() {
         randomWait();
-        Log.d("MockAPI", "getState");
-        return SystemState.DEMO;
+        return MOCK_SYSTEM_STATE;
     }
 
-    private Integer postState(SystemState systemState) throws APIException {
+    private Integer postState(SystemState systemState) {
         randomWait();
-        Log.d("MockAPI", "postState " + systemState.toString());
-        return responseAuthorized();
+        MOCK_SYSTEM_STATE = systemState;
+        return HttpsURLConnection.HTTP_OK;
     }
 
     private int getNotifyThreshold() {
         randomWait();
-        Log.d("MockAPI", "getNotifyThreshold");
-        return 10;
+        return MOCK_THRESHOLD;
     }
 
-    private Integer postNotifyThreshold(int threshold) throws APIException {
+    private Integer postNotifyThreshold(int threshold) {
         randomWait();
-        Log.d("MockAPI", "postNotifyThreshold " + threshold);
-        return responseAuthorized();
+        MOCK_THRESHOLD = threshold;
+        return HttpsURLConnection.HTTP_OK;
     }
 
     @Override

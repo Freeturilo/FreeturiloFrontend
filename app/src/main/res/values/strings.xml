@@ -74,4 +74,6 @@
     <string name="name_empty_text">Brak nazwy</string>
     <string name="threshold_invalid_text">Niepoprawna liczba</string>
     <string name="start_location_services_message">Aby kontynuować, włącz lokalizację urządzenia.</string>
+    <string name="no_initialize_favourites_message">Nie udało się zainicjować ulubionych miejsc</string>
+    <string name="no_initialize_history_message">Nie udało się zainicjalizować historii tras</string>
 </resources>

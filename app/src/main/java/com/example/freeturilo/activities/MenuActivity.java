@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.R;
 import com.example.freeturilo.misc.AuthTools;
+import com.example.freeturilo.storage.StorageManager;
+import com.example.freeturilo.storage.ToastStorageHandler;
 import com.google.android.libraries.places.api.Places;
 
 public class MenuActivity extends AppCompatActivity {
@@ -22,6 +24,9 @@ public class MenuActivity extends AppCompatActivity {
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         ImageView logo = findViewById(R.id.toolbar).findViewById(R.id.logo);
         logo.setOnLongClickListener(this::goToAdmin);
+        StorageManager storage = new StorageManager(this);
+        storage.ensureFavouritesExistAsync(new ToastStorageHandler(this));
+        storage.ensureHistoryExistsAsync(new ToastStorageHandler(this));
     }
 
     public void goToMap(@NonNull View view) {

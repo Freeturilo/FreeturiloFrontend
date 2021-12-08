@@ -18,7 +18,7 @@ public class Station extends Location {
     public final int id;
     public final int bikeRacks;
     public final int bikes;
-    public final int state;
+    public int state;
 
     public Station(String name, double latitude, double longitude,
                    int id, int bikeRacks, int bikes, int state){

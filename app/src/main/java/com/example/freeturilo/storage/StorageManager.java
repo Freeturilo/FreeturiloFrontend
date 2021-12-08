@@ -32,6 +32,17 @@ public class StorageManager {
     }
 
     @NonNull
+    private Boolean ensureFavouritesExist() throws StorageException {
+        if (!context.getFileStreamPath(FAVOURITES_FILE).exists())
+            try {
+                saveFavourites(new ArrayList<>());
+            } catch (StorageException e) {
+                throw new StorageException(context.getString(R.string.no_initialize_favourites_message));
+            }
+        return true;
+    }
+
+    @NonNull
     private List<Favourite> loadFavourites() throws StorageException {
         try {
             Gson gson = new Gson();
@@ -69,6 +80,17 @@ public class StorageManager {
             String noFavouritesMessage = context.getString(R.string.no_favourites_message);
             throw new StorageException(noFavouritesMessage);
         }
+    }
+
+    @NonNull
+    private Boolean ensureHistoryExists() throws StorageException {
+        if (!context.getFileStreamPath(HISTORY_FILE).exists())
+            try {
+                saveHistory(new ArrayList<>());
+            } catch (StorageException e) {
+                throw new StorageException(context.getString(R.string.no_initialize_history_message));
+            }
+        return true;
     }
 
     @NonNull
@@ -122,12 +144,20 @@ public class StorageManager {
         return true;
     }
 
+    public void ensureFavouritesExistAsync(@Nullable StorageHandler handler) {
+        StorageRunnable.create(this::ensureFavouritesExist).setHandler(handler).startThread();
+    }
+
     public void loadFavouritesAsync(@Nullable Callback<List<Favourite>> callback, @Nullable StorageHandler handler) {
         StorageRunnable.create(this::loadFavourites).setCallback(callback).setHandler(handler).startThread();
     }
 
     public void saveFavouritesAsync(@NonNull List<Favourite> favourites, @Nullable StorageHandler handler) {
         StorageRunnable.create(() -> saveFavourites(favourites)).setHandler(handler).startThread();
+    }
+
+    public void ensureHistoryExistsAsync(@Nullable StorageHandler handler) {
+        StorageRunnable.create(this::ensureHistoryExists).setHandler(handler).startThread();
     }
 
     public void loadHistoryAsync(@Nullable Callback<List<RouteParameters>> callback, @Nullable StorageHandler handler) {
