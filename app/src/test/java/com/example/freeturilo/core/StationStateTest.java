@@ -7,21 +7,20 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import androidx.test.platform.app.InstrumentationRegistry;
-
 import com.example.freeturilo.R;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.robolectric.ParameterizedRobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 import java.util.Arrays;
 
-@RunWith(Parameterized.class)
+@RunWith(ParameterizedRobolectricTestRunner.class)
 public class StationStateTest {
 
-    @Parameterized.Parameters
+    @ParameterizedRobolectricTestRunner.Parameters
     public static Iterable<Object[]> states() {
         return Arrays.asList(new Object[][] {
                 {0, R.string.station_working_text, R.drawable.marker_station},
@@ -42,7 +41,7 @@ public class StationStateTest {
 
     @Test
     public void getStateText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
 
         String result = StationState.getStateText(context, stationState);
 
@@ -51,7 +50,7 @@ public class StationStateTest {
 
     @Test
     public void getMarkerIcon() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Bitmap expected = BitmapFactory.decodeResource(context.getResources(), stateMarkerId);
         int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
         int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);

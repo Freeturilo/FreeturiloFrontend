@@ -1,11 +1,12 @@
 package com.example.freeturilo.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.freeturilo.R;
 import com.google.maps.model.Bounds;
@@ -20,6 +21,7 @@ import com.google.maps.model.LatLng;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +35,7 @@ public class RouteTest {
 
     @Test
     public void getPrimaryText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
 
         String result = route.getPrimaryText(context);
 
@@ -44,7 +46,7 @@ public class RouteTest {
 
     @Test
     public void getSecondaryText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         long lengthInMeters = 0;
         for (DirectionsLeg leg : route.directionsRoute.legs)
             lengthInMeters += leg.distance.inMeters;

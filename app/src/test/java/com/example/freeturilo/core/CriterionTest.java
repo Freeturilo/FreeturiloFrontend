@@ -4,20 +4,19 @@ import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 
-import androidx.test.platform.app.InstrumentationRegistry;
-
 import com.example.freeturilo.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.robolectric.ParameterizedRobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 import java.util.Arrays;
 
-@RunWith(Parameterized.class)
+@RunWith(ParameterizedRobolectricTestRunner.class)
 public class CriterionTest {
 
-    @Parameterized.Parameters
+    @ParameterizedRobolectricTestRunner.Parameters
     public static Iterable<Object[]> criteria() {
         return Arrays.asList(new Object[][] {
                 {Criterion.COST, R.string.cost_criterion_text},
@@ -36,7 +35,7 @@ public class CriterionTest {
 
     @Test
     public void getCriterionText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
 
         String result = Criterion.getCriterionText(context, criterion);
 

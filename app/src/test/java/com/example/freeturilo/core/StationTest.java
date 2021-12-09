@@ -1,18 +1,18 @@
 package com.example.freeturilo.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.freeturilo.R;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RuntimeEnvironment;
 
 import java.util.Locale;
 
@@ -20,19 +20,8 @@ import java.util.Locale;
 public class StationTest {
 
     @Test
-    public void createMarkerOptions() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        MapsInitializer.initialize(context);
-        Station station = new Station("test", 49, 51, 45, 25, 10, 0);
-
-        MarkerOptions result = station.createMarkerOptions(context);
-
-        assertNotNull(result.getIcon());
-    }
-
-    @Test
     public void getSecondaryText_Working() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Station station = new Station("test", 49, 51, 45, 25, 10, 0);
 
         String result = station.getSecondaryText(context);
@@ -45,7 +34,7 @@ public class StationTest {
 
     @Test
     public void getSecondaryText_Reported() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Station station = new Station("test", 49, 51, 45, 25, 10, 1);
 
         String result = station.getSecondaryText(context);
@@ -58,7 +47,7 @@ public class StationTest {
 
     @Test
     public void getSecondaryText_Broken() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Station station = new Station("test", 49, 51, 45, 25, 10, 2);
 
         String result = station.getSecondaryText(context);
@@ -71,7 +60,7 @@ public class StationTest {
 
     @Test
     public void getTertiaryText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Station station = new Station("test", 49, 51, 45, 25, 10, 0);
 
         String result = station.getTertiaryText(context);
@@ -85,7 +74,7 @@ public class StationTest {
 
     @Test
     public void getInlineSecondaryText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Station station = new Station("test", 49, 51, 45, 25, 10, 0);
 
         String result = station.getInlineSecondaryText(context);

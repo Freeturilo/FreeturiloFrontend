@@ -1,23 +1,25 @@
 package com.example.freeturilo.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RuntimeEnvironment;
 
 @RunWith(AndroidJUnit4.class)
 public class LocationTest {
 
     @Test
     public void createMarkerOptions() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Location location = new Location("test", 49, 51);
 
         MarkerOptions result = location.createMarkerOptions(context);
@@ -38,7 +40,7 @@ public class LocationTest {
 
     @Test
     public void getSecondaryText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Location location = new Location("test", 49, 51);
 
         String result = location.getSecondaryText(context);
@@ -48,7 +50,7 @@ public class LocationTest {
 
     @Test
     public void getTertiaryText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Location location = new Location("test", 49, 51);
 
         String result = location.getTertiaryText(context);
@@ -58,7 +60,7 @@ public class LocationTest {
 
     @Test
     public void getInlineSecondaryText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Location location = new Location("test", 49, 51);
 
         String result = location.getInlineSecondaryText(context);

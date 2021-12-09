@@ -1,27 +1,27 @@
 package com.example.freeturilo.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import androidx.test.platform.app.InstrumentationRegistry;
-
 import com.example.freeturilo.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.robolectric.ParameterizedRobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 import java.util.Arrays;
 
 import javax.net.ssl.HttpsURLConnection;
 
-@RunWith(Parameterized.class)
+@RunWith(ParameterizedRobolectricTestRunner.class)
 public class ErrorTypeTest {
 
-    @Parameterized.Parameters
+    @ParameterizedRobolectricTestRunner.Parameters
     public static Iterable<Object[]> types() {
         return Arrays.asList(new Object[][] {
                 {-1, ErrorType.NETWORK, R.string.error_network_text, R.drawable.image_error_network},
@@ -45,7 +45,7 @@ public class ErrorTypeTest {
 
     @Test
     public void getTypeText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
 
         String result = ErrorType.getTypeText(context, errorType);
 
@@ -54,7 +54,7 @@ public class ErrorTypeTest {
 
     @Test
     public void getTypeImage() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         int errorImageSize = context.getResources().getDimensionPixelSize(R.dimen.error_image_size);
         Bitmap expected = BitmapFactory.decodeResource(context.getResources(), typeImageId);
         expected = Bitmap.createScaledBitmap(expected, errorImageSize, errorImageSize, false);

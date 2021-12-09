@@ -1,25 +1,25 @@
 package com.example.freeturilo.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import androidx.test.platform.app.InstrumentationRegistry;
-
 import com.example.freeturilo.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.robolectric.ParameterizedRobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 import java.util.Arrays;
 
-@RunWith(Parameterized.class)
+@RunWith(ParameterizedRobolectricTestRunner.class)
 public class FavouriteTypeTest {
 
-    @Parameterized.Parameters
+    @ParameterizedRobolectricTestRunner.Parameters
     public static Iterable<Object[]> types() {
         return Arrays.asList(new Object[][] {
                 {FavouriteType.HOME, R.string.favourite_home_text, R.drawable.marker_home},
@@ -41,7 +41,7 @@ public class FavouriteTypeTest {
 
     @Test
     public void getTypeText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
 
         String result = FavouriteType.getTypeText(context, favouriteType);
 
@@ -50,7 +50,7 @@ public class FavouriteTypeTest {
 
     @Test
     public void getMarkerIcon() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Bitmap expected = BitmapFactory.decodeResource(context.getResources(), typeMarkerId);
         int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
         int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);

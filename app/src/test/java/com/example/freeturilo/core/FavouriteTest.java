@@ -1,18 +1,19 @@
 package com.example.freeturilo.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.freeturilo.R;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RuntimeEnvironment;
 
 import java.util.Locale;
 
@@ -20,19 +21,8 @@ import java.util.Locale;
 public class FavouriteTest {
 
     @Test
-    public void createMarkerOptions() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        MapsInitializer.initialize(context);
-        Favourite favourite = new Favourite("test", 49, 51, FavouriteType.SCHOOL);
-
-        MarkerOptions result = favourite.createMarkerOptions(context);
-
-        assertNotNull(result.getIcon());
-    }
-
-    @Test
     public void getSecondaryText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Favourite favourite = new Favourite("test", 49, 51, FavouriteType.SCHOOL);
 
         String result = favourite.getSecondaryText(context);
@@ -45,7 +35,7 @@ public class FavouriteTest {
 
     @Test
     public void getTertiaryText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Favourite favourite = new Favourite("test", 49, 51, FavouriteType.SCHOOL);
 
         String result = favourite.getTertiaryText(context);
@@ -55,7 +45,7 @@ public class FavouriteTest {
 
     @Test
     public void getInlineSecondaryText() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = RuntimeEnvironment.getApplication();
         Favourite favourite = new Favourite("test", 49, 51, FavouriteType.SCHOOL);
 
         String result = favourite.getInlineSecondaryText(context);

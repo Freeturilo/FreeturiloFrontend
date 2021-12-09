@@ -6,14 +6,14 @@ import com.example.freeturilo.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.robolectric.ParameterizedRobolectricTestRunner;
 
 import java.util.Arrays;
 
-@RunWith(Parameterized.class)
+@RunWith(ParameterizedRobolectricTestRunner.class)
 public class SystemStateTest {
 
-    @Parameterized.Parameters
+    @ParameterizedRobolectricTestRunner.Parameters
     public static Iterable<Object[]> states() {
         return Arrays.asList(new Object[][] {
                 {0, SystemState.STARTED, R.id.started_state_button},
