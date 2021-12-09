@@ -44,6 +44,9 @@ public enum FavouriteType {
 
     @NonNull
     public static Bitmap getMarkerIcon(@NonNull Context context, @NonNull FavouriteType favouriteType) {
-        return BitmapFactory.decodeResource(context.getResources(), getMarkerIconId(favouriteType));
+        Bitmap favouriteImage = BitmapFactory.decodeResource(context.getResources(), getMarkerIconId(favouriteType));
+        int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
+        int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
+        return Bitmap.createScaledBitmap(favouriteImage, markerWidth, markerHeight, false);
     }
 }

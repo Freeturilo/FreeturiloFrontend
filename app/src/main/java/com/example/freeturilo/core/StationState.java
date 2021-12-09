@@ -39,6 +39,9 @@ public class StationState {
 
     @NonNull
     public static Bitmap getMarkerIcon(@NonNull Context context, int state) {
-        return BitmapFactory.decodeResource(context.getResources(), getMarkerIconId(state));
+        Bitmap stateImage = BitmapFactory.decodeResource(context.getResources(), getMarkerIconId(state));
+        int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
+        int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
+        return Bitmap.createScaledBitmap(stateImage, markerWidth, markerHeight, false);
     }
 }

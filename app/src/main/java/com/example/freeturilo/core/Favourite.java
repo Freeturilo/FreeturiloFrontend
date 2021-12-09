@@ -1,15 +1,12 @@
 package com.example.freeturilo.core;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.freeturilo.R;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Locale;
@@ -26,10 +23,8 @@ public class Favourite extends Location {
     @NonNull
     @Override
     public MarkerOptions createMarkerOptions(@NonNull Context context) {
-        LatLng markerPosition = new LatLng(latitude, longitude);
-        return new MarkerOptions()
-                .position(markerPosition)
-                .icon(createMarkerIcon(context));
+        return super.createMarkerOptions(context)
+                .icon(BitmapDescriptorFactory.fromBitmap(FavouriteType.getMarkerIcon(context, type)));
     }
 
     @Nullable
@@ -51,15 +46,5 @@ public class Favourite extends Location {
     public String getInlineSecondaryText(@NonNull Context context) {
         return String.format("%s, %s", context.getString(R.string.favourite_helper_text),
                 FavouriteType.getTypeText(context, type));
-    }
-
-    @NonNull
-    private BitmapDescriptor createMarkerIcon(@NonNull Context context) {
-        Bitmap markerBitmap = FavouriteType.getMarkerIcon(context, type);
-        int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
-        int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
-        Bitmap smallMarker =
-                Bitmap.createScaledBitmap(markerBitmap, markerWidth, markerHeight, false);
-        return BitmapDescriptorFactory.fromBitmap(smallMarker);
     }
 }

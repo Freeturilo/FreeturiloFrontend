@@ -2,7 +2,6 @@ package com.example.freeturilo.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -44,11 +43,11 @@ public class MailNotifyDialog extends DialogFragment {
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    public AlertDialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         api.getNotifyThresholdAsync(this::onThresholdReady, new APIDialogHandler(this, true));
         SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
         notifySwitch.setOnCheckedChangeListener(this::onSwitchChange);
-        Dialog dialog = new AlertDialog.Builder(requireContext(), R.style.FreeturiloDialogTheme)
+        AlertDialog dialog = new AlertDialog.Builder(requireContext(), R.style.FreeturiloDialogTheme)
                 .setView(view)
                 .setTitle(R.string.mail_notify_dialog_title)
                 .setPositiveButton(R.string.ok_text, null)

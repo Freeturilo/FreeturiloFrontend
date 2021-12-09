@@ -1,7 +1,6 @@
 package com.example.freeturilo.dialogs;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Button;
@@ -27,8 +26,8 @@ public class AddFavouriteDialog extends FavouriteDialog {
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = createBuilder()
+    public AlertDialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        AlertDialog dialog = createBuilder()
                 .setTitle(R.string.add_favourite_dialog_title)
                 .setPositiveButton(R.string.ok_text, null)
                 .setNegativeButton(R.string.cancel_text, null)

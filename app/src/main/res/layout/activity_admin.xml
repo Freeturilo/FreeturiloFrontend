@@ -79,7 +79,7 @@
             android:fontFamily="@font/quicksand"
             android:gravity="center"
             android:paddingBottom="@dimen/purple_border_height"
-            android:text="@string/stop_state_text"
+            android:text="@string/stopped_state_text"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_big"
             android:enabled="false"/>

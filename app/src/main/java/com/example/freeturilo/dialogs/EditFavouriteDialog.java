@@ -1,7 +1,6 @@
 package com.example.freeturilo.dialogs;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Button;
@@ -26,12 +25,12 @@ public class EditFavouriteDialog extends FavouriteDialog {
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    public AlertDialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         EditText nameEditText = view.findViewById(R.id.name);
         nameEditText.setText(favourite.name);
         RadioButton typeRadioButton = (RadioButton) findButtonByType(favourite.type);
         typeRadioButton.setChecked(true);
-        Dialog dialog = createBuilder()
+        AlertDialog dialog = createBuilder()
                 .setTitle(R.string.edit_favourite_dialog_title)
                 .setPositiveButton(R.string.ok_text, null)
                 .setNegativeButton(R.string.cancel_text, null)

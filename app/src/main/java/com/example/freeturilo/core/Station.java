@@ -1,13 +1,11 @@
 package com.example.freeturilo.core;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.freeturilo.R;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -32,16 +30,9 @@ public class Station extends Location {
     @NonNull
     @Override
     public MarkerOptions createMarkerOptions(@NonNull Context context) {
-        LatLng markerPosition = new LatLng(latitude, longitude);
-        Bitmap markerBitmap = StationState.getMarkerIcon(context, state);
-        int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
-        int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
-        Bitmap smallMarker =
-                Bitmap.createScaledBitmap(markerBitmap, markerWidth, markerHeight, false);
-        BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
         return new MarkerOptions()
-                .position(markerPosition)
-                .icon(smallMarkerIcon);
+                .position(new LatLng(latitude, longitude))
+                .icon(BitmapDescriptorFactory.fromBitmap(StationState.getMarkerIcon(context, state)));
     }
 
     @Nullable
