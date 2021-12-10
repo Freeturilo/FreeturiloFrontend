@@ -17,7 +17,7 @@ import com.example.freeturilo.core.FavouriteType;
 import com.example.freeturilo.misc.Callback;
 import com.example.freeturilo.misc.ValidationTools;
 
-public class FavouriteDialog extends DialogFragment {
+public abstract class FavouriteDialog extends DialogFragment {
     protected View view;
     protected final Callback<Favourite> positiveCallback;
 
