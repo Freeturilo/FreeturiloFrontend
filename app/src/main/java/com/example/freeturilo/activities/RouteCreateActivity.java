@@ -21,7 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.freeturilo.connection.API;
-import com.example.freeturilo.connection.APIMock;
+import com.example.freeturilo.connection.APIConnector;
 import com.example.freeturilo.misc.AutoCompleteTextWatcher;
 import com.example.freeturilo.misc.ObjectWrapperForBinder;
 import com.example.freeturilo.R;
@@ -46,7 +46,7 @@ import java.util.Objects;
 
 public class RouteCreateActivity extends AppCompatActivity {
     private final StorageManager storage = new StorageManager(this);
-    private final API api = new APIMock();
+    private final API api = new APIConnector();
     private AutoCompleteTextView startInput;
     private AutoCompleteTextView endInput;
     private final List<AutoCompleteTextView> stopInputs = new ArrayList<>();

@@ -50,7 +50,7 @@ public class Station extends Location {
     @Override
     public String getTertiaryText(@NonNull Context context) {
         String availabilityHelperText = context.getString(R.string.bikes_availability_text);
-        String availabilityText = String.format(Locale.ROOT, "%d/%d", bikes, bikeRacks);
+        String availabilityText = String.format(Locale.ROOT, "%d/%d", bikes, bikes + bikeRacks);
         return String.format("%s: %s", availabilityHelperText, availabilityText);
     }
 

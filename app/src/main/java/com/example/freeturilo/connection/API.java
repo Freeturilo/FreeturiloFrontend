@@ -4,6 +4,7 @@ import com.example.freeturilo.core.Route;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.core.Station;
 import com.example.freeturilo.core.SystemState;
+import com.example.freeturilo.misc.AuthCredentials;
 import com.example.freeturilo.misc.Callback;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface API {
 
     void setWorkingStationAsync(Station station, APIHandler handler);
 
-    void postUserAsync(String email, String password, Callback<String> callback, APIHandler handler);
+    void postUserAsync(AuthCredentials authCredentials, Callback<String> callback, APIHandler handler);
 
     void getRouteAsync(RouteParameters routeParameters, Callback<Route> callback, APIHandler handler);
 

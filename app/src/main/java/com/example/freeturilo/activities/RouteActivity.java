@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
-import com.example.freeturilo.connection.APIMock;
+import com.example.freeturilo.connection.APIConnector;
 import com.example.freeturilo.core.Route;
 import com.example.freeturilo.misc.ObjectWrapperForBinder;
 import com.example.freeturilo.R;
@@ -35,7 +35,7 @@ import java.util.Objects;
 
 public class RouteActivity extends AppCompatActivity {
     public static final String ROUTE_PARAMETERS_INTENT = "route_parameters";
-    private final API api = new APIMock();
+    private final API api = new APIConnector();
     private final List<LatLng> path = new ArrayList<>();
     private final List<Marker> markers = new ArrayList<>();
     private GoogleMap map;
@@ -68,6 +68,7 @@ public class RouteActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unfocus(null);
+        path.clear();
         for(Marker marker : markers)
             marker.remove();
         markers.clear();
@@ -94,12 +95,16 @@ public class RouteActivity extends AppCompatActivity {
 
     private void onRouteReady(@NonNull Route retrievedRoute) {
         route = retrievedRoute;
-        for (DirectionsLeg leg : route.directionsRoute.legs)
-            for (DirectionsStep step : leg.steps) {
-                List<com.google.maps.model.LatLng> decodedPath = step.polyline.decodePath();
-                for (com.google.maps.model.LatLng point : decodedPath)
-                    path.add(new LatLng(point.lat, point.lng));
-            }
+        if (route.directionsRoute.legs != null) {
+            for (DirectionsLeg leg : route.directionsRoute.legs)
+                if (leg.steps != null) {
+                    for (DirectionsStep step : leg.steps) {
+                        List<com.google.maps.model.LatLng> decodedPath = step.polyline.decodePath();
+                        for (com.google.maps.model.LatLng point : decodedPath)
+                            path.add(new LatLng(point.lat, point.lng));
+                    }
+                }
+        }
     }
 
     private void onRouteReadySync(@NonNull Route retrievedRoute,

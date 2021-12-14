@@ -37,10 +37,8 @@ public class Route {
     @NonNull
     public String getTertiaryText() {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < waypoints.size() - 1; i++) {
+        for (int i = 0; i < waypoints.size() - 1; i++)
             builder.append(waypoints.get(i).name).append("\n");
-            builder.append(getTime(directionsRoute.legs[i].duration.inSeconds)).append("\n");
-        }
         builder.append(waypoints.get(waypoints.size() - 1).name);
         return builder.toString();
     }

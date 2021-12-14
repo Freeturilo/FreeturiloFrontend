@@ -4,6 +4,7 @@ import com.example.freeturilo.core.Route;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.core.Station;
 import com.example.freeturilo.core.SystemState;
+import com.example.freeturilo.misc.AuthCredentials;
 import com.example.freeturilo.misc.Callback;
 import com.google.maps.model.Bounds;
 import com.google.maps.model.DirectionsLeg;
@@ -65,9 +66,9 @@ public class APIMock implements API {
         return HttpsURLConnection.HTTP_OK;
     }
 
-    private String postUser(String email, String password) {
+    private String postUser(AuthCredentials authCredentials) {
         randomWait();
-        return email + password + "_TOKEN";
+        return authCredentials.email + authCredentials.password + "_TOKEN";
     }
 
     private Route getRoute(RouteParameters routeParameters) {
@@ -152,8 +153,8 @@ public class APIMock implements API {
     }
 
     @Override
-    public void postUserAsync(String username, String password, Callback<String> callback, APIHandler handler) {
-        APIRunnable.create(() -> postUser(username, password)).setCallback(callback).setHandler(handler).startThread();
+    public void postUserAsync(AuthCredentials authCredentials, Callback<String> callback, APIHandler handler) {
+        APIRunnable.create(() -> postUser(authCredentials)).setCallback(callback).setHandler(handler).startThread();
     }
 
     @Override

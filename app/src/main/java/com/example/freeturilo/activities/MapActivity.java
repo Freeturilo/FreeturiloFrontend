@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
-import com.example.freeturilo.connection.APIMock;
+import com.example.freeturilo.connection.APIConnector;
 import com.example.freeturilo.dialogs.AddFavouriteDialog;
 import com.example.freeturilo.dialogs.EditFavouriteDialog;
 import com.example.freeturilo.R;
@@ -50,7 +50,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MapActivity extends AppCompatActivity {
-    private final API api = new APIMock();
+    private final API api = new APIConnector();
     private final StorageManager storage = new StorageManager(this);
     private final List<Marker> markers = new ArrayList<>();
     private GoogleMap map;

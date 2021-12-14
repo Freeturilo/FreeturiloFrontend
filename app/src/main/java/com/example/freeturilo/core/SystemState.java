@@ -5,17 +5,7 @@ import androidx.annotation.NonNull;
 import com.example.freeturilo.R;
 
 public enum SystemState {
-    STARTED(0), DEMO(1), STOPPED(2);
-
-    private final int value;
-
-    SystemState(int value) {
-        this.value = value;
-    }
-
-    public int toInteger() {
-        return value;
-    }
+    STARTED, DEMO, STOPPED;
 
     public static int getButtonId(SystemState state) {
         switch (state) {
@@ -40,5 +30,11 @@ public enum SystemState {
             default:
                 return STOPPED;
         }
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.valueOf(this.ordinal());
     }
 }

@@ -12,12 +12,12 @@ import android.widget.RadioGroup;
 import com.example.freeturilo.R;
 import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
-import com.example.freeturilo.connection.APIMock;
+import com.example.freeturilo.connection.APIConnector;
 import com.example.freeturilo.core.SystemState;
 import com.example.freeturilo.dialogs.MailNotifyDialog;
 
 public class AdminActivity extends AppCompatActivity {
-    private final API api = new APIMock();
+    private final API api = new APIConnector();
     private int checkedButtonId;
 
     @Override

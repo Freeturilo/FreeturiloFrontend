@@ -3,7 +3,6 @@ package com.example.freeturilo.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,12 +11,13 @@ import android.widget.EditText;
 import com.example.freeturilo.R;
 import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
-import com.example.freeturilo.connection.APIMock;
+import com.example.freeturilo.connection.APIConnector;
+import com.example.freeturilo.misc.AuthCredentials;
 import com.example.freeturilo.misc.AuthTools;
 import com.example.freeturilo.misc.ValidationTools;
 
 public class LoginActivity extends AppCompatActivity {
-    private final API api = new APIMock();
+    private final API api = new APIConnector();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,8 @@ public class LoginActivity extends AppCompatActivity {
             String email = emailInput.getText().toString();
             EditText passwordInput = findViewById(R.id.password);
             String password = passwordInput.getText().toString();
-            api.postUserAsync(email, password, this::goToAdmin, new APIActivityHandler(this));
+            AuthCredentials authCredentials = new AuthCredentials(email, password);
+            api.postUserAsync(authCredentials, this::goToAdmin, new APIActivityHandler(this));
         }
     }
 

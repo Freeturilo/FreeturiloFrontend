@@ -1,24 +1,40 @@
 package com.example.freeturilo.connection;
 
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.freeturilo.BuildConfig;
+import com.example.freeturilo.core.Criterion;
 import com.example.freeturilo.core.Route;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.core.Station;
 import com.example.freeturilo.core.SystemState;
+import com.example.freeturilo.misc.AuthCredentials;
 import com.example.freeturilo.misc.AuthTools;
 import com.example.freeturilo.misc.Callback;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.google.maps.model.Distance;
+import com.google.maps.model.Duration;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,6 +43,43 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 public class APIConnector implements API {
+
+    private static class CriterionSerializer implements JsonSerializer<Criterion> {
+        @Override
+        public JsonElement serialize(Criterion src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.ordinal());
+        }
+    }
+
+    private static class CriterionDeserializer implements JsonDeserializer<Criterion> {
+        @Override
+        public Criterion deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return Criterion.values()[json.getAsJsonPrimitive().getAsInt()];
+        }
+    }
+
+    private static class DistanceDeserializer implements JsonDeserializer<Distance> {
+        @Override
+        public Distance deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            JsonObject object = json.getAsJsonObject();
+            Distance distance = new Distance();
+            distance.humanReadable = object.get("text").getAsString();
+            distance.inMeters = object.get("value").getAsLong();
+            return distance;
+        }
+    }
+
+    private static class DurationDeserializer implements JsonDeserializer<Duration> {
+        @Override
+        public Duration deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            JsonObject object = json.getAsJsonObject();
+            Duration duration = new Duration();
+            duration.humanReadable = object.get("text").getAsString();
+            duration.inSeconds = object.get("value").getAsLong();
+            return duration;
+        }
+    }
+
 
     @NonNull
     private URL createURL(@NonNull String ... pathFragments) throws MalformedURLException {
@@ -58,7 +111,10 @@ public class APIConnector implements API {
 
     private <T> void attachRequestBody(@NonNull HttpsURLConnection connection,
                                        @NonNull T object) throws APIException {
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Criterion.class, new CriterionSerializer());
+        Gson gson = gsonBuilder.create();
+        connection.setRequestProperty("Content-type", "application/json");
         connection.setDoOutput(true);
         connection.setChunkedStreamingMode(0);
         try {
@@ -89,7 +145,11 @@ public class APIConnector implements API {
     @NonNull
     private <T> T retrieveResponseJsonObject(@NonNull HttpsURLConnection connection,
                                              @NonNull Class<T> classOfObject) throws APIException {
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Criterion.class, new CriterionDeserializer());
+        gsonBuilder.registerTypeAdapter(Distance.class, new DistanceDeserializer());
+        gsonBuilder.registerTypeAdapter(Duration.class, new DurationDeserializer());
+        Gson gson = gsonBuilder.create();
         try {
             JsonReader reader = new JsonReader(new InputStreamReader(connection.getInputStream()));
             T object = gson.fromJson(reader, classOfObject);
@@ -157,10 +217,10 @@ public class APIConnector implements API {
     }
 
     @NonNull
-    private String postUser(@NonNull String email, @NonNull String password) throws APIException {
+    private String postUser(@NonNull AuthCredentials authCredentials) throws APIException {
         HttpsURLConnection connection = createConnection("POST", "user");
-        connection.setRequestProperty("email", email);
-        connection.setRequestProperty("password", password);
+        attachRequestBody(connection, authCredentials);
+        retrieveResponseCode(connection);
         String token = retrieveResponseJsonObject(connection, String.class);
         connection.disconnect();
         return token;
@@ -170,6 +230,7 @@ public class APIConnector implements API {
     private Route getRoute(@NonNull RouteParameters routeParameters) throws APIException {
         HttpsURLConnection connection = createConnection("POST", "route");
         attachRequestBody(connection, routeParameters);
+        retrieveResponseCode(connection);
         Route route = retrieveResponseJsonObject(connection, Route.class);
         connection.disconnect();
         return route;
@@ -178,15 +239,16 @@ public class APIConnector implements API {
     @NonNull
     private SystemState getState() throws APIException {
         HttpsURLConnection connection = createConnection("GET", "app", "state");
+        retrieveResponseCode(connection);
         SystemState systemState = retrieveResponseJsonObject(connection, SystemState.class);
         connection.disconnect();
         return systemState;
     }
 
     @NonNull
-    private Integer postState(SystemState systemState) throws APIException {
+    private Integer postState(@NonNull SystemState systemState) throws APIException {
         HttpsURLConnection connection = createConnection("POST",
-                "app", "state", String.valueOf(systemState.toInteger()));
+                "app", "state", systemState.toString());
         int responseCode = retrieveResponseCode(connection);
         connection.disconnect();
         return responseCode;
@@ -194,6 +256,7 @@ public class APIConnector implements API {
 
     private int getNotifyThreshold() throws APIException {
         HttpsURLConnection connection = createConnection("GET", "app", "notify");
+        retrieveResponseCode(connection);
         int threshold = retrieveResponseJsonObject(connection, Integer.class);
         connection.disconnect();
         return threshold;
@@ -229,9 +292,9 @@ public class APIConnector implements API {
     }
 
     @Override
-    public void postUserAsync(@NonNull String username, @NonNull String password,
+    public void postUserAsync(@NonNull AuthCredentials authCredentials,
                               @Nullable Callback<String> callback, @Nullable APIHandler handler) {
-        APIRunnable.create(() -> postUser(username, password)).setCallback(callback).setHandler(handler).startThread();
+        APIRunnable.create(() -> postUser(authCredentials)).setCallback(callback).setHandler(handler).startThread();
     }
 
     @Override
