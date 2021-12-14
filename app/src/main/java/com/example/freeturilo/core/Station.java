@@ -14,8 +14,8 @@ import java.util.Locale;
 
 public class Station extends Location {
     public final int id;
-    public final int bikeRacks;
-    public final int bikes;
+    public int bikeRacks;
+    public int bikes;
     public int state;
 
     public Station(String name, double latitude, double longitude,

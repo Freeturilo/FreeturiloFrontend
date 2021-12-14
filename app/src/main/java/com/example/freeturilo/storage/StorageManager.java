@@ -1,5 +1,8 @@
 package com.example.freeturilo.storage;
 
+import static com.example.freeturilo.json.FreeturiloGson.getFreeturiloDeserializingGson;
+import static com.example.freeturilo.json.FreeturiloGson.getFreeturiloSerializingGson;
+
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -45,7 +48,7 @@ public class StorageManager {
     @NonNull
     private List<Favourite> loadFavourites() throws StorageException {
         try {
-            Gson gson = new Gson();
+            Gson gson = getFreeturiloDeserializingGson();
             FileInputStream in = context.openFileInput(FAVOURITES_FILE);
             JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             List<Favourite> favourites = new ArrayList<>();
@@ -66,7 +69,7 @@ public class StorageManager {
     @NonNull
     private Boolean saveFavourites(@NonNull List<Favourite> favourites) throws StorageException {
         try {
-            Gson gson = new Gson();
+            Gson gson = getFreeturiloSerializingGson();
             FileOutputStream out = context.openFileOutput(FAVOURITES_FILE, Context.MODE_PRIVATE);
             JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
             writer.setIndent("  ");
@@ -96,7 +99,7 @@ public class StorageManager {
     @NonNull
     private List<RouteParameters> loadHistory() throws StorageException {
         try {
-            Gson gson = new Gson();
+            Gson gson = getFreeturiloDeserializingGson();
             FileInputStream in = context.openFileInput(HISTORY_FILE);
             JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             List<RouteParameters> history = new ArrayList<>();
@@ -117,7 +120,7 @@ public class StorageManager {
     @NonNull
     private Boolean saveHistory(@NonNull List<RouteParameters> history) throws StorageException {
         try {
-            Gson gson = new Gson();
+            Gson gson = getFreeturiloSerializingGson();
             FileOutputStream out = context.openFileOutput(HISTORY_FILE, Context.MODE_PRIVATE);
             JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
             writer.setIndent("  ");
