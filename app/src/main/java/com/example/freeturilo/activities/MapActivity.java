@@ -344,6 +344,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void showSetWorkingStationDialog(@NonNull View view) {
+        map.stopAnimation();
         Station station = Objects.requireNonNull((Station) view.getTag());
         new AlertDialog.Builder(this, R.style.FreeturiloDialogTheme)
                 .setMessage(String.format("%s \"%s\"?",
@@ -366,6 +367,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void showLocationPermissionsDialog(@NonNull View view) {
+        map.stopAnimation();
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
             ContextCompat.checkSelfPermission(this,

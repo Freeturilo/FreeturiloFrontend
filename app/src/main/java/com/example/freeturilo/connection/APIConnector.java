@@ -1,7 +1,6 @@
 package com.example.freeturilo.connection;
 
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +29,6 @@ import com.google.gson.stream.JsonWriter;
 import com.google.maps.model.Distance;
 import com.google.maps.model.Duration;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -55,6 +53,13 @@ public class APIConnector implements API {
         @Override
         public Criterion deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             return Criterion.values()[json.getAsJsonPrimitive().getAsInt()];
+        }
+    }
+
+    private static class SystemStateDeserializer implements JsonDeserializer<SystemState> {
+        @Override
+        public SystemState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return SystemState.values()[json.getAsJsonPrimitive().getAsInt()];
         }
     }
 
@@ -147,6 +152,7 @@ public class APIConnector implements API {
                                              @NonNull Class<T> classOfObject) throws APIException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Criterion.class, new CriterionDeserializer());
+        gsonBuilder.registerTypeAdapter(SystemState.class, new SystemStateDeserializer());
         gsonBuilder.registerTypeAdapter(Distance.class, new DistanceDeserializer());
         gsonBuilder.registerTypeAdapter(Duration.class, new DurationDeserializer());
         Gson gson = gsonBuilder.create();
