@@ -49,9 +49,10 @@ public class MailNotifyDialogTest {
         private final int threshold;
 
         @Override
-        public void getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
+        public Thread getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
             if (callback != null)
                 callback.call(threshold);
+            return null;
         }
 
         public apiThreshold(int threshold) {
@@ -62,9 +63,10 @@ public class MailNotifyDialogTest {
 
     private static class apiThresholdException extends APIConnector {
         @Override
-        public void getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
+        public Thread getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
             if (handler != null)
                 handler.handle(new APIException(HttpsURLConnection.HTTP_UNAUTHORIZED));
+            return null;
         }
     }
 

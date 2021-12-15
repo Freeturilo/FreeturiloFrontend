@@ -10,23 +10,23 @@ import com.example.freeturilo.misc.Callback;
 import java.util.List;
 
 public interface API {
-    void getStationsAsync(Callback<List<Station>> callback, APIHandler handler);
+    Thread getStationsAsync(Callback<List<Station>> callback, APIHandler handler);
 
-    void reportStationAsync(Station station, APIHandler handler);
+    Thread reportStationAsync(Station station, APIHandler handler);
 
-    void setBrokenStationAsync(Station station, APIHandler handler);
+    Thread setBrokenStationAsync(Station station, APIHandler handler);
 
-    void setWorkingStationAsync(Station station, APIHandler handler);
+    Thread setWorkingStationAsync(Station station, APIHandler handler);
 
-    void postUserAsync(AuthCredentials authCredentials, Callback<String> callback, APIHandler handler);
+    Thread postUserAsync(AuthCredentials authCredentials, Callback<String> callback, APIHandler handler);
 
-    void getRouteAsync(RouteParameters routeParameters, Callback<Route> callback, APIHandler handler);
+    Thread getRouteAsync(RouteParameters routeParameters, Callback<Route> callback, APIHandler handler);
 
-    void getStateAsync(Callback<SystemState> callback, APIHandler handler);
+    Thread getStateAsync(Callback<SystemState> callback, APIHandler handler);
 
-    void postStateAsync(SystemState systemState, APIHandler handler);
+    Thread postStateAsync(SystemState systemState, APIHandler handler);
 
-    void getNotifyThresholdAsync(Callback<Integer> callback, APIHandler handler);
+    Thread getNotifyThresholdAsync(Callback<Integer> callback, APIHandler handler);
 
-    void postNotifyThresholdAsync(int threshold, APIHandler handler);
+    Thread postNotifyThresholdAsync(int threshold, APIHandler handler);
 }

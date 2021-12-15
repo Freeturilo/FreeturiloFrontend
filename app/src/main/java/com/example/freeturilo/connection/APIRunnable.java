@@ -50,8 +50,4 @@ public class APIRunnable<T> implements Runnable {
     public Thread toThread() {
         return new Thread(this);
     }
-
-    public void startThread() {
-        toThread().start();
-    }
 }

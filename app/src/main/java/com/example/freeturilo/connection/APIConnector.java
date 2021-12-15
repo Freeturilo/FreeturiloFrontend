@@ -23,6 +23,7 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public class APIConnector implements API {
             connection.disconnect();
             throw new APIException(-1);
         }
-        if (responseCode != 200) {
+        if (responseCode != HttpURLConnection.HTTP_OK) {
             connection.disconnect();
             throw new APIException(responseCode);
         }
@@ -217,54 +218,74 @@ public class APIConnector implements API {
     }
 
     @Override
-    public void getStationsAsync(@Nullable Callback<List<Station>> callback, @Nullable APIHandler handler) {
-        APIRunnable.create(this::getStations).setCallback(callback).setHandler(handler).startThread();
+    public Thread getStationsAsync(@Nullable Callback<List<Station>> callback, @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(this::getStations).setCallback(callback).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
     @Override
-    public void reportStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
-        APIRunnable.create(() -> reportStation(station)).setHandler(handler).startThread();
+    public Thread reportStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> reportStation(station)).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
     @Override
-    public void setBrokenStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
-        APIRunnable.create(() -> setBrokenStation(station)).setHandler(handler).startThread();
+    public Thread setBrokenStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> setBrokenStation(station)).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
     @Override
-    public void setWorkingStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
-        APIRunnable.create(() -> setWorkingStation(station)).setHandler(handler).startThread();
+    public Thread setWorkingStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> setWorkingStation(station)).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
     @Override
-    public void postUserAsync(@NonNull AuthCredentials authCredentials,
+    public Thread postUserAsync(@NonNull AuthCredentials authCredentials,
                               @Nullable Callback<String> callback, @Nullable APIHandler handler) {
-        APIRunnable.create(() -> postUser(authCredentials)).setCallback(callback).setHandler(handler).startThread();
+        Thread thread = APIRunnable.create(() -> postUser(authCredentials)).setCallback(callback).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
     @Override
-    public void getRouteAsync(@NonNull RouteParameters routeParameters,
+    public Thread getRouteAsync(@NonNull RouteParameters routeParameters,
                               @Nullable Callback<Route> callback, @Nullable APIHandler handler) {
-        APIRunnable.create(() -> getRoute(routeParameters)).setCallback(callback).setHandler(handler).startThread();
+        Thread thread = APIRunnable.create(() -> getRoute(routeParameters)).setCallback(callback).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
     @Override
-    public void getStateAsync(@Nullable Callback<SystemState> callback, @Nullable APIHandler handler) {
-        APIRunnable.create(this::getState).setCallback(callback).setHandler(handler).startThread();
+    public Thread getStateAsync(@Nullable Callback<SystemState> callback, @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(this::getState).setCallback(callback).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
     @Override
-    public void postStateAsync(@NonNull SystemState systemState, @Nullable APIHandler handler) {
-        APIRunnable.create(() -> postState(systemState)).setHandler(handler).startThread();
+    public Thread postStateAsync(@NonNull SystemState systemState, @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> postState(systemState)).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
     @Override
-    public void getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
-        APIRunnable.create(this::getNotifyThreshold).setCallback(callback).setHandler(handler).startThread();
+    public Thread getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(this::getNotifyThreshold).setCallback(callback).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
     @Override
-    public void postNotifyThresholdAsync(int threshold, @Nullable APIHandler handler) {
-        APIRunnable.create(() -> postNotifyThreshold(threshold)).setHandler(handler).startThread();
+    public Thread postNotifyThresholdAsync(int threshold, @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> postNotifyThreshold(threshold)).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 }
