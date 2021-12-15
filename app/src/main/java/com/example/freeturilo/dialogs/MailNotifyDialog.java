@@ -21,7 +21,7 @@ import com.example.freeturilo.R;
 import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIDialogHandler;
 import com.example.freeturilo.misc.Callback;
-import com.example.freeturilo.misc.ValidationTools;
+import com.example.freeturilo.misc.Validation;
 
 public class MailNotifyDialog extends DialogFragment {
     private View view;
@@ -104,8 +104,8 @@ public class MailNotifyDialog extends DialogFragment {
     private boolean validate() {
         SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
         EditText notifyThresholdInput = view.findViewById(R.id.notify_threshold_input);
-        if (!notifySwitch.isChecked() || ValidationTools.hasInteger(notifyThresholdInput)) return true;
-        ValidationTools.setInputError(requireContext(), notifyThresholdInput, R.string.threshold_invalid_text);
+        if (!notifySwitch.isChecked() || Validation.hasInteger(notifyThresholdInput)) return true;
+        Validation.setInputError(requireContext(), notifyThresholdInput, R.string.threshold_invalid_text);
         return false;
     }
 }

@@ -34,7 +34,7 @@ public class SystemStateTest {
 
     @Test
     public void toInteger() {
-        int result = systemState.toInteger();
+        int result = systemState.ordinal();
 
         assertEquals(stateId, result);
     }

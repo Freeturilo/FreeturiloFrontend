@@ -15,7 +15,7 @@ import com.example.freeturilo.R;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.FavouriteType;
 import com.example.freeturilo.misc.Callback;
-import com.example.freeturilo.misc.ValidationTools;
+import com.example.freeturilo.misc.Validation;
 
 public abstract class FavouriteDialog extends DialogFragment {
     protected View view;
@@ -36,8 +36,8 @@ public abstract class FavouriteDialog extends DialogFragment {
 
     boolean validate() {
         EditText nameEditText = view.findViewById(R.id.name);
-        if (ValidationTools.isEmpty(nameEditText)) {
-            ValidationTools.setInputError(requireContext(), nameEditText, R.string.name_empty_text);
+        if (Validation.isEmpty(nameEditText)) {
+            Validation.setInputError(requireContext(), nameEditText, R.string.name_empty_text);
             return false;
         }
         return true;

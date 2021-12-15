@@ -11,8 +11,7 @@ public class APIActivityHandler implements APIHandler {
     private final boolean finishActivity;
 
     public APIActivityHandler(Activity activity) {
-        this.activity = activity;
-        this.finishActivity = false;
+        this(activity, false);
     }
 
     public APIActivityHandler(Activity activity, boolean finishActivity) {
@@ -20,7 +19,6 @@ public class APIActivityHandler implements APIHandler {
         this.finishActivity = finishActivity;
     }
 
-    @Override
     public void handle(APIException e) {
         ErrorType errorType = ErrorType.getType(e.responseCode);
         Intent intent = new Intent(activity, ErrorActivity.class);

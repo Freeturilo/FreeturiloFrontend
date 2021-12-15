@@ -15,7 +15,6 @@ public class APIDialogHandler implements APIHandler {
         this.dismissDialog = dismissDialog;
     }
 
-    @Override
     public void handle(APIException e) {
         ErrorType errorType = ErrorType.getType(e.responseCode);
         String errorText = ErrorType.getTypeText(dialog.requireContext(), errorType);

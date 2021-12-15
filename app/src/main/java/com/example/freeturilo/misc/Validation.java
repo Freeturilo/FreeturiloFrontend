@@ -12,7 +12,7 @@ import com.example.freeturilo.R;
 
 import java.util.Objects;
 
-public class ValidationTools {
+public class Validation {
 
     public static void setInputError(@NonNull Context context, @NonNull EditText input, int messageId) {
         Drawable icon = Objects.requireNonNull(AppCompatResources

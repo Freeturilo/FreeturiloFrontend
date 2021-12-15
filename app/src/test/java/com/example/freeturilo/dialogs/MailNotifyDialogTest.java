@@ -1,7 +1,11 @@
 package com.example.freeturilo.dialogs;
 
 import static android.os.Looper.getMainLooper;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
 import android.app.AlertDialog;
@@ -10,12 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.freeturilo.R;
-import com.example.freeturilo.activities.AdminActivity;
 import com.example.freeturilo.connection.APIConnector;
 import com.example.freeturilo.connection.APIException;
 import com.example.freeturilo.connection.APIHandler;
@@ -66,9 +70,9 @@ public class MailNotifyDialogTest {
 
     @Test
     public void setThreshold_onPositiveButton() {
-        AdminActivity adminActivity = Robolectric.buildActivity(AdminActivity.class).create().start().get();
+        AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         DialogFragment dialogFragment = new MailNotifyDialog(new apiThreshold(3), this::positiveCallback);
-        dialogFragment.show(adminActivity.getSupportFragmentManager(), null);
+        dialogFragment.show(activity.getSupportFragmentManager(), null);
         shadowOf(getMainLooper()).idle();
         AlertDialog dialog = (AlertDialog) dialogFragment.getDialog();
         assertNotNull(dialog);
@@ -86,9 +90,9 @@ public class MailNotifyDialogTest {
 
     @Test
     public void setThresholdToZero_onPositiveButton() {
-        AdminActivity adminActivity = Robolectric.buildActivity(AdminActivity.class).create().start().get();
+        AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         DialogFragment dialogFragment = new MailNotifyDialog(new apiThreshold(3), this::positiveCallback);
-        dialogFragment.show(adminActivity.getSupportFragmentManager(), null);
+        dialogFragment.show(activity.getSupportFragmentManager(), null);
         shadowOf(getMainLooper()).idle();
         AlertDialog dialog = (AlertDialog) dialogFragment.getDialog();
         assertNotNull(dialog);
@@ -107,9 +111,9 @@ public class MailNotifyDialogTest {
     @Test
     public void performsValidation_onPositiveButton() {
         Context context = RuntimeEnvironment.getApplication();
-        AdminActivity adminActivity = Robolectric.buildActivity(AdminActivity.class).create().start().get();
+        AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         DialogFragment dialogFragment = new MailNotifyDialog(new apiThreshold(3), this::positiveCallback);
-        dialogFragment.show(adminActivity.getSupportFragmentManager(), null);
+        dialogFragment.show(activity.getSupportFragmentManager(), null);
         shadowOf(getMainLooper()).idle();
         AlertDialog dialog = (AlertDialog) dialogFragment.getDialog();
         assertNotNull(dialog);
@@ -127,9 +131,9 @@ public class MailNotifyDialogTest {
 
     @Test
     public void dismissed_onNegativeButton() {
-        AdminActivity adminActivity = Robolectric.buildActivity(AdminActivity.class).create().start().get();
+        AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         DialogFragment dialogFragment = new MailNotifyDialog(new apiThreshold(3), this::positiveCallback);
-        dialogFragment.show(adminActivity.getSupportFragmentManager(), null);
+        dialogFragment.show(activity.getSupportFragmentManager(), null);
         shadowOf(getMainLooper()).idle();
         AlertDialog dialog = (AlertDialog) dialogFragment.getDialog();
         assertNotNull(dialog);
@@ -144,10 +148,10 @@ public class MailNotifyDialogTest {
 
     @Test
     public void dismissed_onException() {
-        AdminActivity adminActivity = Robolectric.buildActivity(AdminActivity.class).create().start().get();
+        AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         DialogFragment dialogFragment = new MailNotifyDialog(new apiThresholdException(), this::positiveCallback);
 
-        dialogFragment.show(adminActivity.getSupportFragmentManager(), null);
+        dialogFragment.show(activity.getSupportFragmentManager(), null);
         shadowOf(getMainLooper()).idle();
         AlertDialog dialog = (AlertDialog) dialogFragment.getDialog();
 

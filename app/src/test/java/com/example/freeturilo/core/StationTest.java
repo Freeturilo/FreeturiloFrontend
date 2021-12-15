@@ -68,7 +68,7 @@ public class StationTest {
         assertNotNull(result);
         assertTrue(result.contains(context.getString(R.string.bikes_availability_text)));
         assertTrue(result.contains(String.valueOf(station.bikes)));
-        assertTrue(result.contains(String.valueOf(station.bikeRacks)));
+        assertTrue(result.contains(String.valueOf(station.bikes + station.bikeRacks)));
         assertFalse(result.contains("\n"));
     }
 

@@ -29,7 +29,7 @@ import com.example.freeturilo.core.Criterion;
 import com.example.freeturilo.core.IdentifiedLocation;
 import com.example.freeturilo.core.Location;
 import com.example.freeturilo.core.RouteParameters;
-import com.example.freeturilo.misc.ValidationTools;
+import com.example.freeturilo.misc.Validation;
 import com.example.freeturilo.storage.StorageManager;
 import com.example.freeturilo.storage.ToastStorageHandler;
 import com.google.android.gms.maps.model.LatLng;
@@ -112,9 +112,9 @@ public class RouteCreateActivity extends AppCompatActivity {
         inputs.addAll(stopInputs);
         inputs.add(endInput);
         for (AutoCompleteTextView input : inputs) {
-            if (ValidationTools.isEmpty(input)) {
+            if (Validation.isEmpty(input)) {
                 valid = false;
-                ValidationTools.setInputError(this, input, R.string.autocomplete_empty_error_text);
+                Validation.setInputError(this, input, R.string.autocomplete_empty_error_text);
             }
         }
         return valid;
@@ -197,7 +197,7 @@ public class RouteCreateActivity extends AppCompatActivity {
                 locations.add(new Location(address.getAddressLine(0),
                             address.getLatitude(), address.getLongitude()));
         if(locations.isEmpty()) {
-            ValidationTools.setInputError(this, input,
+            Validation.setInputError(this, input,
                     R.string.autocomplete_not_found_error_text);
             return;
         }

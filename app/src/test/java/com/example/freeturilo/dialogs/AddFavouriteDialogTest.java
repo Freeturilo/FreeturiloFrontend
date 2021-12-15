@@ -1,7 +1,10 @@
 package com.example.freeturilo.dialogs;
 
 import static android.os.Looper.getMainLooper;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
 import android.app.AlertDialog;
@@ -10,10 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.freeturilo.R;
-import com.example.freeturilo.activities.MapActivity;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.FavouriteType;
 import com.google.android.gms.maps.model.LatLng;
@@ -38,10 +41,10 @@ public class AddFavouriteDialogTest {
 
     @Test
     public void createsFavourite_onPositiveButton() {
-        MapActivity mapActivity = Robolectric.buildActivity(MapActivity.class).create().start().get();
+        AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         LatLng latLng = new LatLng(49, 51);
         AddFavouriteDialog dialogFragment = new AddFavouriteDialog(latLng, this::positiveCallback);
-        dialogFragment.show(mapActivity.getSupportFragmentManager(), null);
+        dialogFragment.show(activity.getSupportFragmentManager(), null);
         shadowOf(getMainLooper()).idle();
         AlertDialog dialog = (AlertDialog) dialogFragment.getDialog();
         assertNotNull(dialog);
@@ -63,10 +66,10 @@ public class AddFavouriteDialogTest {
 
     @Test
     public void createsFavouriteWithType_onPositiveButton() {
-        MapActivity mapActivity = Robolectric.buildActivity(MapActivity.class).create().start().get();
+        AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         LatLng latLng = new LatLng(49, 51);
         AddFavouriteDialog dialogFragment = new AddFavouriteDialog(latLng, this::positiveCallback);
-        dialogFragment.show(mapActivity.getSupportFragmentManager(), null);
+        dialogFragment.show(activity.getSupportFragmentManager(), null);
         shadowOf(getMainLooper()).idle();
         AlertDialog dialog = (AlertDialog) dialogFragment.getDialog();
         assertNotNull(dialog);
@@ -88,10 +91,10 @@ public class AddFavouriteDialogTest {
     @Test
     public void performsValidation_onPositiveButton() {
         Context context = RuntimeEnvironment.getApplication();
-        MapActivity mapActivity = Robolectric.buildActivity(MapActivity.class).create().start().get();
+        AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         LatLng latLng = new LatLng(49, 51);
         AddFavouriteDialog dialogFragment = new AddFavouriteDialog(latLng, this::positiveCallback);
-        dialogFragment.show(mapActivity.getSupportFragmentManager(), null);
+        dialogFragment.show(activity.getSupportFragmentManager(), null);
         shadowOf(getMainLooper()).idle();
         AlertDialog dialog = (AlertDialog) dialogFragment.getDialog();
         assertNotNull(dialog);
@@ -108,10 +111,10 @@ public class AddFavouriteDialogTest {
 
     @Test
     public void dismissed_onNegativeButton() {
-        MapActivity mapActivity = Robolectric.buildActivity(MapActivity.class).create().start().get();
+        AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).create().start().get();
         LatLng latLng = new LatLng(49, 51);
         AddFavouriteDialog dialogFragment = new AddFavouriteDialog(latLng, this::positiveCallback);
-        dialogFragment.show(mapActivity.getSupportFragmentManager(), null);
+        dialogFragment.show(activity.getSupportFragmentManager(), null);
         shadowOf(getMainLooper()).idle();
         AlertDialog dialog = (AlertDialog) dialogFragment.getDialog();
         assertNotNull(dialog);

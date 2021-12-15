@@ -14,7 +14,7 @@ import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIConnector;
 import com.example.freeturilo.misc.AuthCredentials;
 import com.example.freeturilo.misc.AuthTools;
-import com.example.freeturilo.misc.ValidationTools;
+import com.example.freeturilo.misc.Validation;
 
 public class LoginActivity extends AppCompatActivity {
     private final API api = new APIConnector();
@@ -29,13 +29,13 @@ public class LoginActivity extends AppCompatActivity {
         boolean valid = true;
         EditText emailInput = findViewById(R.id.email);
         EditText passwordInput = findViewById(R.id.password);
-        if (!ValidationTools.hasEmail(emailInput)) {
+        if (!Validation.hasEmail(emailInput)) {
             valid = false;
-            ValidationTools.setInputError(this, emailInput, R.string.email_invalid_text);
+            Validation.setInputError(this, emailInput, R.string.email_invalid_text);
         }
-        if (ValidationTools.isEmpty(passwordInput)) {
+        if (Validation.isEmpty(passwordInput)) {
             valid = false;
-            ValidationTools.setInputError(this, passwordInput, R.string.password_empty_text);
+            Validation.setInputError(this, passwordInput, R.string.password_empty_text);
         }
         return valid;
     }
