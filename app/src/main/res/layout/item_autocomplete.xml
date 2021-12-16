@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight">
 
@@ -24,9 +25,9 @@
         android:fontFamily="@font/quicksand"
         android:textColor="@color/strong_grey"
         android:layout_gravity="center_vertical"
-        android:paddingTop="6sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15sp"
         android:ellipsize="marquee"/>
 
 </LinearLayout>

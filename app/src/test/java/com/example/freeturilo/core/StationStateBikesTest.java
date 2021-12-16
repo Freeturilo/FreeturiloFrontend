@@ -16,7 +16,7 @@ import org.robolectric.RuntimeEnvironment;
 import java.util.Arrays;
 
 @RunWith(ParameterizedRobolectricTestRunner.class)
-public class StationStateTest {
+public class StationStateBikesTest {
 
     @ParameterizedRobolectricTestRunner.Parameters
     public static Iterable<Object[]> states() {
@@ -30,7 +30,7 @@ public class StationStateTest {
     private final int stationState;
     private final int stateTextId;
 
-    public StationStateTest(int stationState, int stateTextId) {
+    public StationStateBikesTest(int stationState, int stateTextId) {
         this.stationState = stationState;
         this.stateTextId = stateTextId;
     }
@@ -39,7 +39,7 @@ public class StationStateTest {
     public void getStateText() {
         Context context = RuntimeEnvironment.getApplication();
 
-        String result = StationState.getStateText(context, stationState);
+        String result = StationStateBikes.getStateBikesText(context, stationState, 10);
 
         Assert.assertEquals(context.getString(stateTextId), result);
     }
@@ -50,7 +50,7 @@ public class StationStateTest {
         int markerWidth = context.getResources().getDimensionPixelSize(R.dimen.marker_width);
         int markerHeight = context.getResources().getDimensionPixelSize(R.dimen.marker_height);
 
-        Bitmap result = StationState.getMarkerIcon(context, stationState);
+        Bitmap result = StationStateBikes.getMarkerIcon(context, stationState, 10);
 
         assertEquals(markerWidth, result.getWidth());
         assertEquals(markerHeight, result.getHeight());

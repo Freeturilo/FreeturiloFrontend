@@ -28,7 +28,7 @@ public class StationTest {
 
         assertNotNull(result);
         assertTrue(result.contains(context.getString(R.string.station_helper_text).toLowerCase(Locale.ROOT)));
-        assertFalse(result.contains(StationState.getStateText(context, station.state)));
+        assertFalse(result.contains(StationStateBikes.getStateBikesText(context, station.state, station.bikes)));
         assertFalse(result.contains("\n"));
     }
 
@@ -41,7 +41,7 @@ public class StationTest {
 
         assertNotNull(result);
         assertTrue(result.contains(context.getString(R.string.station_helper_text).toLowerCase(Locale.ROOT)));
-        assertTrue(result.contains(StationState.getStateText(context, station.state)));
+        assertTrue(result.contains(StationStateBikes.getStateBikesText(context, station.state, station.bikes)));
         assertFalse(result.contains("\n"));
     }
 
@@ -54,7 +54,7 @@ public class StationTest {
 
         assertNotNull(result);
         assertTrue(result.contains(context.getString(R.string.station_helper_text).toLowerCase(Locale.ROOT)));
-        assertTrue(result.contains(StationState.getStateText(context, station.state)));
+        assertTrue(result.contains(StationStateBikes.getStateBikesText(context, station.state, station.bikes)));
         assertFalse(result.contains("\n"));
     }
 
@@ -81,7 +81,7 @@ public class StationTest {
 
         assertNotNull(result);
         assertTrue(result.contains(context.getString(R.string.station_helper_text)));
-        assertTrue(result.contains(StationState.getStateText(context, station.state)));
+        assertTrue(result.contains(StationStateBikes.getStateBikesText(context, station.state, station.bikes)));
         assertFalse(result.contains("\n"));
     }
 }

@@ -32,15 +32,15 @@ public class Station extends Location {
     public MarkerOptions createMarkerOptions(@NonNull Context context) {
         return new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
-                .icon(BitmapDescriptorFactory.fromBitmap(StationState.getMarkerIcon(context, state)));
+                .icon(BitmapDescriptorFactory.fromBitmap(StationStateBikes.getMarkerIcon(context, state, bikes)));
     }
 
     @Nullable
     @Override
     public String getSecondaryText(@NonNull Context context) {
         String stationHelperText = context.getString(R.string.station_helper_text).toLowerCase(Locale.ROOT);
-        String stateText = StationState.getStateText(context, state);
-        if (state == 0)
+        String stateText = StationStateBikes.getStateBikesText(context, state, bikes);
+        if (state == 0 && bikes > 3)
             return stationHelperText;
         else
             return String.format("%s (%s)", stationHelperText, stateText);
@@ -58,6 +58,6 @@ public class Station extends Location {
     @Override
     public String getInlineSecondaryText(@NonNull Context context) {
         return String.format("%s, %s", context.getString(R.string.station_helper_text),
-                StationState.getStateText(context, state));
+                StationStateBikes.getStateBikesText(context, state, bikes));
     }
 }

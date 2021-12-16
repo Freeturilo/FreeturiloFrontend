@@ -76,4 +76,6 @@
     <string name="start_location_services_message">Aby kontynuować, włącz lokalizację urządzenia.</string>
     <string name="no_initialize_favourites_message">Nie udało się zainicjować ulubionych miejsc</string>
     <string name="no_initialize_history_message">Nie udało się zainicjalizować historii tras</string>
+    <string name="station_empty_text">pusta</string>
+    <string name="station_almost_empty_text">niemal pusta</string>
 </resources>

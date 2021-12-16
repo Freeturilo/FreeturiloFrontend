@@ -37,15 +37,22 @@ public class AutoCompleteTextWatcher implements TextWatcher {
         this.token = AutocompleteSessionToken.newInstance();
     }
 
+    private List<Location> matchCustomLocations(String query) {
+        List<Location> matched = new ArrayList<>();
+        for (Location location : customLocations)
+            if (location.name.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT))) {
+                matched.add(location);
+                if (matched.size() == 2)
+                    break;
+            }
+        return matched;
+    }
+
     @Override
     public void onTextChanged(@NonNull CharSequence charSequence, int i, int i1, int i2) {
         activity.clearLocationAssignment(input);
         String query = charSequence.toString().replaceAll("^[ \t]+|[ \t]+$", "");
-        ArrayList<Location> autoComplete = new ArrayList<>();
-        for (Location location : customLocations)
-            if (location.name.toLowerCase(Locale.ROOT)
-                    .contains(query.toLowerCase(Locale.ROOT)))
-                autoComplete.add(location);
+        ArrayList<Location> autoComplete = new ArrayList<>(matchCustomLocations(query));
         RectangularBounds bounds = RectangularBounds.newInstance(
                 new LatLng(52.03, 20.80),
                 new LatLng(52.36, 21.30)
