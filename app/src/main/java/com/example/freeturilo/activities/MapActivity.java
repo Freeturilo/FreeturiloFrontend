@@ -135,30 +135,15 @@ public class MapActivity extends FreeturiloActivity {
     }
 
     private void showStationMarkers() {
-        double south = 52.23;
-        double west = 21;
-        double north = 52.23;
-        double east = 21;
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Station station : stations) {
             Marker marker = map.addMarker(station.createMarkerOptions(this));
             Objects.requireNonNull(marker).setTag(station);
             markers.add(marker);
-
-            if (station.latitude < south)
-                south = station.latitude;
-            else if (station.latitude > north)
-                north = station.latitude;
-            if (station.longitude < west)
-                west = station.longitude;
-            else if (station.longitude > east)
-                east = station.longitude;
+            builder.include(new LatLng(station.latitude, station.longitude));
         }
-        if (!stations.isEmpty()) {
-            LatLng southwest = new LatLng(south, west);
-            LatLng northeast = new LatLng(north, east);
-            LatLngBounds bounds = new LatLngBounds(southwest, northeast);
-            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
-        }
+        if (!stations.isEmpty())
+            map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
         stopLoadingAnimation();
     }
 
