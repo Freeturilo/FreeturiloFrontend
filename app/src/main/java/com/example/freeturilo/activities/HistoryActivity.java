@@ -1,7 +1,6 @@
 package com.example.freeturilo.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +17,7 @@ import com.example.freeturilo.core.RouteParameters;
 
 import java.util.List;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends FreeturiloActivity {
     private final StorageManager storage = new StorageManager(this);
     private ListView historyListView;
     private List<RouteParameters> history;

@@ -2,7 +2,6 @@ package com.example.freeturilo.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +15,7 @@ import com.example.freeturilo.connection.APIConnector;
 import com.example.freeturilo.core.SystemState;
 import com.example.freeturilo.dialogs.MailNotifyDialog;
 
-public class AdminActivity extends AppCompatActivity {
+public class AdminActivity extends FreeturiloActivity {
     private final API api = new APIConnector();
     private int checkedButtonId;
 

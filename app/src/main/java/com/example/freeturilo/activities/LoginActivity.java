@@ -1,7 +1,6 @@
 package com.example.freeturilo.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +15,7 @@ import com.example.freeturilo.misc.AuthCredentials;
 import com.example.freeturilo.misc.AuthTools;
 import com.example.freeturilo.misc.Validation;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends FreeturiloActivity {
     private final API api = new APIConnector();
 
     @Override

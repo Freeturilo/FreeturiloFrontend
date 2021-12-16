@@ -2,7 +2,6 @@ package com.example.freeturilo.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -33,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class RouteActivity extends AppCompatActivity {
+public class RouteActivity extends FreeturiloActivity {
     public static final String ROUTE_PARAMETERS_INTENT = "route_parameters";
     private final API api = new APIConnector();
     private final List<LatLng> path = new ArrayList<>();
@@ -57,6 +56,7 @@ public class RouteActivity extends AppCompatActivity {
         super.onResume();
         SupportMapFragment mapFragment = Objects.requireNonNull((SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map));
+        startLoadingAnimation();
         Synchronizer routeSynchronizer = new Synchronizer(2, this::showRoute);
         mapFragment.getMapAsync(googleMap -> onMapReadySync(googleMap, routeSynchronizer));
         api.getRouteAsync(routeParameters,
@@ -130,6 +130,7 @@ public class RouteActivity extends AppCompatActivity {
                 route.directionsRoute.bounds.northeast.lng);
         LatLngBounds bounds = new LatLngBounds(southwest, northeast);
         map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+        stopLoadingAnimation();
     }
 
     private void unfocus(@Nullable LatLng latLng) {

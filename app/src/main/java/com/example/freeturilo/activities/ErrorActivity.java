@@ -1,7 +1,5 @@
 package com.example.freeturilo.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,7 +7,7 @@ import android.widget.TextView;
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.ErrorType;
 
-public class ErrorActivity extends AppCompatActivity {
+public class ErrorActivity extends FreeturiloActivity {
     public static final String ERROR_TYPE_INTENT = "error_type";
 
     @Override

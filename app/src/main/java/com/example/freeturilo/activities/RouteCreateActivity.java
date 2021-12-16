@@ -2,7 +2,6 @@ package com.example.freeturilo.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -44,7 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class RouteCreateActivity extends AppCompatActivity {
+public class RouteCreateActivity extends FreeturiloActivity {
     private final StorageManager storage = new StorageManager(this);
     private final API api = new APIConnector();
     private AutoCompleteTextView startInput;

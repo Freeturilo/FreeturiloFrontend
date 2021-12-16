@@ -14,4 +14,17 @@
         android:layout_gravity="center"
         android:src="@drawable/logo"
         android:contentDescription="@string/logo_description" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="5dp"
+        android:layout_marginVertical="10dp"
+        android:visibility="gone"
+        android:progressTint="@color/white"
+        android:indeterminateOnly="true"
+        android:indeterminateTintMode="src_in"
+        android:indeterminateTint="@color/white" />
 </androidx.appcompat.widget.Toolbar>

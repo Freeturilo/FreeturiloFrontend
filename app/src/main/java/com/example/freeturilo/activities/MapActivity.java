@@ -5,7 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.location.LocationManagerCompat;
 
@@ -40,6 +39,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends FreeturiloActivity {
     private final API api = new APIConnector();
     private final StorageManager storage = new StorageManager(this);
     private final List<Marker> markers = new ArrayList<>();
@@ -70,6 +70,7 @@ public class MapActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        startLoadingAnimation();
         Synchronizer stationsSynchronizer =
                 new Synchronizer(2, this::showStationMarkers);
         Synchronizer favouritesSynchronizer =
@@ -134,11 +135,31 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void showStationMarkers() {
+        double south = 52.23;
+        double west = 21;
+        double north = 52.23;
+        double east = 21;
         for (Station station : stations) {
             Marker marker = map.addMarker(station.createMarkerOptions(this));
             Objects.requireNonNull(marker).setTag(station);
             markers.add(marker);
+
+            if (station.latitude < south)
+                south = station.latitude;
+            else if (station.latitude > north)
+                north = station.latitude;
+            if (station.longitude < west)
+                west = station.longitude;
+            else if (station.longitude > east)
+                east = station.longitude;
         }
+        if (!stations.isEmpty()) {
+            LatLng southwest = new LatLng(south, west);
+            LatLng northeast = new LatLng(north, east);
+            LatLngBounds bounds = new LatLngBounds(southwest, northeast);
+            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+        }
+        stopLoadingAnimation();
     }
 
     private void showFavouriteMarkers() {
