@@ -33,6 +33,6 @@ public class AutoCompleteAdapterTest {
         TextView textPrimary = view.findViewById(R.id.text_primary);
         assertEquals(location.getPrimaryText(), textPrimary.getText().toString());
         TextView textSecondary = view.findViewById(R.id.text_secondary);
-        assertEquals(", " + location.getInlineSecondaryText(context), textSecondary.getText().toString());
+        assertEquals(location.getInlineSecondaryText(context), textSecondary.getText().toString());
     }
 }
