@@ -25,7 +25,7 @@ import com.example.freeturilo.connection.APIConnector;
 import com.example.freeturilo.dialogs.AddFavouriteDialog;
 import com.example.freeturilo.dialogs.EditFavouriteDialog;
 import com.example.freeturilo.R;
-import com.example.freeturilo.storage.StorageManager;
+import com.example.freeturilo.storage.StorageConnector;
 import com.example.freeturilo.storage.ToastStorageHandler;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.Location;
@@ -51,7 +51,7 @@ import java.util.Objects;
 
 public class MapActivity extends FreeturiloActivity {
     private final API api = new APIConnector();
-    private final StorageManager storage = new StorageManager(this);
+    private final StorageConnector storage = new StorageConnector(this);
     private final List<Marker> markers = new ArrayList<>();
     private GoogleMap map;
     private List<Favourite> favourites = new ArrayList<>();
@@ -93,6 +93,7 @@ public class MapActivity extends FreeturiloActivity {
         unfocus(null);
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     private void onMapReady(@NonNull GoogleMap googleMap) {
         markers.clear();
         map = googleMap;

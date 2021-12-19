@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class APIConnection implements Connection {
+public class APIConnection implements ExternalConnection {
 
     private final HttpsURLConnection connection;
 
@@ -65,25 +65,25 @@ public class APIConnection implements Connection {
         connection.disconnect();
     }
 
-    public static class Builder implements Connection.Builder {
+    public static class Builder implements ExternalConnection.Builder {
         private String method = null;
         private final List<String> pathFragments = new ArrayList<>();
 
-        public Connection.Builder newConnection() {
+        public ExternalConnection.Builder newConnection() {
             return new Builder();
         }
 
-        public Connection.Builder setMethod(String method) {
+        public ExternalConnection.Builder setMethod(String method) {
             this.method = method;
             return this;
         }
 
-        public Connection.Builder appendPath(String path) {
+        public ExternalConnection.Builder appendPath(String path) {
             this.pathFragments.add(path);
             return this;
         }
 
-        public Connection create() throws APIException {
+        public ExternalConnection create() throws APIException {
             HttpsURLConnection connection = null;
             Uri.Builder builder = new Uri.Builder();
             builder.scheme("https").authority(BuildConfig.FREETURILO_API_URL);

@@ -13,30 +13,39 @@ import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.misc.Callback;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StorageManager {
+public class StorageConnector {
     private static final String FAVOURITES_FILE = "favourites.json";
     private static final String HISTORY_FILE = "history.json";
     private final Context context;
+    private final InternalConnection.Builder builder;
 
-    public StorageManager(Context context) {
+    public StorageConnector(Context context) {
         this.context = context;
+        builder = new StorageConnection.Builder();
+    }
+
+    public StorageConnector(Context context, InternalConnection.Builder builder) {
+        this.context = context;
+        this.builder = builder;
     }
 
     @NonNull
     private Boolean ensureFavouritesExist() throws StorageException {
-        if (!context.getFileStreamPath(FAVOURITES_FILE).exists())
+        InternalConnection connection = builder.setContext(context).create();
+        if (connection.checkFileAbsent(FAVOURITES_FILE))
             try {
                 saveFavourites(new ArrayList<>());
             } catch (StorageException e) {
@@ -47,47 +56,32 @@ public class StorageManager {
 
     @NonNull
     private List<Favourite> loadFavourites() throws StorageException {
-        try {
-            Gson gson = getFreeturiloDeserializingGson();
-            FileInputStream in = context.openFileInput(FAVOURITES_FILE);
-            JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-            List<Favourite> favourites = new ArrayList<>();
-            reader.beginArray();
-            while (reader.hasNext()) {
-                Favourite favourite = gson.fromJson(reader, Favourite.class);
-                favourites.add(favourite);
-            }
-            reader.endArray();
-            reader.close();
-            return favourites;
-        } catch (IOException exception) {
-            String noFavouritesMessage = context.getString(R.string.no_favourites_message);
-            throw new StorageException(noFavouritesMessage);
-        }
+        Gson gson = getFreeturiloDeserializingGson();
+        InternalConnection connection = builder.setContext(context).create();
+        InputStream in = connection.openFileInput(FAVOURITES_FILE);
+        JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+        List<Favourite> favourites = gson.fromJson(reader, new TypeToken<List<Favourite>>(){}.getType());
+        try { reader.close(); }
+        catch (IOException ignored) {}
+        return favourites;
     }
 
     @NonNull
     private Boolean saveFavourites(@NonNull List<Favourite> favourites) throws StorageException {
-        try {
-            Gson gson = getFreeturiloSerializingGson();
-            FileOutputStream out = context.openFileOutput(FAVOURITES_FILE, Context.MODE_PRIVATE);
-            JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
-            writer.setIndent("  ");
-            writer.beginArray();
-            for (Favourite favourite : favourites)
-                gson.toJson(favourite, Favourite.class, writer);
-            writer.endArray();
-            writer.close();
-            return true;
-        } catch (IOException exception) {
-            String noFavouritesMessage = context.getString(R.string.no_favourites_message);
-            throw new StorageException(noFavouritesMessage);
-        }
+        Gson gson = getFreeturiloSerializingGson();
+        InternalConnection connection = builder.setContext(context).create();
+        OutputStream out = connection.openFileOutput(FAVOURITES_FILE);
+        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
+        gson.toJson(favourites, new TypeToken<List<Favourite>>(){}.getType(), writer);
+        try { writer.close(); }
+        catch (IOException ignored) {}
+        return true;
     }
 
     @NonNull
     private Boolean ensureHistoryExists() throws StorageException {
-        if (!context.getFileStreamPath(HISTORY_FILE).exists())
+        InternalConnection connection = builder.setContext(context).create();
+        if (connection.checkFileAbsent(HISTORY_FILE))
             try {
                 saveHistory(new ArrayList<>());
             } catch (StorageException e) {
@@ -98,43 +92,26 @@ public class StorageManager {
 
     @NonNull
     private List<RouteParameters> loadHistory() throws StorageException {
-        try {
-            Gson gson = getFreeturiloDeserializingGson();
-            FileInputStream in = context.openFileInput(HISTORY_FILE);
-            JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-            List<RouteParameters> history = new ArrayList<>();
-            reader.beginArray();
-            while (reader.hasNext()) {
-                RouteParameters parameters = gson.fromJson(reader, RouteParameters.class);
-                history.add(parameters);
-            }
-            reader.endArray();
-            reader.close();
-            return history;
-        } catch (IOException exception) {
-            String noHistoryMessage = context.getString(R.string.no_history_message);
-            throw new StorageException(noHistoryMessage);
-        }
+        Gson gson = getFreeturiloDeserializingGson();
+        InternalConnection connection = builder.setContext(context).create();
+        InputStream in = connection.openFileInput(HISTORY_FILE);
+        JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+        List<RouteParameters> history = gson.fromJson(reader, new TypeToken<List<RouteParameters>>(){}.getType());
+        try { reader.close(); }
+        catch (IOException ignored) {}
+        return history;
     }
 
     @NonNull
     private Boolean saveHistory(@NonNull List<RouteParameters> history) throws StorageException {
-        try {
-            Gson gson = getFreeturiloSerializingGson();
-            FileOutputStream out = context.openFileOutput(HISTORY_FILE, Context.MODE_PRIVATE);
-            JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
-            writer.setIndent("  ");
-            writer.beginArray();
-            for (RouteParameters routeParameters : history) {
-                gson.toJson(routeParameters, RouteParameters.class, writer);
-            }
-            writer.endArray();
-            writer.close();
-            return true;
-        } catch (IOException exception) {
-            String noHistoryMessage = context.getString(R.string.no_history_message);
-            throw new StorageException(noHistoryMessage);
-        }
+        Gson gson = getFreeturiloSerializingGson();
+        InternalConnection connection = builder.setContext(context).create();
+        OutputStream out = connection.openFileOutput(HISTORY_FILE);
+        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
+        gson.toJson(history, new TypeToken<List<RouteParameters>>(){}.getType(), writer);
+        try { writer.close(); }
+        catch (IOException ignored) {}
+        return true;
     }
 
     @NonNull

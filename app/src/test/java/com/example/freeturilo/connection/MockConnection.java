@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
 
-public class MockConnection implements Connection {
+public class MockConnection implements ExternalConnection {
     private final int responseCode;
     private final InputStream inputStream;
     private final OutputStream outputStream;
@@ -45,7 +45,7 @@ public class MockConnection implements Connection {
     @Override
     public void disconnect() {}
 
-    public static class Builder implements Connection.Builder {
+    public static class Builder implements ExternalConnection.Builder {
         private String method = null;
         private final StringBuilder pathBuilder = new StringBuilder();
         private final int responseCode;
@@ -57,24 +57,24 @@ public class MockConnection implements Connection {
         }
 
         @NonNull
-        public Connection.Builder newConnection() {
+        public ExternalConnection.Builder newConnection() {
             return new Builder(responseCode, outputStream);
         }
 
         @NonNull
-        public Connection.Builder setMethod(@NonNull String method) {
+        public ExternalConnection.Builder setMethod(@NonNull String method) {
             this.method = method;
             return this;
         }
 
         @NonNull
-        public Connection.Builder appendPath(@NonNull String path) {
+        public ExternalConnection.Builder appendPath(@NonNull String path) {
             pathBuilder.append(path);
             return this;
         }
 
         @NonNull
-        public Connection create() {
+        public ExternalConnection create() {
             String fileName = pathBuilder.insert(0, method).append("_response.json").toString();
             InputStream inputStream = Objects.requireNonNull(getClass().getClassLoader()).getResourceAsStream(fileName);
             return new MockConnection(responseCode, inputStream, outputStream);

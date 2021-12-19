@@ -78,4 +78,5 @@
     <string name="no_initialize_history_message">Nie udało się zainicjalizować historii tras</string>
     <string name="station_empty_text">pusta</string>
     <string name="station_almost_empty_text">niemal pusta</string>
+    <string name="no_file_message">Plik jest niedostępny</string>
 </resources>

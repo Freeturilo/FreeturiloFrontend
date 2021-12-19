@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.R;
 import com.example.freeturilo.misc.AuthTools;
-import com.example.freeturilo.storage.StorageManager;
+import com.example.freeturilo.storage.StorageConnector;
 import com.example.freeturilo.storage.ToastStorageHandler;
 import com.google.android.libraries.places.api.Places;
 
@@ -24,7 +24,7 @@ public class FreeturiloActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
-        StorageManager storage = new StorageManager(this);
+        StorageConnector storage = new StorageConnector(this);
         storage.ensureFavouritesExistAsync(new ToastStorageHandler(this));
         storage.ensureHistoryExistsAsync(new ToastStorageHandler(this));
     }

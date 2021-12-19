@@ -11,14 +11,14 @@ import android.widget.ListView;
 import com.example.freeturilo.misc.HistoryAdapter;
 import com.example.freeturilo.misc.ObjectWrapperForBinder;
 import com.example.freeturilo.R;
-import com.example.freeturilo.storage.StorageManager;
+import com.example.freeturilo.storage.StorageConnector;
 import com.example.freeturilo.storage.ToastStorageHandler;
 import com.example.freeturilo.core.RouteParameters;
 
 import java.util.List;
 
 public class HistoryActivity extends FreeturiloActivity {
-    private final StorageManager storage = new StorageManager(this);
+    private final StorageConnector storage = new StorageConnector(this);
     private ListView historyListView;
     private List<RouteParameters> history;
 

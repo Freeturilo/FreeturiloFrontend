@@ -2,9 +2,8 @@ package com.example.freeturilo.connection;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
-interface Connection {
+interface ExternalConnection {
     void setRequestProperty(String key, String value);
 
     void setDoOutput(boolean doOutput);
@@ -26,6 +25,6 @@ interface Connection {
 
         Builder appendPath(String path);
 
-        Connection create() throws APIException;
+        ExternalConnection create() throws APIException;
     }
 }

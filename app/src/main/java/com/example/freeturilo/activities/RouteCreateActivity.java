@@ -29,7 +29,7 @@ import com.example.freeturilo.core.IdentifiedLocation;
 import com.example.freeturilo.core.Location;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.misc.Validation;
-import com.example.freeturilo.storage.StorageManager;
+import com.example.freeturilo.storage.StorageConnector;
 import com.example.freeturilo.storage.ToastStorageHandler;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class RouteCreateActivity extends FreeturiloActivity {
-    private final StorageManager storage = new StorageManager(this);
+    private final StorageConnector storage = new StorageConnector(this);
     private final API api = new APIConnector();
     private AutoCompleteTextView startInput;
     private AutoCompleteTextView endInput;
