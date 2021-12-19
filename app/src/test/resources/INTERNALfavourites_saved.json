@@ -1,0 +1,14 @@
+[
+  {
+    "type": "Favourite.HOME",
+    "name": "Mieszkanie",
+    "latitude": 52.2468349,
+    "longitude": 20.9981223
+  },
+  {
+    "type": "Favourite.SCHOOL",
+    "name": "SGH",
+    "latitude" : 52.208901,
+    "longitude": 21.0085756
+  }
+]

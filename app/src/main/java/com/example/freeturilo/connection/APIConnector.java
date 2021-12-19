@@ -165,35 +165,35 @@ public class APIConnector implements API {
         return responseCode;
     }
 
-    @Override
+    @NonNull
     public Thread getStationsAsync(@Nullable Callback<List<Station>> callback, @Nullable APIHandler handler) {
         Thread thread = APIRunnable.create(this::getStations).setCallback(callback).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
-    @Override
+    @NonNull
     public Thread reportStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
         Thread thread = APIRunnable.create(() -> reportStation(station)).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
-    @Override
+    @NonNull
     public Thread setBrokenStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
         Thread thread = APIRunnable.create(() -> setBrokenStation(station)).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
-    @Override
+    @NonNull
     public Thread setWorkingStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
         Thread thread = APIRunnable.create(() -> setWorkingStation(station)).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
-    @Override
+    @NonNull
     public Thread postUserAsync(@NonNull AuthCredentials authCredentials,
                               @Nullable Callback<String> callback, @Nullable APIHandler handler) {
         Thread thread = APIRunnable.create(() -> postUser(authCredentials)).setCallback(callback).setHandler(handler).toThread();
@@ -201,7 +201,7 @@ public class APIConnector implements API {
         return thread;
     }
 
-    @Override
+    @NonNull
     public Thread getRouteAsync(@NonNull RouteParameters routeParameters,
                               @Nullable Callback<Route> callback, @Nullable APIHandler handler) {
         Thread thread = APIRunnable.create(() -> getRoute(routeParameters)).setCallback(callback).setHandler(handler).toThread();
@@ -209,28 +209,28 @@ public class APIConnector implements API {
         return thread;
     }
 
-    @Override
+    @NonNull
     public Thread getStateAsync(@Nullable Callback<SystemState> callback, @Nullable APIHandler handler) {
         Thread thread = APIRunnable.create(this::getState).setCallback(callback).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
-    @Override
+    @NonNull
     public Thread postStateAsync(@NonNull SystemState systemState, @Nullable APIHandler handler) {
         Thread thread = APIRunnable.create(() -> postState(systemState)).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
-    @Override
+    @NonNull
     public Thread getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
         Thread thread = APIRunnable.create(this::getNotifyThreshold).setCallback(callback).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
-    @Override
+    @NonNull
     public Thread postNotifyThresholdAsync(int threshold, @Nullable APIHandler handler) {
         Thread thread = APIRunnable.create(() -> postNotifyThreshold(threshold)).setHandler(handler).toThread();
         thread.start();

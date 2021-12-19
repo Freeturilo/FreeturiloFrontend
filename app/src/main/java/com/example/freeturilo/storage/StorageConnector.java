@@ -8,7 +8,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.freeturilo.R;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.misc.Callback;
@@ -22,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,75 +43,54 @@ public class StorageConnector {
     }
 
     @NonNull
-    private Boolean ensureFavouritesExist() throws StorageException {
+    private <T> Boolean ensureFileExist(@NonNull String filename, @NonNull T defaultContent) throws StorageException {
         InternalConnection connection = builder.setContext(context).create();
-        if (connection.checkFileAbsent(FAVOURITES_FILE))
-            try {
-                saveFavourites(new ArrayList<>());
-            } catch (StorageException e) {
-                throw new StorageException(context.getString(R.string.no_initialize_favourites_message));
-            }
+        if (connection.checkFileAbsent(filename))
+            saveToFile(filename, defaultContent);
+        return true;
+    }
+
+    private <T> void saveToFile(@NonNull String filename, @NonNull T object) throws StorageException {
+        Gson gson = getFreeturiloSerializingGson();
+        InternalConnection connection = builder.setContext(context).create();
+        OutputStream out = connection.openFileOutput(filename);
+        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
+        gson.toJson(object, object.getClass(), writer);
+        try { writer.close(); }
+        catch (IOException ignored) {}
+    }
+
+    @NonNull
+    private <T> T loadFromFile(@NonNull String filename, @NonNull Type typeOfObject) throws StorageException {
+        Gson gson = getFreeturiloDeserializingGson();
+        InternalConnection connection = builder.setContext(context).create();
+        InputStream in = connection.openFileInput(filename);
+        JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+        T object = gson.fromJson(reader, typeOfObject);
+        try { reader.close(); }
+        catch (IOException ignored) {}
+        return object;
+    }
+
+    @NonNull
+    private Boolean saveFavourites(@NonNull List<Favourite> favourites) throws StorageException {
+        saveToFile(FAVOURITES_FILE, favourites);
         return true;
     }
 
     @NonNull
     private List<Favourite> loadFavourites() throws StorageException {
-        Gson gson = getFreeturiloDeserializingGson();
-        InternalConnection connection = builder.setContext(context).create();
-        InputStream in = connection.openFileInput(FAVOURITES_FILE);
-        JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-        List<Favourite> favourites = gson.fromJson(reader, new TypeToken<List<Favourite>>(){}.getType());
-        try { reader.close(); }
-        catch (IOException ignored) {}
-        return favourites;
+        return loadFromFile(FAVOURITES_FILE, new TypeToken<List<Favourite>>(){}.getType());
     }
 
-    @NonNull
-    private Boolean saveFavourites(@NonNull List<Favourite> favourites) throws StorageException {
-        Gson gson = getFreeturiloSerializingGson();
-        InternalConnection connection = builder.setContext(context).create();
-        OutputStream out = connection.openFileOutput(FAVOURITES_FILE);
-        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
-        gson.toJson(favourites, new TypeToken<List<Favourite>>(){}.getType(), writer);
-        try { writer.close(); }
-        catch (IOException ignored) {}
-        return true;
-    }
-
-    @NonNull
-    private Boolean ensureHistoryExists() throws StorageException {
-        InternalConnection connection = builder.setContext(context).create();
-        if (connection.checkFileAbsent(HISTORY_FILE))
-            try {
-                saveHistory(new ArrayList<>());
-            } catch (StorageException e) {
-                throw new StorageException(context.getString(R.string.no_initialize_history_message));
-            }
+    private Boolean saveHistory(@NonNull List<RouteParameters> history) throws StorageException {
+        saveToFile(HISTORY_FILE, history);
         return true;
     }
 
     @NonNull
     private List<RouteParameters> loadHistory() throws StorageException {
-        Gson gson = getFreeturiloDeserializingGson();
-        InternalConnection connection = builder.setContext(context).create();
-        InputStream in = connection.openFileInput(HISTORY_FILE);
-        JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-        List<RouteParameters> history = gson.fromJson(reader, new TypeToken<List<RouteParameters>>(){}.getType());
-        try { reader.close(); }
-        catch (IOException ignored) {}
-        return history;
-    }
-
-    @NonNull
-    private Boolean saveHistory(@NonNull List<RouteParameters> history) throws StorageException {
-        Gson gson = getFreeturiloSerializingGson();
-        InternalConnection connection = builder.setContext(context).create();
-        OutputStream out = connection.openFileOutput(HISTORY_FILE);
-        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
-        gson.toJson(history, new TypeToken<List<RouteParameters>>(){}.getType(), writer);
-        try { writer.close(); }
-        catch (IOException ignored) {}
-        return true;
+        return loadFromFile(HISTORY_FILE, new TypeToken<List<RouteParameters>>(){}.getType());
     }
 
     @NonNull
@@ -120,35 +99,56 @@ public class StorageConnector {
         try { history = loadHistory(); }
         catch (StorageException ignored) {}
         history.add(0, routeParameters);
-        saveHistory(history);
+        saveToFile(HISTORY_FILE, history);
         return true;
     }
 
-    public void ensureFavouritesExistAsync(@Nullable StorageHandler handler) {
-        StorageRunnable.create(this::ensureFavouritesExist).setHandler(handler).startThread();
+    @NonNull
+    public Thread ensureFavouritesExistAsync(@Nullable StorageHandler handler) {
+        Thread thread = StorageRunnable.create(() -> ensureFileExist(FAVOURITES_FILE, new ArrayList<Favourite>())).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
-    public void loadFavouritesAsync(@Nullable Callback<List<Favourite>> callback, @Nullable StorageHandler handler) {
-        StorageRunnable.create(this::loadFavourites).setCallback(callback).setHandler(handler).startThread();
+    @NonNull
+    public Thread loadFavouritesAsync(@Nullable Callback<List<Favourite>> callback, @Nullable StorageHandler handler) {
+        Thread thread = StorageRunnable.create(this::loadFavourites).setCallback(callback).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
-    public void saveFavouritesAsync(@NonNull List<Favourite> favourites, @Nullable StorageHandler handler) {
-        StorageRunnable.create(() -> saveFavourites(favourites)).setHandler(handler).startThread();
+    @NonNull
+    public Thread saveFavouritesAsync(@NonNull List<Favourite> favourites, @Nullable StorageHandler handler) {
+        Thread thread = StorageRunnable.create(() -> saveFavourites(favourites)).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
-    public void ensureHistoryExistsAsync(@Nullable StorageHandler handler) {
-        StorageRunnable.create(this::ensureHistoryExists).setHandler(handler).startThread();
+    @NonNull
+    public Thread ensureHistoryExistsAsync(@Nullable StorageHandler handler) {
+        Thread thread = StorageRunnable.create(() -> ensureFileExist(HISTORY_FILE, new ArrayList<RouteParameters>())).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
-    public void loadHistoryAsync(@Nullable Callback<List<RouteParameters>> callback, @Nullable StorageHandler handler) {
-        StorageRunnable.create(this::loadHistory).setCallback(callback).setHandler(handler).startThread();
+    @NonNull
+    public Thread loadHistoryAsync(@Nullable Callback<List<RouteParameters>> callback, @Nullable StorageHandler handler) {
+        Thread thread = StorageRunnable.create(this::loadHistory).setCallback(callback).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
-    public void saveHistoryAsync(@NonNull List<RouteParameters> history, @Nullable StorageHandler handler) {
-        StorageRunnable.create(() -> saveHistory(history)).setHandler(handler).startThread();
+    @NonNull
+    public Thread saveHistoryAsync(@NonNull List<RouteParameters> history, @Nullable StorageHandler handler) {
+        Thread thread = StorageRunnable.create(() -> saveHistory(history)).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 
-    public void addToHistoryAsync(@NonNull RouteParameters routeParameters, @Nullable StorageHandler handler) {
-        StorageRunnable.create(() -> addToHistory(routeParameters)).setHandler(handler).startThread();
+    @NonNull
+    public Thread addToHistoryAsync(@NonNull RouteParameters routeParameters, @Nullable StorageHandler handler) {
+        Thread thread = StorageRunnable.create(() -> addToHistory(routeParameters)).setHandler(handler).toThread();
+        thread.start();
+        return thread;
     }
 }

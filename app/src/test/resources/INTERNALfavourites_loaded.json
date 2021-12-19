@@ -1,0 +1,20 @@
+[
+  {
+    "type": "Favourite.HOME",
+    "name": "Mieszkanie",
+    "latitude": 52.2468349,
+    "longitude": 20.9981223
+  },
+  {
+    "type": "Favourite.SCHOOL",
+    "name": "MiNI",
+    "latitude" : 52.221990,
+    "longitude": 21.0070651
+  },
+  {
+    "type": "Favourite.OTHER",
+    "name": "Biblioteka",
+    "latitude" : 52.2381951,
+    "longitude": 21.053444
+  }
+]

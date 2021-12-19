@@ -25,6 +25,7 @@ import com.example.freeturilo.connection.APIException;
 import com.example.freeturilo.connection.APIHandler;
 import com.example.freeturilo.misc.Callback;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -48,11 +49,11 @@ public class MailNotifyDialogTest {
     private static class apiThreshold extends APIConnector {
         private final int threshold;
 
-        @Override
+        @NotNull
         public Thread getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
             if (callback != null)
                 callback.call(threshold);
-            return null;
+            return Thread.currentThread();
         }
 
         public apiThreshold(int threshold) {
@@ -62,11 +63,11 @@ public class MailNotifyDialogTest {
     }
 
     private static class apiThresholdException extends APIConnector {
-        @Override
+        @NotNull
         public Thread getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
             if (handler != null)
                 handler.handle(new APIException(HttpsURLConnection.HTTP_UNAUTHORIZED));
-            return null;
+            return Thread.currentThread();
         }
     }
 

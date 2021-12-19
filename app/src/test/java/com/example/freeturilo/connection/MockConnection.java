@@ -75,8 +75,8 @@ public class MockConnection implements ExternalConnection {
 
         @NonNull
         public ExternalConnection create() {
-            String fileName = pathBuilder.insert(0, method).append("_response.json").toString();
-            InputStream inputStream = Objects.requireNonNull(getClass().getClassLoader()).getResourceAsStream(fileName);
+            String inputFileName = pathBuilder.insert(0, method).append("_response.json").toString();
+            InputStream inputStream = Objects.requireNonNull(getClass().getClassLoader()).getResourceAsStream(inputFileName);
             return new MockConnection(responseCode, inputStream, outputStream);
         }
     }
