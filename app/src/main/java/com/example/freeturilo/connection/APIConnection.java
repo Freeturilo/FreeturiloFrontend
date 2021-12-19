@@ -1,22 +1,13 @@
 package com.example.freeturilo.connection;
 
-import static com.example.freeturilo.json.FreeturiloGson.getFreeturiloDeserializingGson;
-import static com.example.freeturilo.json.FreeturiloGson.getFreeturiloSerializingGson;
-
 import android.net.Uri;
 
 import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.misc.AuthTools;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,54 +52,9 @@ public class APIConnection implements Connection {
         }
     }
 
-    public <T> void attachRequestBody(T object) throws APIException {
-        Gson gson = getFreeturiloSerializingGson();
-        setRequestProperty("Content-type", "application/json");
-        setDoOutput(true);
-        setChunkedStreamingMode(0);
-        JsonWriter writer = new JsonWriter(new OutputStreamWriter(getOutputStream()));
-        gson.toJson(object, object.getClass(), writer);
-        try { writer.close(); }
-        catch (IOException ignored) {}
-    }
-
     public int getResponseCode() throws APIException {
         try {
             return connection.getResponseCode();
-        } catch (IOException exception) {
-            disconnect();
-            throw new APIException(-1);
-        }
-    }
-
-    public int retrieveResponseCode() throws APIException {
-        int responseCode = getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK)
-            return responseCode;
-        disconnect();
-        throw new APIException(responseCode);
-    }
-
-    public <T> T retrieveResponseJsonObject(Class<T> classOfObject) throws APIException {
-        Gson gson = getFreeturiloDeserializingGson();
-        JsonReader reader = new JsonReader(new InputStreamReader(getInputStream()));
-        T object = gson.fromJson(reader, classOfObject);
-        try { reader.close(); }
-        catch (IOException ignored) {}
-        return object;
-    }
-
-    public <T> List<T> retrieveResponseJsonList(Class<T> classOfElement) throws APIException {
-        Gson gson = getFreeturiloDeserializingGson();
-        try {
-            JsonReader reader = new JsonReader(new InputStreamReader(getInputStream()));
-            List<T> list = new ArrayList<>();
-            reader.beginArray();
-            while(reader.hasNext())
-                list.add(gson.fromJson(reader, classOfElement));
-            reader.endArray();
-            reader.close();
-            return list;
         } catch (IOException exception) {
             disconnect();
             throw new APIException(-1);
@@ -120,8 +66,8 @@ public class APIConnection implements Connection {
     }
 
     public static class Builder implements Connection.Builder {
-        String method = null;
-        List<String> pathFragments = new ArrayList<>();
+        private String method = null;
+        private final List<String> pathFragments = new ArrayList<>();
 
         public Connection.Builder newConnection() {
             return new Builder();

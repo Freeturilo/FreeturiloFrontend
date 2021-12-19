@@ -1,0 +1,791 @@
+{
+  "parameters": {
+    "start": {
+      "longitude": 21.045194,
+      "latitude": 52.266611,
+      "name": "Mieszkanie",
+      "type": "Location",
+      "bikeRacks": null,
+      "bikes": null
+    },
+    "end": {
+      "longitude": 21.0070651,
+      "latitude": 52.22199,
+      "name": "MiNI",
+      "type": "Favourite.SCHOOL",
+      "bikeRacks": null,
+      "bikes": null
+    },
+    "stops": [
+      {
+        "longitude": 20.985926,
+        "latitude": 52.256128,
+        "name": "Westfield Arkadia",
+        "type": "Location",
+        "bikeRacks": null,
+        "bikes": null
+      }
+    ],
+    "criterion": 1
+  },
+  "cost": 1,
+  "time": 2492,
+  "waypoints": [
+    {
+      "longitude": 21.045194,
+      "latitude": 52.266611,
+      "name": "Mieszkanie",
+      "type": "Location",
+      "bikeRacks": null,
+      "bikes": null
+    },
+    {
+      "longitude": 21.051284,
+      "latitude": 52.269795,
+      "name": "Metro Targówek Mieszkaniowy ",
+      "type": "Station",
+      "bikeRacks": 0,
+      "bikes": 7
+    },
+    {
+      "longitude": 20.985926,
+      "latitude": 52.256128,
+      "name": "Westfield Arkadia",
+      "type": "Location",
+      "bikeRacks": null,
+      "bikes": null
+    },
+    {
+      "longitude": 21.00811,
+      "latitude": 52.222683,
+      "name": "Noakowskiego - Koszykowa",
+      "type": "Station",
+      "bikeRacks": 13,
+      "bikes": 15
+    },
+    {
+      "longitude": 21.0070651,
+      "latitude": 52.22199,
+      "name": "MiNI",
+      "type": "Favourite.SCHOOL",
+      "bikeRacks": null,
+      "bikes": null
+    }
+  ],
+  "directionsRoute": {
+    "bounds": {
+      "northeast": {
+        "lat": 52.2707074,
+        "lng": 21.0512473
+      },
+      "southwest": {
+        "lat": 52.2209088,
+        "lng": 20.9772576
+      }
+    },
+    "copyrights": "Map data ©2021 Google",
+    "legs": [
+      {
+        "distance": {
+          "text": "11.8 km",
+          "value": 11776
+        },
+        "duration": {
+          "text": "42 mins",
+          "value": 2492
+        },
+        "end_address": "Wydział Matematyki i Nauk Informacyjnych, pokój 127, Koszykowa 75, 00-662 Warszawa, Poland",
+        "end_location": {
+          "lat": 52.2219898,
+          "lng": 21.0070651
+        },
+        "start_address": "II Rejonu AK 2, 03-506 Warszawa, Poland",
+        "start_location": {
+          "lat": 52.2665971,
+          "lng": 21.0451921
+        },
+        "steps": [
+          {
+            "distance": {
+              "text": "0.2 km",
+              "value": 215
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 35
+            },
+            "end_location": {
+              "lat": 52.2681323,
+              "lng": 21.0469153
+            },
+            "start_location": {
+              "lat": 52.2665971,
+              "lng": 21.0451921
+            },
+            "html_instructions": "Head <b>northeast</b> on <b>II Rejonu AK</b> toward <b>Smoleńska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "gi_~Hmkm_CUSg@a@a@]i@c@]Y_@Wi@]AAOIEECECGCGGYAAEUGa@CU"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.1 km",
+              "value": 99
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 17
+            },
+            "end_location": {
+              "lat": 52.2689706,
+              "lng": 21.0465012
+            },
+            "start_location": {
+              "lat": 52.2681323,
+              "lng": 21.0469153
+            },
+            "html_instructions": "Turn <b>left</b> onto <b>Smoleńska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "yr_~Hgvm_CGBMD{@To@P[JCBABADAF"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.2 km",
+              "value": 162
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 30
+            },
+            "end_location": {
+              "lat": 52.2700154,
+              "lng": 21.0480291
+            },
+            "start_location": {
+              "lat": 52.2689706,
+              "lng": 21.0465012
+            },
+            "html_instructions": "Turn <b>right</b> onto <b>Witebska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "ax_~Hssm_CGWm@{BGSEKGIGIEGOMGG{@o@c@["
+            }
+          },
+          {
+            "distance": {
+              "text": "0.1 km",
+              "value": 100
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 28
+            },
+            "end_location": {
+              "lat": 52.2707074,
+              "lng": 21.0486045
+            },
+            "start_location": {
+              "lat": 52.2700154,
+              "lng": 21.0480291
+            },
+            "html_instructions": "At the roundabout, continue straight onto <b>Prałatowska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "s~_~He}m_C@A?A?A?A@A?A?A?A?A?A?A?AAA?A?A?AAA?A?AAA?AAAAAAA?AA?AAA?A?A?A?A?A??@A?A@A??@A@?@A??@A@?@?@YQkA}@"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.2 km",
+              "value": 184
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 30
+            },
+            "end_location": {
+              "lat": 52.2697698,
+              "lng": 21.050415
+            },
+            "start_location": {
+              "lat": 52.2707074,
+              "lng": 21.0486045
+            },
+            "html_instructions": "Turn <b>right</b> to stay on <b>Prałatowska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "}b`~Hw`n_Cp@_DLm@DSBGBCBC?ABAFCZEDCXEJCFCDCBEBE@EBI@A?E@I?GAIAEEK?A"
+            }
+          },
+          {
+            "distance": {
+              "text": "48 m",
+              "value": 48
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 9
+            },
+            "end_location": {
+              "lat": 52.2698682,
+              "lng": 21.0510784
+            },
+            "start_location": {
+              "lat": 52.2697698,
+              "lng": 21.050415
+            },
+            "html_instructions": "Slight <b>right</b> toward <b>Prałatowska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "a}_~Haln_C@M?O?KCIAEACAEKaA"
+            }
+          },
+          {
+            "distance": {
+              "text": "10 m",
+              "value": 10
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 3
+            },
+            "end_location": {
+              "lat": 52.2697815,
+              "lng": 21.051068
+            },
+            "start_location": {
+              "lat": 52.2698682,
+              "lng": 21.0510784
+            },
+            "html_instructions": "Turn <b>right</b> toward <b>Prałatowska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "u}_~Hgpn_CP@"
+            }
+          },
+          {
+            "distance": {
+              "text": "12 m",
+              "value": 12
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 2
+            },
+            "end_location": {
+              "lat": 52.2697662,
+              "lng": 21.0512473
+            },
+            "start_location": {
+              "lat": 52.2697815,
+              "lng": 21.051068
+            },
+            "html_instructions": "Turn <b>left</b> toward <b>Prałatowska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "c}_~Hepn_C@c@"
+            }
+          },
+          {
+            "distance": {
+              "text": "24 m",
+              "value": 24
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 4
+            },
+            "end_location": {
+              "lat": 52.2695465,
+              "lng": 21.0512215
+            },
+            "start_location": {
+              "lat": 52.2697662,
+              "lng": 21.0512473
+            },
+            "html_instructions": "Turn <b>right</b> toward <b>Prałatowska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "a}_~Hiqn_Cj@D"
+            }
+          },
+          {
+            "distance": {
+              "text": "52 m",
+              "value": 52
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 9
+            },
+            "end_location": {
+              "lat": 52.2697882,
+              "lng": 21.0506997
+            },
+            "start_location": {
+              "lat": 52.2695465,
+              "lng": 21.0512215
+            },
+            "html_instructions": "Turn <b>right</b> toward <b>Prałatowska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "u{_~Hcqn_C@b@?@?PCH?@A@EBSNQL"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.2 km",
+              "value": 205
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 37
+            },
+            "end_location": {
+              "lat": 52.2707074,
+              "lng": 21.0486045
+            },
+            "start_location": {
+              "lat": 52.2697882,
+              "lng": 21.0506997
+            },
+            "html_instructions": "Turn <b>left</b> onto <b>Prałatowska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "e}_~H{mn_C@DBH?J?NAL?@DJ@D@H?FAH?DA@CHADCDCDEBGBKBYDEB[DGBC@?@CBCBCFERMl@q@~C"
+            }
+          },
+          {
+            "distance": {
+              "text": "62 m",
+              "value": 62
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 10
+            },
+            "end_location": {
+              "lat": 52.27020419999999,
+              "lng": 21.048198
+            },
+            "start_location": {
+              "lat": 52.2707074,
+              "lng": 21.0486045
+            },
+            "html_instructions": "Turn <b>left</b> to stay on <b>Prałatowska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "}b`~Hw`n_CjA|@XP"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.2 km",
+              "value": 199
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 47
+            },
+            "end_location": {
+              "lat": 52.2689706,
+              "lng": 21.0465012
+            },
+            "start_location": {
+              "lat": 52.27020419999999,
+              "lng": 21.048198
+            },
+            "html_instructions": "At the roundabout, continue straight onto <b>Witebska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "w_`~Hg~m_CA@?@?@?@?@A@?@?@?@?@?@?@@@?@?@?@@@?@?@@@?@@@@@?@@?@@@??@@?@?@?@?@?@??A@?@A@A@A?A@??A@A?A?Ab@Zz@n@FFNLDFFHFHDJFRl@zBFV"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.4 km",
+              "value": 374
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 67
+            },
+            "end_location": {
+              "lat": 52.2705013,
+              "lng": 21.0416025
+            },
+            "start_location": {
+              "lat": 52.2689706,
+              "lng": 21.0465012
+            },
+            "html_instructions": "Turn <b>right</b> onto <b>Smoleńska</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "ax_~Hssm_CKb@ADm@rCu@hDo@`Du@bDa@pBYtAGVADK^G^"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.3 km",
+              "value": 341
+            },
+            "duration": {
+              "text": "2 mins",
+              "value": 129
+            },
+            "end_location": {
+              "lat": 52.2690464,
+              "lng": 21.0375341
+            },
+            "start_location": {
+              "lat": 52.2705013,
+              "lng": 21.0416025
+            },
+            "html_instructions": "Turn <b>left</b> onto <b>św. Wincentego</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "sa`~H_ul_CXLNHLFLJDD@@LNLNJPHLBHJRJZJX@NBPBRBd@Bp@Dl@@Z@X@N@F@N@R@JDLBJBJ?@Nf@Ld@Nj@Hj@BHBP@TBj@"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.8 km",
+              "value": 848
+            },
+            "duration": {
+              "text": "3 mins",
+              "value": 157
+            },
+            "end_location": {
+              "lat": 52.2657871,
+              "lng": 21.0266872
+            },
+            "start_location": {
+              "lat": 52.2690464,
+              "lng": 21.0375341
+            },
+            "html_instructions": "At <b>rondo Żaba</b>, take the <b>1st</b> exit onto <b>Stefana Starzyńskiego</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "qx_~Hq{k_CDT@B@JBH@D@@@DBDBFBBFHFFHFLHLHFBFBDBDDT\\b@n@JPHNBJBH?B@DFPFPDPFTBTDT@VBZBf@FdC@f@@h@Bn@Bd@Fj@D^@T@h@Np@VlALh@TpABFBHp@nDPz@XzAnAtGp@fDHb@F\\RbALn@"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.4 km",
+              "value": 383
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 68
+            },
+            "end_location": {
+              "lat": 52.2640454,
+              "lng": 21.0218574
+            },
+            "start_location": {
+              "lat": 52.2657871,
+              "lng": 21.0266872
+            },
+            "html_instructions": "Take the <b>Augustów</b> ramp",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "ed_~Hywi_C?J?B@HN|@Lj@DR\\pARv@DPLb@j@lBpApEdApDTv@Nh@BJ@L"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.1 km",
+              "value": 128
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 34
+            },
+            "end_location": {
+              "lat": 52.26368429999999,
+              "lng": 21.0202457
+            },
+            "start_location": {
+              "lat": 52.2640454,
+              "lng": 21.0218574
+            },
+            "html_instructions": "At the roundabout, take the <b>2nd</b> exit onto the <b>Droga Wojewódzka Gdański</b> ramp to <b>stary Żoliborz</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "iy~}Hsyh_CCl@AT?F?D?H?F?H@PBDBBDDBDDFBB@BB@@BB@DBDDFZ@D?D@LBVHz@"
+            }
+          },
+          {
+            "distance": {
+              "text": "52 m",
+              "value": 52
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 10
+            },
+            "end_location": {
+              "lat": 52.2636011,
+              "lng": 21.0195004
+            },
+            "start_location": {
+              "lat": 52.26368429999999,
+              "lng": 21.0202457
+            },
+            "html_instructions": "Keep <b>right</b> at the fork to continue toward <b>Stefana Starzyńskiego</b>/<wbr/><b>DW634</b>/<wbr/><b>DW637</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "_w~}Hqoh_CFbADX@v@"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.3 km",
+              "value": 259
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 72
+            },
+            "end_location": {
+              "lat": 52.2628212,
+              "lng": 21.0159374
+            },
+            "start_location": {
+              "lat": 52.2636011,
+              "lng": 21.0195004
+            },
+            "html_instructions": "Keep <b>left</b> at the fork to continue toward <b>Stefana Starzyńskiego</b>/<wbr/><b>DW634</b>/<wbr/><b>DW637</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "ov~}H{jh_CFVFr@TbCDr@Hz@@P@J@JFf@BTF\\Lv@F^DRDXFZT`AJ\\"
+            }
+          },
+          {
+            "distance": {
+              "text": "6.3 km",
+              "value": 6262
+            },
+            "duration": {
+              "text": "22 mins",
+              "value": 1324
+            },
+            "end_location": {
+              "lat": 52.2239053,
+              "lng": 20.9896542
+            },
+            "start_location": {
+              "lat": 52.2628212,
+              "lng": 21.0159374
+            },
+            "html_instructions": "Merge onto <b>Stefana Starzyńskiego</b>/<wbr/><b>DW634</b>/<wbr/><b>DW637</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "sq~}Hstg_CLn@d@`CNn@BLDLBLDJHPHVLZBH`@bAN|@H\\Jf@?BDRDRnCzMdCbMDR@DH\\DVP|@DPLn@Lh@?L?FBNDZ@N@FB\\DZB`@Db@Hd@h@jCFXl@xCJh@Jf@VtAFXDXFb@@JFh@Fd@?FFv@Dl@Bf@D|@@l@@z@@vC?B?`@@j@@j@BxBB`D?x@?V@XD~@B^BXL`AHn@LbA@@?DBNFXJl@Fd@AD?B?BBH@LBPN`A?FNfADTNdAJj@`@nBFZHh@@HXlBDTHh@H`AVdCx@fJDVHr@DZJ|@D\\NtADZF`@H^BPNj@BHHZJ\\HRBHX|@FNDJNXLTXj@T`@P`@DJXr@HXJZJ`@Jb@Jh@Hf@DZ@J?D?JANCTCLBEBC@ABCBCBABABCJAD?D?D?D?D@D@D@D@DBDBBBDBDDBDDD@BBD@DBB@D@DBD@D?@?@@@?@@F@H@F@H@H?H?F?H?H?F?FAF?HAFAFAF@L?@@DFLDDB@JDNF^J`AXh@NPFXL\\JtC`A|Aj@zFtBZJH@JDRFRJ`Cz@dCt@l@Rf@R`@Th@\\TLRPDDJDFFFF\\`@^`@PRRTf@h@FHNLFBBB\\ZZTRHLHLDRFVFTFXBT?T?\\CD?RC`@I~Ae@DA^SbAUPEd@OxDkAj@Qb@M`Bg@nJmCZKZKdGeBNEJEfAYv@O`@KXCZERCD?JCJAPEXGLCv@SzBe@\\G`@KLEDCDATOLIROnAeA`CoBNKVO|@]^O`@QDAPI@?PKd@Wp@c@bAs@LItAgAHIt@o@TQJKLMTWR[LSHMX_@LOLMHIDCFGHEJGHEJb@DRDP@HBR@P@P@Rb@e@j@s@n@u@VUTSz@s@hB}AvAmA`Ay@RQHIBAJKHOHMFKHIFEBCRQRMLKDCHENENGFCFC^Sn@i@|@q@v@k@`@[\\YBABCBA@A@AFCFEL?F?F?B?F?FAHCDCDG@AFIHKJMDEDCPUNSb@m@JWJKHI"
+            }
+          },
+          {
+            "distance": {
+              "text": "1.3 km",
+              "value": 1266
+            },
+            "duration": {
+              "text": "5 mins",
+              "value": 286
+            },
+            "end_location": {
+              "lat": 52.2228229,
+              "lng": 21.0081168
+            },
+            "start_location": {
+              "lat": 52.2239053,
+              "lng": 20.9896542
+            },
+            "html_instructions": "Turn <b>left</b> onto <b>Koszykowa</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "m~v}Hipb_CV_A@Y?]@[F_CJgEHcEFcDDkBHsD@a@@a@?]JaFDcC@q@@k@FuCB{@@kADaBBuADaCLyGHgEJ}DBo@?w@Bk@@I?G?C?CFiDD}A@u@@EF_CFyB"
+            }
+          },
+          {
+            "distance": {
+              "text": "67 m",
+              "value": 67
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 11
+            },
+            "end_location": {
+              "lat": 52.22244019999999,
+              "lng": 21.0088194
+            },
+            "start_location": {
+              "lat": 52.2228229,
+              "lng": 21.0081168
+            },
+            "html_instructions": "Slight <b>right</b> onto <b>Stanisława Noakowskiego</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "swv}Hwcf_CLQVe@\\g@BG@C@E?Y"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.1 km",
+              "value": 145
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 23
+            },
+            "end_location": {
+              "lat": 52.22140750000001,
+              "lng": 21.0100703
+            },
+            "start_location": {
+              "lat": 52.22244019999999,
+              "lng": 21.0088194
+            },
+            "html_instructions": "Turn <b>right</b> to stay on <b>Stanisława Noakowskiego</b>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "guv}Hchf_CFCHADCJEFGHINOfCgE"
+            }
+          },
+          {
+            "distance": {
+              "text": "86 m",
+              "value": 86
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 16
+            },
+            "end_location": {
+              "lat": 52.2209071,
+              "lng": 21.0091192
+            },
+            "start_location": {
+              "lat": 52.22140750000001,
+              "lng": 21.0100703
+            },
+            "html_instructions": "Turn <b>right</b> onto <b>Professor Witolda Wierzbickiego</b><div style=\"font-size:0.9em\">Restricted usage road</div>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "ynv}H}of_CR`@j@jA\\t@BJ@F?D"
+            }
+          },
+          {
+            "distance": {
+              "text": "7 m",
+              "value": 7
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 1
+            },
+            "end_location": {
+              "lat": 52.2209349,
+              "lng": 21.0090298
+            },
+            "start_location": {
+              "lat": 52.2209071,
+              "lng": 21.0091192
+            },
+            "html_instructions": "Turn <b>right</b> to stay on <b>Professor Witolda Wierzbickiego</b><div style=\"font-size:0.9em\">Restricted usage road</div>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "ukv}H_jf_C?D?BABAB"
+            }
+          },
+          {
+            "distance": {
+              "text": "0.2 km",
+              "value": 152
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 27
+            },
+            "end_location": {
+              "lat": 52.22196890000001,
+              "lng": 21.0075616
+            },
+            "start_location": {
+              "lat": 52.2209349,
+              "lng": 21.0090298
+            },
+            "html_instructions": "Slight <b>right</b> to stay on <b>Professor Witolda Wierzbickiego</b><div style=\"font-size:0.9em\">Restricted usage road</div>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "ykv}Hmif_C[`@i@~@QV_AzAGJo@bA"
+            }
+          },
+          {
+            "distance": {
+              "text": "34 m",
+              "value": 34
+            },
+            "duration": {
+              "text": "1 min",
+              "value": 6
+            },
+            "end_location": {
+              "lat": 52.2219898,
+              "lng": 21.0070651
+            },
+            "start_location": {
+              "lat": 52.22196890000001,
+              "lng": 21.0075616
+            },
+            "html_instructions": "Slight <b>left</b> to stay on <b>Professor Witolda Wierzbickiego</b><div style=\"font-size:0.9em\">Restricted usage road</div>",
+            "travel_mode": "BICYCLING",
+            "polyline": {
+              "points": "irv}Hg`f_CANAJ?J?p@?F"
+            }
+          }
+        ],
+        "traffic_speed_entry": [],
+        "via_waypoint": [
+          {
+            "location": {
+              "lat": 52.2697662,
+              "lng": 21.0512473
+            },
+            "step_index": 7,
+            "step_interpolation": 1
+          },
+          {
+            "location": {
+              "lat": 52.2560756,
+              "lng": 20.9859873
+            },
+            "step_index": 20,
+            "step_interpolation": 0.3511102823441792
+          },
+          {
+            "location": {
+              "lat": 52.2227448,
+              "lng": 21.0082236
+            },
+            "step_index": 22,
+            "step_interpolation": 0.1697150014570708
+          }
+        ]
+      }
+    ],
+    "overview_polyline": {
+      "points": "gi_~Hmkm_CiCwBiBqAUOGMSy@Kw@UHkBf@_@NCHAFGWu@oCMUe@g@_BkA@C@E?GAMCIGGGAG@GFADYOkA}@p@_DRaAFKNKfASLGFKFW@QCOEM@]G_@MgAP@@c@j@D@b@?RCJGDe@\\DNAj@FP@PGZEJIHs@Pg@LGFIZ_AlEdBnAADAF@LBJDFFBFAFEBE?Ab@XxAlANRL^t@rCMh@iEbSeAdFS~@h@Vb@ZZ^T^f@rALzATpENp@l@zBR|AH`ABNHVRZl@b@NFJHnAnBH^\\jAHj@Dr@N~FFtALjAB~@f@~Bj@lCdGj[Ln@?J@L\\hBb@dBrAzE|DdNDXEbA?^@ZFHRVJJJHH`@NfBL|A@v@FV\\vDNnBLpA`@jCh@jCXlAt@pDRt@d@nA`@bAN|@TdAzCfOvCzNj@vCLv@BVLpAH|@NhAjBhJp@pDX~BPtCFjBBrEB|BFlJFxAFx@d@tDLp@RrAAHHl@d@fDdA|Fj@vDRjBpAlN`@dDZnCd@~Bb@vAd@vA|@fBf@bA^~@l@zBZlB@PAZGb@FILKXGV@VHTPNTHTFPHx@CdAA^HRHF|Br@z@Vv@XjOnF|@Z`Cz@dCt@tAf@tBrA`@ZbBlBn@r@VP`@^n@^ZNj@Nn@Jj@?b@Ct@MdBg@^SbAUv@UdF}ApOoE|H}B~Bi@z@O`AMdASrDy@~@Sn@[rFoEf@[|Am@z@]v@c@tBwAbDkCdAcAdA}Aj@k@f@[XrAHjAnAyAfAkArGsFbBwAf@u@h@e@p@c@n@U^Sn@i@tB}AfA{@NIFEL?F?ZAVQb@i@VYr@aAJWJKHIV_A@w@H{Cb@{SLuGh@cY`@yTRqIR}INyFd@w@`@o@BI?YFCNERMXYfCgER`@hA`CD^_@l@cC~Do@bAANAV?x@"
+    },
+    "summary": "DW634/DW637",
+    "warnings": [
+      "Bicycling directions are in beta. Use caution – This route may contain streets that aren't suited for bicycling."
+    ],
+    "waypoint_order": []
+  }
+}

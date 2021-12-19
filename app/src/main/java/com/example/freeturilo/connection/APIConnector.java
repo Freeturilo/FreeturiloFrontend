@@ -1,5 +1,8 @@
 package com.example.freeturilo.connection;
 
+import static com.example.freeturilo.json.FreeturiloGson.getFreeturiloDeserializingGson;
+import static com.example.freeturilo.json.FreeturiloGson.getFreeturiloSerializingGson;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -9,7 +12,16 @@ import com.example.freeturilo.core.Station;
 import com.example.freeturilo.core.SystemState;
 import com.example.freeturilo.misc.AuthCredentials;
 import com.example.freeturilo.misc.Callback;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 public class APIConnector implements API {
@@ -20,16 +32,65 @@ public class APIConnector implements API {
         this.builder = new APIConnection.Builder();
     }
 
-    public APIConnector(Connection.Builder builder) {
+    public APIConnector(@NonNull Connection.Builder builder) {
         this.builder = builder;
     }
+
+    private <T> void attachRequestBody(@NonNull Connection connection, @NonNull T object) throws APIException {
+        Gson gson = getFreeturiloSerializingGson();
+        connection.setRequestProperty("Content-type", "application/json");
+        connection.setDoOutput(true);
+        connection.setChunkedStreamingMode(0);
+        JsonWriter writer = new JsonWriter(new OutputStreamWriter(connection.getOutputStream()));
+        gson.toJson(object, object.getClass(), writer);
+        try { writer.close(); }
+        catch (IOException ignored) {}
+    }
+
+    private int retrieveResponseCode(@NonNull Connection connection) throws APIException {
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK)
+            return responseCode;
+        connection.disconnect();
+        throw new APIException(responseCode);
+    }
+
+    @NonNull
+    private <T> T retrieveResponseJsonObject(@NonNull Connection connection, @NonNull Type typeOfObject) throws APIException {
+        Gson gson = getFreeturiloDeserializingGson();
+        JsonReader reader = new JsonReader(new InputStreamReader(connection.getInputStream()));
+        T object = gson.fromJson(reader, typeOfObject);
+        try { reader.close(); }
+        catch (IOException ignored) {}
+        return object;
+    }
+
+    /*
+    @NonNull
+    private <T> List<T> retrieveResponseJsonList(@NonNull Connection connection, @NonNull Class<T> classOfElement) throws APIException {
+        Gson gson = getFreeturiloDeserializingGson();
+        try {
+            JsonReader reader = new JsonReader(new InputStreamReader(connection.getInputStream()));
+            List<T> list = new ArrayList<>();
+            reader.beginArray();
+            while(reader.hasNext())
+                list.add(gson.fromJson(reader, classOfElement));
+            reader.endArray();
+            reader.close();
+            return list;
+        } catch (IOException exception) {
+            connection.disconnect();
+            throw new APIException(-1);
+        }
+    }
+    */
 
     @NonNull
     private List<Station> getStations() throws APIException {
         Connection connection = builder.newConnection().setMethod("GET")
                 .appendPath("station").create();
-        connection.retrieveResponseCode();
-        List<Station> stations = connection.retrieveResponseJsonList(Station.class);
+        retrieveResponseCode(connection);
+        List<Station> stations = retrieveResponseJsonObject(connection, new TypeToken<List<Station>>(){}.getType());
         connection.disconnect();
         return stations;
     }
@@ -39,7 +100,7 @@ public class APIConnector implements API {
         Connection connection = builder.newConnection().setMethod("POST")
                 .appendPath("station").appendPath(String.valueOf(station.id))
                 .appendPath("report").create();
-        int responseCode = connection.retrieveResponseCode();
+        int responseCode = retrieveResponseCode(connection);
         connection.disconnect();
         return responseCode;
     }
@@ -49,7 +110,7 @@ public class APIConnector implements API {
         Connection connection = builder.newConnection().setMethod("POST")
                 .appendPath("station").appendPath(String.valueOf(station.id))
                 .appendPath("broken").create();
-        int responseCode = connection.retrieveResponseCode();
+        int responseCode = retrieveResponseCode(connection);
         connection.disconnect();
         return responseCode;
     }
@@ -59,7 +120,7 @@ public class APIConnector implements API {
         Connection connection = builder.newConnection().setMethod("POST")
                 .appendPath("station").appendPath(String.valueOf(station.id))
                 .appendPath("working").create();
-        int responseCode = connection.retrieveResponseCode();
+        int responseCode = retrieveResponseCode(connection);
         connection.disconnect();
         return responseCode;
     }
@@ -68,9 +129,9 @@ public class APIConnector implements API {
     private String postUser(@NonNull AuthCredentials authCredentials) throws APIException {
         Connection connection = builder.newConnection().setMethod("POST")
                 .appendPath("user").create();
-        connection.attachRequestBody(authCredentials);
-        connection.retrieveResponseCode();
-        String token = connection.retrieveResponseJsonObject(String.class);
+        attachRequestBody(connection, authCredentials);
+        retrieveResponseCode(connection);
+        String token = retrieveResponseJsonObject(connection, String.class);
         connection.disconnect();
         return token;
     }
@@ -79,9 +140,9 @@ public class APIConnector implements API {
     private Route getRoute(@NonNull RouteParameters routeParameters) throws APIException {
         Connection connection = builder.newConnection().setMethod("POST")
                 .appendPath("route").create();
-        connection.attachRequestBody(routeParameters);
-        connection.retrieveResponseCode();
-        Route route = connection.retrieveResponseJsonObject(Route.class);
+        attachRequestBody(connection, routeParameters);
+        retrieveResponseCode(connection);
+        Route route = retrieveResponseJsonObject(connection, Route.class);
         connection.disconnect();
         return route;
     }
@@ -90,8 +151,8 @@ public class APIConnector implements API {
     private SystemState getState() throws APIException {
         Connection connection = builder.newConnection().setMethod("GET")
                 .appendPath("app").appendPath("state").create();
-        connection.retrieveResponseCode();
-        SystemState systemState = connection.retrieveResponseJsonObject(SystemState.class);
+        retrieveResponseCode(connection);
+        SystemState systemState = retrieveResponseJsonObject(connection, SystemState.class);
         connection.disconnect();
         return systemState;
     }
@@ -100,7 +161,7 @@ public class APIConnector implements API {
     private Integer postState(@NonNull SystemState systemState) throws APIException {
         Connection connection = builder.newConnection().setMethod("POST")
                 .appendPath("app").appendPath("state").appendPath(systemState.toString()).create();
-        int responseCode = connection.retrieveResponseCode();
+        int responseCode = retrieveResponseCode(connection);
         connection.disconnect();
         return responseCode;
     }
@@ -108,8 +169,8 @@ public class APIConnector implements API {
     private int getNotifyThreshold() throws APIException {
         Connection connection = builder.newConnection().setMethod("GET")
                 .appendPath("app").appendPath("notify").create();
-        connection.retrieveResponseCode();
-        int threshold = connection.retrieveResponseJsonObject(Integer.class);
+        retrieveResponseCode(connection);
+        int threshold = retrieveResponseJsonObject(connection, Integer.class);
         connection.disconnect();
         return threshold;
     }
@@ -119,7 +180,7 @@ public class APIConnector implements API {
         Connection connection = builder.newConnection().setMethod("POST")
                 .appendPath("app").appendPath("notify")
                 .appendPath(String.valueOf(threshold)).create();
-        int responseCode = connection.retrieveResponseCode();
+        int responseCode = retrieveResponseCode(connection);
         connection.disconnect();
         return responseCode;
     }

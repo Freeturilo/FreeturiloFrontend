@@ -1,5 +1,6 @@
 package com.example.freeturilo.connection;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -12,15 +13,9 @@ interface Connection {
 
     OutputStream getOutputStream() throws APIException;
 
-    <T> void attachRequestBody(T object) throws APIException;
+    InputStream getInputStream() throws APIException;
 
     int getResponseCode() throws APIException;
-
-    int retrieveResponseCode() throws APIException;
-
-    <T> T retrieveResponseJsonObject(Class<T> classOfObject) throws APIException;
-
-    <T> List<T> retrieveResponseJsonList(Class<T> classOfElement) throws APIException;
 
     void disconnect();
 

@@ -1,0 +1,62 @@
+[
+  {
+    "id": 2585893,
+    "state": 0,
+    "longitude": 21.033253,
+    "latitude": 52.149506,
+    "name": "Ciszewskiego - Pileckiego",
+    "type": "Station",
+    "bikeRacks": 7,
+    "bikes": 16
+  },
+  {
+    "id": 2585919,
+    "state": 0,
+    "longitude": 20.897887,
+    "latitude": 52.220789,
+    "name": "Lazurowa - Sternicza",
+    "type": "Station",
+    "bikeRacks": 13,
+    "bikes": 10
+  },
+  {
+    "id": 2585942,
+    "state": 0,
+    "longitude": 21.056083,
+    "latitude": 52.275799,
+    "name": "Metro Trocka",
+    "type": "Station",
+    "bikeRacks": 8,
+    "bikes": 14
+  },
+  {
+    "id": 2585941,
+    "state": 0,
+    "longitude": 21.072086,
+    "latitude": 52.283569,
+    "name": "Blokowa - DK Zacisze",
+    "type": "Station",
+    "bikeRacks": 8,
+    "bikes": 24
+  },
+  {
+    "id": 2585939,
+    "state": 0,
+    "longitude": 21.025853,
+    "latitude": 52.281231,
+    "name": "Wysockiego - Matki Teresy z Kalkuty",
+    "type": "Station",
+    "bikeRacks": 5,
+    "bikes": 12
+  },
+  {
+    "id": 2585934,
+    "state": 0,
+    "longitude": 21.056987,
+    "latitude": 52.292431,
+    "name": "Kondratowicza - Przy Grodzisku",
+    "type": "Station",
+    "bikeRacks": 0,
+    "bikes": 27
+  }
+]

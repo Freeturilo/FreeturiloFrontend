@@ -1,0 +1,23 @@
+{
+  "start": {
+    "type": "Location",
+    "name": "Mieszkanie",
+    "latitude": 52.266611,
+    "longitude": 21.045194
+  },
+  "end": {
+    "type": "Favourite.SCHOOL",
+    "name": "MiNI",
+    "latitude" : 52.221990,
+    "longitude": 21.0070651
+  },
+  "stops": [
+    {
+      "type": "Location",
+      "name": "Westfield Arkadia",
+      "latitude": 52.256128,
+      "longitude": 20.985926
+    }
+  ],
+  "criterion": 1
+}
