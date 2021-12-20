@@ -20,8 +20,8 @@ public class CriterionTest {
     public static Iterable<Object[]> criteria() {
         return Arrays.asList(new Object[][] {
                 {Criterion.COST, R.string.cost_criterion_text},
-                {Criterion.HYBRID, R.string.hybrid_criterion_text},
-                {Criterion.TIME, R.string.time_criterion_text}
+                {Criterion.TIME, R.string.time_criterion_text},
+                {Criterion.HYBRID, R.string.hybrid_criterion_text}
         });
     }
 
