@@ -7,6 +7,8 @@
     android:background="@color/white"
     android:fontFamily="@font/quicksand"
     android:hint="@string/input_autocomplete_hint"
+    android:importantForAutofill="no"
+    android:inputType="textNoSuggestions"
     android:minHeight="50dp"
     android:completionThreshold="1"
     android:paddingHorizontal="10dp"

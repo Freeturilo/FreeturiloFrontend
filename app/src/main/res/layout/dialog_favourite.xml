@@ -13,7 +13,7 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/favourite_dialog_name_hint"
         android:importantForAutofill="no"
-        android:inputType="text"
+        android:inputType="textNoSuggestions"
         android:paddingHorizontal="10dp"
         android:singleLine="true"
         android:textColor="@color/black"

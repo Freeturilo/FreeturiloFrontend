@@ -93,7 +93,6 @@ public class MapActivity extends FreeturiloActivity {
         unfocus(null);
     }
 
-    @SuppressLint("PotentialBehaviorOverride")
     private void onMapReady(@NonNull GoogleMap googleMap) {
         markers.clear();
         map = googleMap;

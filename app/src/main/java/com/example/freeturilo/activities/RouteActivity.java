@@ -76,6 +76,7 @@ public class RouteActivity extends FreeturiloActivity {
             polyline.remove();
     }
 
+
     private void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,
