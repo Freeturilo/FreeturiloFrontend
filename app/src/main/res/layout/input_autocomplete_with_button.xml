@@ -28,11 +28,10 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/remove_input_button"
-        android:src="@drawable/icon_remove_stop"
+        android:src="@drawable/button_remove_stop"
         android:backgroundTint="@color/white"
-        android:layout_marginTop="10dp"
-        android:layout_height="@dimen/autocomplete_input_height"
-        android:layout_width="@dimen/autocomplete_input_height"
-        android:layout_marginLeft="@dimen/negative_autocomplete_input_height"
-        android:padding="10dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_height="@dimen/icon_autocomplete_size"
+        android:layout_width="@dimen/icon_autocomplete_size"
+        android:layout_marginLeft="@dimen/negative_icon_autocomplete_margin"/>
 </LinearLayout>

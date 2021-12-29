@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/marker_autocomplete_assigned"
+    <item android:drawable="@drawable/icon_remove_stop"
         android:width="@dimen/icon_autocomplete_size"
         android:height="@dimen/icon_autocomplete_size"/>
 </layer-list>

@@ -42,6 +42,13 @@ public class HistoryActivity extends FreeturiloActivity {
         historyListView.setAdapter(new HistoryAdapter(this, history));
     }
 
+    public void deleteHistoryItem(RouteParameters routeParameters) {
+        HistoryAdapter adapter = (HistoryAdapter) historyListView.getAdapter();
+        adapter.remove(routeParameters);
+        history.remove(routeParameters);
+        storage.saveHistoryAsync(history, new ToastStorageHandler(this));
+    }
+
     private void recreateRoute(@NonNull AdapterView<?> adapterView, @NonNull View view,
                                int position, long id) {
         RouteParameters routeParameters = history.get(position);

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/cross_remove_stop"
-        android:width="@dimen/icon_autocomplete_height"
-        android:height="@dimen/icon_autocomplete_height"/>
-</layer-list>

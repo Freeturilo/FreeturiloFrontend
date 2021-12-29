@@ -25,8 +25,8 @@
 
     <Button
         android:id="@+id/device_location_button"
-        android:layout_width="@dimen/action_button_height"
-        android:layout_height="@dimen/action_button_height"
+        android:layout_width="@dimen/action_button_size"
+        android:layout_height="@dimen/action_button_size"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/button_device_location"
@@ -37,8 +37,8 @@
 
     <Button
         android:id="@+id/set_broken_station_button"
-        android:layout_width="@dimen/action_button_height"
-        android:layout_height="@dimen/action_button_height"
+        android:layout_width="@dimen/action_button_size"
+        android:layout_height="@dimen/action_button_size"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/button_set_broken_station"
@@ -49,8 +49,8 @@
 
     <Button
         android:id="@+id/set_working_station_button"
-        android:layout_width="@dimen/action_button_height"
-        android:layout_height="@dimen/action_button_height"
+        android:layout_width="@dimen/action_button_size"
+        android:layout_height="@dimen/action_button_size"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/button_set_working_station"
@@ -61,8 +61,8 @@
 
     <Button
         android:id="@+id/report_station_button"
-        android:layout_width="@dimen/action_button_height"
-        android:layout_height="@dimen/action_button_height"
+        android:layout_width="@dimen/action_button_size"
+        android:layout_height="@dimen/action_button_size"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/button_report_station"
@@ -73,8 +73,8 @@
 
     <Button
         android:id="@+id/delete_favourite_button"
-        android:layout_width="@dimen/action_button_height"
-        android:layout_height="@dimen/action_button_height"
+        android:layout_width="@dimen/action_button_size"
+        android:layout_height="@dimen/action_button_size"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/button_delete_favourite"
@@ -85,8 +85,8 @@
 
     <Button
         android:id="@+id/edit_favourite_button"
-        android:layout_width="@dimen/action_button_height"
-        android:layout_height="@dimen/action_button_height"
+        android:layout_width="@dimen/action_button_size"
+        android:layout_height="@dimen/action_button_size"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/button_edit_favourite"

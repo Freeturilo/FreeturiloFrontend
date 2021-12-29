@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.freeturilo.R;
+import com.example.freeturilo.activities.HistoryActivity;
 import com.example.freeturilo.core.Criterion;
 import com.example.freeturilo.core.RouteParameters;
 
@@ -35,6 +37,9 @@ public class HistoryAdapter extends ArrayAdapter<RouteParameters> {
         endText.setText(routeParameters.end.name);
         TextView criterionText = convertView.findViewById(R.id.criterion_text);
         criterionText.setText(Criterion.getCriterionText(getContext(), routeParameters.criterion));
+        ImageButton deleteItemButton = convertView.findViewById(R.id.delete_history_item_button);
+        HistoryActivity activity = (HistoryActivity) getContext();
+        deleteItemButton.setOnClickListener((view) -> activity.deleteHistoryItem(routeParameters));
         return convertView;
     }
 
