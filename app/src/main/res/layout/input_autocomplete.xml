@@ -13,6 +13,7 @@
     android:completionThreshold="1"
     android:paddingHorizontal="10dp"
     android:singleLine="true"
+    android:textColor="@color/black"
     android:textColorHint="@color/strong_grey"
     android:textSize="@dimen/text_size_medium"
     android:imeOptions="actionDone"

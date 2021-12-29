@@ -26,9 +26,9 @@
     <string name="station_broken_text">niesprawna</string>
     <string name="route_create_title">Trasa</string>
     <string name="input_autocomplete_hint">Pole tekstowe dla lokalizacji</string>
-    <string name="start_point_hint">Początek trasy</string>
+    <string name="start_input_hint">Początek trasy</string>
     <string name="stop_hint">Przystanek</string>
-    <string name="end_point_hint">Koniec trasy</string>
+    <string name="end_input_hint">Koniec trasy</string>
     <string name="add_stop_text">+przystanek</string>
     <string name="cost_criterion_text">najtańsza</string>
     <string name="hybrid_criterion_text">optymalna</string>
@@ -36,7 +36,6 @@
     <string name="submit_route_text">Wyznacz</string>
     <string name="google_attribution">Atrybucja Google</string>
     <string name="specify_address_title">Czy chodziło o…</string>
-    <string name="specify_address_message" tools:ignore="Typos">Wyberz adres lokalizacji</string>
     <string name="no_address_to_specify_message">Nie zlokalizowano punktu</string>
     <string name="no_history_message">Historia tras jest niedostępna</string>
     <string name="history_title">Historia tras</string>

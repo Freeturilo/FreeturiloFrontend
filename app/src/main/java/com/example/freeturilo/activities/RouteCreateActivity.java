@@ -55,10 +55,10 @@ public class RouteCreateActivity extends FreeturiloActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_create);
-        startInput = this.findViewById(R.id.startTextView);
-        endInput = this.findViewById(R.id.endTextView);
-        initializeAutocompleteInput(startInput, R.string.start_point_hint);
-        initializeAutocompleteInput(endInput, R.string.end_point_hint);
+        startInput = this.findViewById(R.id.start_input);
+        endInput = this.findViewById(R.id.end_input);
+        initializeAutocompleteInput(startInput, R.string.start_input_hint);
+        initializeAutocompleteInput(endInput, R.string.end_input_hint);
     }
 
     private void initializeAutocompleteInput(@NonNull AutoCompleteTextView input,

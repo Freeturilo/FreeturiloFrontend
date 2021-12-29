@@ -45,11 +45,11 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <include
-                android:id="@+id/startTextView"
+                android:id="@+id/start_input"
                 layout="@layout/input_autocomplete" />
 
             <include
-                android:id="@+id/endTextView"
+                android:id="@+id/end_input"
                 layout="@layout/input_autocomplete" />
 
         </LinearLayout>
