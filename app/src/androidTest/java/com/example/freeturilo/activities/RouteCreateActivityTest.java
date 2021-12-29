@@ -110,22 +110,20 @@ public class RouteCreateActivityTest {
     }
 
     @Test
-    public void addStopButton() {
+    public void addAndRemoveStopButtons() {
         onView(withId(R.id.add_stop_button)).check(matches(allOf(
                 isDisplayed(),
                 withText(R.string.add_stop_text),
                 isClickable()
         ))).perform(click());
         onView(withId(R.id.autocomplete_inputs)).check(matches(hasChildCount(3)));
-        onView(allOf(withParent(withId(R.id.autocomplete_inputs)), withParentIndex(1)))
-                .check(matches(allOf(
-                        isDisplayed(),
-                        withHint(R.string.stop_hint))));
-        onView(withId(R.id.add_stop_button)).perform(
-                click(),
-                click()
-        ).check(matches(not(isDisplayed())));
+        onView(allOf(withId(R.id.remove_input_button), withParent(withParentIndex(1)))).perform(click());
+        onView(withId(R.id.autocomplete_inputs)).check(matches(hasChildCount(2)));
+        onView(withId(R.id.add_stop_button)).perform(click(), click(), click()).check(matches(not(isDisplayed())));
         onView(withId(R.id.autocomplete_inputs)).check(matches(hasChildCount(5)));
+        onView(allOf(withId(R.id.remove_input_button), withParent(withParentIndex(2)))).perform(click());
+        onView(withId(R.id.autocomplete_inputs)).check(matches(hasChildCount(4)));
+        onView(withId(R.id.add_stop_button)).check(matches(isDisplayed()));
     }
 
     @Test

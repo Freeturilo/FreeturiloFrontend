@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <AutoCompleteTextView
+        android:id="@+id/autocomplete_input"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/autocomplete_input_height"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:fontFamily="@font/quicksand"
+        android:hint="@string/input_autocomplete_hint"
+        android:importantForAutofill="no"
+        android:inputType="textNoSuggestions"
+        android:minHeight="50dp"
+        android:completionThreshold="1"
+        android:paddingLeft="10dp"
+        android:paddingRight="@dimen/autocomplete_input_height"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="@color/strong_grey"
+        android:textSize="@dimen/text_size_medium"
+        android:imeOptions="actionDone"
+        android:drawableLeft="@drawable/icon_autocomplete_unassigned"
+        android:drawablePadding="10dp" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/remove_input_button"
+        android:src="@drawable/icon_remove_stop"
+        android:backgroundTint="@color/white"
+        android:layout_marginTop="10dp"
+        android:layout_height="@dimen/autocomplete_input_height"
+        android:layout_width="@dimen/autocomplete_input_height"
+        android:layout_marginLeft="@dimen/negative_autocomplete_input_height"
+        android:padding="10dp"/>
+</LinearLayout>

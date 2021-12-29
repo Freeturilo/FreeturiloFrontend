@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -90,18 +91,31 @@ public class RouteCreateActivity extends FreeturiloActivity {
     }
 
     public void addStop(@NonNull View view) {
-        if (stopInputs.size() > 2)
-            return;
         if (stopInputs.size() == 2) {
             Button addStopButton = findViewById(R.id.add_stop_button);
             addStopButton.setVisibility(View.GONE);
         }
         LinearLayout autocompleteInputs = this.findViewById(R.id.autocomplete_inputs);
-        AutoCompleteTextView stopInput = (AutoCompleteTextView) getLayoutInflater()
-                .inflate(R.layout.input_autocomplete, autocompleteInputs, false);
-        autocompleteInputs.addView(stopInput, stopInputs.size() + 1);
+        LinearLayout stopInputWithButton = (LinearLayout) getLayoutInflater()
+                .inflate(R.layout.input_autocomplete_with_button, autocompleteInputs, false);
+        AutoCompleteTextView stopInput = stopInputWithButton.findViewById(R.id.autocomplete_input);
+        autocompleteInputs.addView(stopInputWithButton, stopInputs.size() + 1);
         stopInputs.add(stopInput);
         initializeAutocompleteInput(stopInput, R.string.stop_hint);
+        ImageButton imageButton = stopInputWithButton.findViewById(R.id.remove_input_button);
+        imageButton.setOnClickListener((v) -> removeStop(stopInputWithButton));
+    }
+
+    public void removeStop(@NonNull LinearLayout stopInputWithButton) {
+        if (stopInputs.size() == 3) {
+            Button addStopButton = findViewById(R.id.add_stop_button);
+            addStopButton.setVisibility(View.VISIBLE);
+        }
+        AutoCompleteTextView stopInput = stopInputWithButton.findViewById(R.id.autocomplete_input);
+        stopInputs.remove(stopInput);
+        stopInputWithButton.setVisibility(View.GONE);
+        LinearLayout autocompleteInputs = this.findViewById(R.id.autocomplete_inputs);
+        autocompleteInputs.removeView(stopInputWithButton);
     }
 
     private boolean validate() {

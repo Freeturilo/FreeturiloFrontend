@@ -39,6 +39,7 @@
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_autocomplete_assigned.xml" value="0.3" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_autocomplete_error.xml" value="0.2984375" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_autocomplete_unassigned.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_delete_stop.xml" value="0.2875" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/icon_validation_error.xml" value="0.3828125" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/item_history.xml" value="0.3015625" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/drawable/item_history_background.xml" value="0.2984375" />
@@ -64,6 +65,7 @@
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/fragment_favourite_dialog.xml" value="0.23489583333333333" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/history_list_item.xml" value="0.28541666666666665" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/input_autocomplete.xml" value="0.2838541666666667" />
+        <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/input_autocomplete_with_button.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/item_autocomplete.xml" value="0.5" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/item_history.xml" value="0.33" />
         <entry key="..\:/Users/mikol/Documents/FreeturiloFrontend/app/src/main/res/layout/item_specify_address.xml" value="0.36666666666666664" />

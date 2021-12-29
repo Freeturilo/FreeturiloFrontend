@@ -10,6 +10,7 @@
     <dimen name="purple_border_height">10dp</dimen>
     <dimen name="action_button_height">60dp</dimen>
     <dimen name="autocomplete_input_height">50dp</dimen>
+    <dimen name="negative_autocomplete_input_height">-50dp</dimen>
     <dimen name="icon_autocomplete_height">30dp</dimen>
     <dimen name="error_image_size">130dp</dimen>
 </resources>
