@@ -1,6 +1,7 @@
 package com.example.freeturilo.activities;
 
 import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.Espresso.onIdle;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -44,6 +45,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.Location;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +57,16 @@ public class RouteCreateActivityTest {
     @Rule
     public ActivityScenarioRule<RouteCreateActivity> activityScenarioRule
             = new ActivityScenarioRule<>(RouteCreateActivity.class);
+
+    @Before
+    public void setUp() {
+        Intents.init();
+    }
+
+    @After
+    public void breakDown() {
+        Intents.release();
+    }
 
     @Test
     public void startInput() {
@@ -160,10 +173,8 @@ public class RouteCreateActivityTest {
                 typeText("rondo ONZ")
         );
         onData(anything()).atPosition(0).inRoot(isPlatformPopup()).perform(click());
-        Intents.init();
         onView(withId(R.id.submit_button)).perform(click());
         intended(hasComponent(RouteActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
@@ -176,10 +187,8 @@ public class RouteCreateActivityTest {
         Thread.sleep(100);
         onView(withId(R.id.submit_button)).perform(click());
         onView(withText(R.string.specify_address_title)).check(matches(isDisplayed()));
-        Intents.init();
         onData(anything()).atPosition(0).inRoot(isDialog()).perform(click());
         intended(hasComponent(RouteActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
@@ -189,9 +198,7 @@ public class RouteCreateActivityTest {
         onView(withId(R.id.end_input)).perform(typeText("Koszykowa"));
         onData(anything()).atPosition(0).inRoot(isPlatformPopup()).perform(click());
         onView(withId(R.id.criterion_time_button)).perform(click());
-        Intents.init();
         onView(withId(R.id.submit_button)).perform(click());
         intended(hasComponent(RouteActivity.class.getName()));
-        Intents.release();
     }
 }

@@ -83,7 +83,7 @@ public class AutoCompleteTextWatcher implements TextWatcher {
             input.setAdapter(adapter);
             adapter.addAll(autoComplete);
             adapter.notifyDataSetChanged();
-            if (input.hasFocus())
+            if (input.getWindowToken() != null && input.hasFocus())
                 input.showDropDown();
         });
     }

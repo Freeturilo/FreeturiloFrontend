@@ -22,8 +22,11 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.R;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -32,6 +35,16 @@ public class LoginActivityTest {
     @Rule
     public ActivityScenarioRule<LoginActivity> activityScenarioRule
             = new ActivityScenarioRule<>(LoginActivity.class);
+
+    @Before
+    public void setUp() {
+        Intents.init();
+    }
+
+    @After
+    public void breakDown() {
+        Intents.release();
+    }
 
     @Test
     public void inputs() {
@@ -62,21 +75,17 @@ public class LoginActivityTest {
                 .check(matches(hasErrorText(context.getString(R.string.password_empty_text))));
         onView(withId(R.id.email)).perform(clearText(), typeText("admin@example.com"));
         onView(withId(R.id.password)).perform(typeText("password"));
-        Intents.init();
         onView(withId(R.id.login_button)).perform(click());
         Thread.sleep(1000);
         intended(hasComponent(ErrorActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
     public void loginButton() throws InterruptedException {
-        onView(withId(R.id.email)).perform(typeText("admin@example.com"));
-        onView(withId(R.id.password)).perform(typeText("password"));
-        Intents.init();
+        onView(withId(R.id.email)).perform(typeText(BuildConfig.ADMIN_EMAIL));
+        onView(withId(R.id.password)).perform(typeText(BuildConfig.ADMIN_PASSWORD));
         onView(withId(R.id.login_button)).perform(click());
-        Thread.sleep(1000);
-        intended(hasComponent(ErrorActivity.class.getName()));
-        Intents.release();
+        Thread.sleep(2000);
+        intended(hasComponent(AdminActivity.class.getName()));
     }
 }

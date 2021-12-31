@@ -44,7 +44,7 @@
     <string name="login_password_hint">Hasło</string>
     <string name="submit_login_text">Zaloguj</string>
     <string name="admin_title">Stan systemu</string>
-    <string name="start_state_text">stan działania</string>
+    <string name="started_state_text">stan działania</string>
     <string name="demo_state_text">stan demonstracyjny</string>
     <string name="stopped_state_text">stan zatrzymania</string>
     <string name="mail_notify_text">powiadomienia mailowe</string>
