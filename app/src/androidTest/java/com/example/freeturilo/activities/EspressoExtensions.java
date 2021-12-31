@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.isA;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Checkable;
 import android.widget.ImageView;
