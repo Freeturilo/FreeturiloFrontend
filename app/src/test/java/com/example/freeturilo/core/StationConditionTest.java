@@ -17,7 +17,7 @@ import org.robolectric.RuntimeEnvironment;
 import java.util.Arrays;
 
 @RunWith(ParameterizedRobolectricTestRunner.class)
-public class StationStateBikesTest {
+public class StationConditionTest {
 
     @ParameterizedRobolectricTestRunner.Parameters
     public static Iterable<Object[]> states() {
@@ -34,14 +34,13 @@ public class StationStateBikesTest {
         });
     }
 
-    private final int stationState;
-    private final int stationBikes;
+    private final Station station;
     private final int stateTextId;
     private final int stateMarkerId;
 
-    public StationStateBikesTest(int stationState, int stationBikes, int stateTextId, int stateMarkerId) {
-        this.stationState = stationState;
-        this.stationBikes = stationBikes;
+    public StationConditionTest(int stationState, int stationBikes, int stateTextId, int stateMarkerId) {
+        this.station = new Station("Test", 49, 51,
+                                1, 20, stationBikes, stationState);
         this.stateTextId = stateTextId;
         this.stateMarkerId = stateMarkerId;
     }
@@ -62,7 +61,7 @@ public class StationStateBikesTest {
     public void getStateText() {
         Context context = RuntimeEnvironment.getApplication();
 
-        String result = StationStateBikes.getStateBikesText(context, stationState, stationBikes);
+        String result = StationCondition.getConditionText(context, station);
 
         Assert.assertEquals(context.getString(stateTextId), result);
     }
@@ -71,7 +70,7 @@ public class StationStateBikesTest {
     public void getMarkerIcon() {
         Context context = RuntimeEnvironment.getApplication();
 
-        Bitmap result = StationStateBikes.getMarkerIcon(context, stationState, stationBikes);
+        Bitmap result = StationCondition.getMarkerIcon(context, station);
 
         assertTrue(getBitmap(context, stateMarkerId).sameAs(result));
     }

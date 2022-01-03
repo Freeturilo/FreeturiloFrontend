@@ -73,13 +73,8 @@ public class AutoCompleteTextWatcher implements TextWatcher {
         PlacesClient placesClient = Places.createClient(input.getContext());
         placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
             AutoCompleteAdapter adapter = new AutoCompleteAdapter(input.getContext(), new ArrayList<>());
-            for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
-                IdentifiedLocation idPrediction = new IdentifiedLocation(
-                        prediction.getPrimaryText(null).toString(),
-                        prediction.getSecondaryText(null).toString(),
-                        prediction.getPlaceId(), token);
-                autoComplete.add(idPrediction);
-            }
+            for (AutocompletePrediction prediction : response.getAutocompletePredictions())
+                autoComplete.add(new IdentifiedLocation(prediction, token));
             input.setAdapter(adapter);
             adapter.addAll(autoComplete);
             adapter.notifyDataSetChanged();

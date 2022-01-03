@@ -38,8 +38,10 @@ public class HistoryAdapter extends ArrayAdapter<RouteParameters> {
         TextView criterionText = convertView.findViewById(R.id.criterion_text);
         criterionText.setText(Criterion.getCriterionText(getContext(), routeParameters.criterion));
         ImageButton deleteItemButton = convertView.findViewById(R.id.delete_history_item_button);
-        HistoryActivity activity = (HistoryActivity) getContext();
-        deleteItemButton.setOnClickListener((view) -> activity.deleteHistoryItem(routeParameters));
+        if (getContext() instanceof HistoryActivity) {
+            HistoryActivity activity = (HistoryActivity) getContext();
+            deleteItemButton.setOnClickListener((view) -> activity.deleteHistoryItem(routeParameters));
+        }
         return convertView;
     }
 
