@@ -5,53 +5,65 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.example.freeturilo.R;
-import com.google.maps.model.DirectionsLeg;
-import com.google.maps.model.DirectionsRoute;
+import com.google.android.gms.maps.model.LatLngBounds;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 /**
- * A calculated bike route.
- * Object of this class represents a calculated NextBike bicycle route with
- * cost and waypoints. It encapsulates the {@link #cost}, {@link #parameters},
- * {@link #waypoints} and the corresponding Google Maps route
- * ({@link #directionsRoute}) of the route. There are multiple methods declared
- *  within the class that help represent a location with text and properties.
+ * A calculated bicycle route.
+ * Object of this class represents a calculated NextBike bicycle route
+ * composed of fragments. It encapsulates the collection of {@link #fragments}
+ * and the {@link #parameters} of calculation of the route. There are multiple
+ * methods declared within the class that help represent a route with text and
+ * properties.
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #cost
+ * @see #fragments
  * @see #parameters
- * @see #waypoints
- * @see #directionsRoute
+ * @see #getWaypoints
  * @see #getPrimaryText
  * @see #getSecondaryText
  * @see #getTertiaryText
- * @see #getTime()
- * @see #getLength()
- * @see #getCost()
- * @see RouteParameters
- * @see DirectionsRoute
+ * @see #getTime
+ * @see #getDistance
+ * @see #getCost
+ * @see #getBounds
  */
 public class Route {
     /**
-     * Stores this route's corresponding Google Maps route.
+     * Stores a collection of this route's fragments.
      */
-    public DirectionsRoute directionsRoute;
+    public List<RouteFragment> fragments;
     /**
-     * Stores a collection of this route's waypoints including
-     * the start and the end.
-     */
-    public List<Location> waypoints;
-    /**
-     * Stores the cost of covering this route with NextBike.
-     */
-    public double cost;
-    /**
-     * Stores the parameters used to calculate this route.
+     * Stores the parameters with which this route has been calculated.
      */
     public RouteParameters parameters;
+
+    /**
+     * Class constructor.
+     * @param fragments     a list of fragments that this route consists of
+     * @param parameters    a bundle of parameters of this route's calculation
+     */
+    public Route(List<RouteFragment> fragments, RouteParameters parameters) {
+        this.fragments = fragments;
+        this.parameters = parameters;
+    }
+
+    /**
+     * Gets a list of the waypoints of this route.
+     * @return          a list of locations that this route passes in order
+     *                  that they are visited in
+     */
+    public List<Location> getWaypoints() {
+        List<Location> waypoints = new ArrayList<>();
+        for(RouteFragment fragment : fragments)
+            waypoints.add(fragment.getStart());
+        waypoints.add(fragments.get(fragments.size() - 1).getEnd());
+        return waypoints;
+    }
 
     /**
      * Gets a short basic description of this route containing information
@@ -70,18 +82,18 @@ public class Route {
 
     /**
      * Gets a short description of this route containing information about
-     * its properties: length, time and cost.
+     * its properties: distance, time and cost.
      * @param context   the context of the application providing all global
      *                  information
      * @return          a string providing description of this route
      */
     @NonNull
     public String getSecondaryText(@NonNull Context context) {
-        String lengthHelper = context.getString(R.string.length_helper_text);
+        String distanceHelper = context.getString(R.string.distance_helper_text);
         String timeHelper = context.getString(R.string.time_helper_text);
         String costHelper = context.getString(R.string.cost_helper_text);
         return String.format("%s: %s | %s: %s | %s: %s",
-                lengthHelper, getLength(), timeHelper, getTime(), costHelper, getCost());
+                distanceHelper, getDistance(), timeHelper, getTime(), costHelper, getCost());
     }
 
     /**
@@ -93,66 +105,63 @@ public class Route {
     @NonNull
     public String getTertiaryText() {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < waypoints.size() - 1; i++)
-            builder.append(waypoints.get(i).name).append("\n");
-        builder.append(waypoints.get(waypoints.size() - 1).name);
+        for (RouteFragment fragment : fragments) {
+            String fragmentDetails = String.format("%s | %s | %s",
+                    fragment.getDistance(), fragment.getTime(), fragment.getCost());
+            builder.append(fragment.getStart().name).append("\n")
+                    .append("☇ ").append(fragmentDetails).append("\n");
+        }
+        builder.append(fragments.get(fragments.size() - 1).getEnd().name);
         return builder.toString();
     }
 
     /**
-     * Gets the text representation of the length of this route in the metric
-     * system.
-     * @return          a string containing this route's length in meters when
-     *                  shorter than a kilometer and in kilometers otherwise
+     * Gets the distance of this route.
+     * @return          a long equal to this route's distance in meters
      */
-    @NonNull
-    private String getLength() {
-        long lengthInMeters = 0;
-        for (DirectionsLeg leg : directionsRoute.legs)
-            lengthInMeters += leg.distance.inMeters;
-        return getLength(lengthInMeters);
+    public long getDistanceInMeters() {
+        long distanceInMeters = 0;
+        for (RouteFragment fragment : fragments)
+            distanceInMeters += fragment.getDistanceInMeters();
+        return distanceInMeters;
     }
 
     /**
-     * Gets the text representation of a length
-     * @param lengthInMeters    a long of a value equal to a length in meters
-     * @return                  a string containing the length in meters when
-     *                          shorter than a kilometer and in kilometers
-     *                          otherwise
+     * Gets the text representation of the distance of this route.
+     * @return          a string containing this route's distance in meters
+     *                  when shorter than a kilometer and in kilometers
+     *                  otherwise
      */
     @NonNull
-    private String getLength(long lengthInMeters) {
-        if (lengthInMeters < 1000)
-            return String.format(Locale.ROOT, "%d m", lengthInMeters);
+    public String getDistance() {
+        long distanceInMeters = getDistanceInMeters();
+        if (distanceInMeters < 1000)
+            return String.format(Locale.ROOT, "%d m", distanceInMeters);
         else {
-            double lengthInKilometers = lengthInMeters / 1000.0;
-            return String.format(Locale.ROOT,"%.1f km", lengthInKilometers);
+            double distanceInKilometers = distanceInMeters / 1000.0;
+            return String.format(Locale.ROOT,"%.1f km", distanceInKilometers);
         }
     }
 
     /**
-     * Gets the text representation of the duration of this route
+     * Gets the duration of this route.
+     * @return      a long equal to this route's duration in seconds
+     */
+    public long getTimeInSeconds() {
+        long timeInSeconds = 0;
+        for (RouteFragment fragment : fragments)
+            timeInSeconds += fragment.getTimeInSeconds();
+        return timeInSeconds;
+    }
+
+    /**
+     * Gets the text representation of the duration of this route.
      * @return          a string containing this route's duration in seconds
      *                  when shorter than a minute and in minutes otherwise
      */
     @NonNull
-    private String getTime() {
-        long timeInSeconds = 0;
-        for (DirectionsLeg leg : directionsRoute.legs)
-            timeInSeconds += leg.duration.inSeconds;
-        return getTime(timeInSeconds);
-    }
-
-    /**
-     * Gets the text representation of a duration
-     * @param timeInSeconds     a long of a value equal to a duration in
-     *                          seconds
-     * @return                  a string containing the duration in seconds
-     *                          when shorter than a minute and in minutes
-     *                          otherwise
-     */
-    @NonNull
-    private String getTime(long timeInSeconds) {
+    public String getTime() {
+        long timeInSeconds = getTimeInSeconds();
         if (timeInSeconds < 60)
             return "<1 min";
         else {
@@ -162,11 +171,37 @@ public class Route {
     }
 
     /**
-     * Gets the text representation of the cost of this route in zł
-     * @return          a string containing this route's cost in zł
+     * Gets the cost of this route.
+     * @return          a double equal to this route's cost in pln
+     */
+    public double getCostInPLN() {
+        double costInPLN = 0;
+        for (RouteFragment fragment : fragments)
+            costInPLN += fragment.getCostInPLN();
+        return costInPLN;
+    }
+
+    /**
+     * Gets the text representation of the cost of this route.
+     * @return          a string containing this route's cost in pln
      */
     @NonNull
-    private String getCost() {
-        return String.format(Locale.ROOT, "%.2f zł", cost);
+    public String getCost() {
+        return String.format(Locale.ROOT, "%.2f zł", getCostInPLN());
+    }
+
+    /**
+     * Gets the geographical bounds of this route.
+     * @return          a bounds object representing this route's bounds
+     */
+    @NonNull
+    public LatLngBounds getBounds() {
+        LatLngBounds fullBounds = fragments.get(0).getBounds();
+        for (RouteFragment fragment : fragments) {
+            LatLngBounds bounds = fragment.getBounds();
+            fullBounds = fullBounds.including(bounds.southwest);
+            fullBounds = fullBounds.including(bounds.northeast);
+        }
+        return fullBounds;
     }
 }

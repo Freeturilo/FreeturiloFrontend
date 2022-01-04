@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.freeturilo.core.Route;
+import com.example.freeturilo.core.RouteFragment;
 import com.example.freeturilo.core.RouteParameters;
 import com.example.freeturilo.core.Station;
 import com.example.freeturilo.core.SystemState;
@@ -70,7 +71,8 @@ public class APIConnector implements API {
         ExternalConnection connection = builder.newConnection().setMethod("GET")
                 .appendPath("station").create();
         retrieveResponseCode(connection);
-        List<Station> stations = retrieveResponseJsonObject(connection, new TypeToken<List<Station>>(){}.getType());
+        List<Station> stations = retrieveResponseJsonObject(connection,
+                new TypeToken<List<Station>>(){}.getType());
         connection.disconnect();
         return stations;
     }
@@ -122,7 +124,9 @@ public class APIConnector implements API {
                 .appendPath("route").create();
         attachRequestBody(connection, routeParameters);
         retrieveResponseCode(connection);
-        Route route = retrieveResponseJsonObject(connection, Route.class);
+        List<RouteFragment> routeFragments = retrieveResponseJsonObject(connection,
+                new TypeToken<List<RouteFragment>>(){}.getType());
+        Route route = new Route(routeFragments, routeParameters);
         connection.disconnect();
         return route;
     }

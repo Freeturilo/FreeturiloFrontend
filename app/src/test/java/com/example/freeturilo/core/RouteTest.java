@@ -1,6 +1,6 @@
 package com.example.freeturilo.core;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -9,6 +9,7 @@ import android.content.Context;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.freeturilo.R;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.model.Bounds;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsRoute;
@@ -34,6 +35,16 @@ public class RouteTest {
     private Route route;
 
     @Test
+    public void getWaypoints() {
+        List<Location> waypoints = route.getWaypoints();
+
+        for(int i = 0; i < route.fragments.size(); i++)
+            assertEquals(route.fragments.get(i).getStart(), waypoints.get(i));
+        assertEquals(route.fragments.get(route.fragments.size() - 1).getEnd(),
+                waypoints.get(waypoints.size() - 1));
+    }
+
+    @Test
     public void getPrimaryText() {
         Context context = RuntimeEnvironment.getApplication();
 
@@ -41,42 +52,47 @@ public class RouteTest {
 
         assertNotNull(result);
         assertTrue(result.toLowerCase(Locale.ROOT).contains(context.getString(R.string.route_caption_text).toLowerCase(Locale.ROOT)));
-        assertTrue(result.toLowerCase(Locale.ROOT).contains(Criterion.getCriterionText(context, route.parameters.criterion).toLowerCase(Locale.ROOT)));
+        assertTrue(result.toLowerCase(Locale.ROOT).contains(Criterion
+                .getCriterionText(context, route.parameters.criterion).toLowerCase(Locale.ROOT)));
     }
 
     @Test
     public void getSecondaryText() {
         Context context = RuntimeEnvironment.getApplication();
-        long lengthInMeters = 0;
-        for (DirectionsLeg leg : route.directionsRoute.legs)
-            lengthInMeters += leg.distance.inMeters;
-        double lengthInKilometers = lengthInMeters / 1000.0;
-
-        long timeInSeconds = 0;
-        for (DirectionsLeg leg : route.directionsRoute.legs)
-            timeInSeconds += leg.duration.inSeconds;
-        long timeInMinutes = timeInSeconds / 60;
 
         String result = route.getSecondaryText(context);
 
         assertNotNull(result);
-        assertTrue(result.contains(context.getString(R.string.length_helper_text)));
-        assertTrue(result.contains(String.format(Locale.ROOT,"%.1f km", lengthInKilometers)));
+        assertTrue(result.contains(context.getString(R.string.distance_helper_text)));
+        assertTrue(result.contains(route.getDistance()));
         assertTrue(result.contains(context.getString(R.string.time_helper_text)));
-        assertTrue(result.contains(String.format(Locale.ROOT, "%d min", timeInMinutes)));
+        assertTrue(result.contains(route.getTime()));
         assertTrue(result.contains(context.getString(R.string.cost_helper_text)));
-        assertTrue(result.contains("0.00 zł"));
-        assertFalse(result.contains("\n"));
+        assertTrue(result.contains(route.getCost()));
     }
 
     @Test
     public void getTertiaryText() {
         String result = route.getTertiaryText();
 
-        assertTrue(result.contains(route.parameters.start.name));
-        for (Location stop : route.parameters.stops)
-            assertTrue(result.contains(stop.name));
-        assertTrue(result.contains(route.parameters.end.name));
+        for(Location waypoint : route.getWaypoints())
+            assertTrue(result.contains(waypoint.name));
+        for(RouteFragment fragment : route.fragments) {
+            assertTrue(result.contains(fragment.getCost()));
+            assertTrue(result.contains(fragment.getTime()));
+            assertTrue(result.contains(fragment.getDistance()));
+        }
+    }
+
+    @Test
+    public void getBounds() {
+        LatLngBounds bounds = route.getBounds();
+
+        for (RouteFragment fragment : route.fragments) {
+            LatLngBounds fragmentBounds = fragment.getBounds();
+            assertTrue(bounds.contains(fragmentBounds.northeast));
+            assertTrue(bounds.contains(fragmentBounds.southwest));
+        }
     }
 
     @Before
@@ -89,39 +105,47 @@ public class RouteTest {
         );
         Criterion criterion = Criterion.TIME;
         RouteParameters routeParameters = new RouteParameters(start, end, stops, criterion);
-        route = new Route();
-        route.cost = 0;
-        route.parameters = routeParameters;
-        route.waypoints = new ArrayList<>();
-        route.waypoints.add(routeParameters.start);
-        route.waypoints.addAll(routeParameters.stops);
-        route.waypoints.add(routeParameters.end);
-        route.directionsRoute = new DirectionsRoute();
-        route.directionsRoute.bounds = new Bounds();
-        double westLatitude = Math.min(routeParameters.start.latitude, routeParameters.end.latitude);
-        double eastLatitude = Math.max(routeParameters.start.latitude, routeParameters.end.latitude);
-        double southLongitude = Math.min(routeParameters.start.longitude, routeParameters.end.longitude);
-        double northLongitude = Math.max(routeParameters.start.longitude, routeParameters.end.longitude);
-        route.directionsRoute.bounds.southwest = new LatLng(westLatitude, southLongitude);
-        route.directionsRoute.bounds.northeast = new LatLng(eastLatitude, northLongitude);
-        route.directionsRoute.legs = new DirectionsLeg[route.waypoints.size() - 1];
-        for (int i = 0; i < route.waypoints.size() - 1; i++) {
-            route.directionsRoute.legs[i] = new DirectionsLeg();
-            route.directionsRoute.legs[i].distance = new Distance();
-            route.directionsRoute.legs[i].distance.inMeters =
-                    Math.round(Math.sqrt(Math.pow((route.waypoints.get(i + 1).latitude - route.waypoints.get(i).latitude) * 111000, 2)
-                            + Math.pow((route.waypoints.get(i + 1).longitude - route.waypoints.get(i).longitude) * 111000, 2)));
-            route.directionsRoute.legs[i].duration = new Duration();
-            route.directionsRoute.legs[i].duration.inSeconds =
-                    Math.round(route.directionsRoute.legs[i].distance.inMeters / 5.55);
-            route.directionsRoute.legs[i].steps = new DirectionsStep[1];
-            route.directionsRoute.legs[i].steps[0] = new DirectionsStep();
-            route.directionsRoute.legs[i].steps[0].distance = route.directionsRoute.legs[i].distance;
-            route.directionsRoute.legs[i].steps[0].duration = route.directionsRoute.legs[i].duration;
+        List<RouteFragment> routeFragments = new ArrayList<>();
+        List<Location> waypoints = new ArrayList<>();
+        waypoints.add(routeParameters.start);
+        waypoints.addAll(routeParameters.stops);
+        waypoints.add(routeParameters.end);
+        for(int i = 0; i < waypoints.size() - 1; i++) {
+            RouteFragment fragment = new RouteFragment();
+            fragment.cost = 0;
+            fragment.parameters = routeParameters;
+            fragment.waypoints = new ArrayList<>();
+            fragment.waypoints.add(waypoints.get(i));
+            fragment.waypoints.add(waypoints.get(i + 1));
+            fragment.directionsRoute = new DirectionsRoute();
+            fragment.directionsRoute.bounds = new Bounds();
+            Location fragmentStart = fragment.waypoints.get(0);
+            Location fragmentEnd = fragment.waypoints.get(1);
+            double westLatitude = Math.min(fragmentStart.latitude, fragmentEnd.latitude);
+            double eastLatitude = Math.max(fragmentStart.latitude, fragmentEnd.latitude);
+            double southLongitude = Math.min(fragmentStart.longitude, fragmentEnd.longitude);
+            double northLongitude = Math.max(fragmentStart.longitude, fragmentEnd.longitude);
+            fragment.directionsRoute.bounds.southwest = new LatLng(westLatitude, southLongitude);
+            fragment.directionsRoute.bounds.northeast = new LatLng(eastLatitude, northLongitude);
+            fragment.directionsRoute.legs = new DirectionsLeg[1];
+            fragment.directionsRoute.legs[0] = new DirectionsLeg();
+            fragment.directionsRoute.legs[0].distance = new Distance();
+            fragment.directionsRoute.legs[0].distance.inMeters =
+                    Math.round(Math.sqrt(Math.pow((fragmentEnd.latitude - fragmentStart.latitude) * 111000, 2)
+                            + Math.pow((fragmentEnd.longitude - fragmentStart.longitude) * 111000, 2)));
+            fragment.directionsRoute.legs[0].duration = new Duration();
+            fragment.directionsRoute.legs[0].duration.inSeconds =
+                    Math.round(fragment.directionsRoute.legs[0].distance.inMeters / 5.55);
+            fragment.directionsRoute.legs[0].steps = new DirectionsStep[1];
+            fragment.directionsRoute.legs[0].steps[0] = new DirectionsStep();
+            fragment.directionsRoute.legs[0].steps[0].distance = fragment.directionsRoute.legs[0].distance;
+            fragment.directionsRoute.legs[0].steps[0].duration = fragment.directionsRoute.legs[0].duration;
             List<LatLng> startAndEnd = new ArrayList<>();
-            startAndEnd.add(new LatLng(route.waypoints.get(i).latitude, route.waypoints.get(i).longitude));
-            startAndEnd.add(new LatLng(route.waypoints.get(i + 1).latitude, route.waypoints.get(i + 1).longitude));
-            route.directionsRoute.legs[i].steps[0].polyline = new EncodedPolyline(startAndEnd);
+            startAndEnd.add(new LatLng(fragmentStart.latitude, fragmentStart.longitude));
+            startAndEnd.add(new LatLng(fragmentEnd.latitude, fragmentEnd.longitude));
+            fragment.directionsRoute.legs[0].steps[0].polyline = new EncodedPolyline(startAndEnd);
+            routeFragments.add(fragment);
         }
+        route = new Route(routeFragments, routeParameters);
     }
 }

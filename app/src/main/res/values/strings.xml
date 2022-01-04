@@ -57,7 +57,7 @@
     <string name="set_working_station_message">Czy chcesz oznaczyć jako sprawną stację</string>
     <string name="set_broken_station_message">Czy chcesz oznaczyć jako niesprawną stację</string>
     <string name="route_caption_text">Trasa</string>
-    <string name="length_helper_text">długość</string>
+    <string name="distance_helper_text">długość</string>
     <string name="time_helper_text">czas</string>
     <string name="cost_helper_text">koszt</string>
     <string name="error_image_description">Grafika błędu</string>

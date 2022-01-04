@@ -139,10 +139,11 @@ public class APIConnectorTest {
         assertEquals("Mieszkanie", route.parameters.start.name);
         assertTrue(route.parameters.end instanceof Favourite);
         assertEquals(Criterion.TIME, route.parameters.criterion);
-        assertEquals(1, route.cost, 0.000001);
-        assertEquals(52.2707074, route.directionsRoute.bounds.northeast.lat, 0.000001);
-        assertEquals(1, route.directionsRoute.legs.length);
-        assertEquals(28, route.directionsRoute.legs[0].steps.length);
+        assertEquals(4, route.fragments.size());
+        assertEquals(0, route.fragments.get(0).cost, 0.000001);
+        assertEquals(52.2665971, route.fragments.get(0).directionsRoute.bounds.northeast.lat, 0.000001);
+        assertEquals(1, route.fragments.get(1).directionsRoute.legs.length);
+        assertEquals(17, route.fragments.get(1).directionsRoute.legs[0].steps.length);
     }
 
     @Test

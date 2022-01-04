@@ -11,6 +11,7 @@ import com.example.freeturilo.connection.API;
 import com.example.freeturilo.connection.APIActivityHandler;
 import com.example.freeturilo.connection.APIConnector;
 import com.example.freeturilo.core.Route;
+import com.example.freeturilo.core.RouteFragment;
 import com.example.freeturilo.misc.ObjectWrapperForBinder;
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.Location;
@@ -20,7 +21,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
@@ -96,16 +96,17 @@ public class RouteActivity extends FreeturiloActivity {
 
     private void onRouteReady(@NonNull Route retrievedRoute) {
         route = retrievedRoute;
-        if (route.directionsRoute.legs != null) {
-            for (DirectionsLeg leg : route.directionsRoute.legs)
-                if (leg.steps != null) {
-                    for (DirectionsStep step : leg.steps) {
-                        List<com.google.maps.model.LatLng> decodedPath = step.polyline.decodePath();
-                        for (com.google.maps.model.LatLng point : decodedPath)
-                            path.add(new LatLng(point.lat, point.lng));
+        for(RouteFragment fragment : route.fragments)
+            if (fragment.directionsRoute.legs != null) {
+                for (DirectionsLeg leg : fragment.directionsRoute.legs)
+                    if (leg.steps != null) {
+                        for (DirectionsStep step : leg.steps) {
+                            List<com.google.maps.model.LatLng> decodedPath = step.polyline.decodePath();
+                            for (com.google.maps.model.LatLng point : decodedPath)
+                                path.add(new LatLng(point.lat, point.lng));
+                        }
                     }
-                }
-        }
+            }
     }
 
     private void onRouteReadySync(@NonNull Route retrievedRoute,
@@ -118,19 +119,14 @@ public class RouteActivity extends FreeturiloActivity {
         PolylineOptions opts = new PolylineOptions()
                 .addAll(path).color(getColor(R.color.purple_first));
         polyline = map.addPolyline(opts);
-        for (Location location : route.waypoints) {
+        for (Location location : route.getWaypoints()) {
             Marker marker = map.addMarker(location.createMarkerOptions(this));
             Objects.requireNonNull(marker).setTag(location);
             markers.add(marker);
         }
         updateBottomPanel(route.getPrimaryText(this),
                 route.getSecondaryText(this), route.getTertiaryText());
-        LatLng southwest = new LatLng(route.directionsRoute.bounds.southwest.lat,
-                route.directionsRoute.bounds.southwest.lng);
-        LatLng northeast = new LatLng(route.directionsRoute.bounds.northeast.lat,
-                route.directionsRoute.bounds.northeast.lng);
-        LatLngBounds bounds = new LatLngBounds(southwest, northeast);
-        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(route.getBounds(), 100));
         stopLoadingAnimation();
     }
 
