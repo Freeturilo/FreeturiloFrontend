@@ -46,7 +46,7 @@ public class LoginActivity extends FreeturiloActivity {
             EditText passwordInput = findViewById(R.id.password);
             String password = passwordInput.getText().toString();
             AuthCredentials authCredentials = new AuthCredentials(email, password);
-            api.postUserAsync(authCredentials, this::goToAdmin, new APIActivityHandler(this));
+            api.postUserAsync(authCredentials, this::goToAdmin, new APIActivityHandler(this, false));
         }
     }
 

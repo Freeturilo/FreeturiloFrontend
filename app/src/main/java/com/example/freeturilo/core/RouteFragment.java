@@ -13,6 +13,7 @@ import java.util.Locale;
 
 /**
  * A bicycle route fragment.
+ * <p>
  * Object of this class represents a calculated NextBike bicycle route's
  * fragment with its details. It encapsulates the {@link #cost},
  * {@link #waypoints}, {@link #parameters} of calculation and the corresponding

@@ -9,6 +9,7 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 
 /**
  * An identified geographical location.
+ * <p>
  * Object of this class represents a real-world location identified with
  * a Google Maps identifier. It is always obtained from an autocomplete
  * prediction within an autocomplete session. It encapsulates the

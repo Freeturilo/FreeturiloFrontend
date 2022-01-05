@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.Marker;
 
 /**
  * Type of a {@code Favourite} location.
+ * <p>
  * Values of this enum represent different types of user-favourite locations.
  * There are multiple static methods declared within the enum that help
  * represent a type with text or a {@code Marker}.

@@ -25,19 +25,72 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.List;
 
+/**
+ * A service for Freeturilo API data transaction.
+ * <p>
+ * Object of this class connects to Freeturilo API and handles data
+ * transactions of the application. It encapsulates a {@link #builder} that
+ * is used to build connections to various Freeturilo API endpoints.
+ *
+ * @author Mikołaj Terzyk
+ * @version 1.0.0
+ * @see #builder
+ * @see #attachRequestBody
+ * @see #retrieveResponseCode
+ * @see #retrieveResponseJsonObject
+ * @see #getStations
+ * @see #reportStation
+ * @see #setBrokenStation
+ * @see #setWorkingStation
+ * @see #postUser
+ * @see #getRoute
+ * @see #getState
+ * @see #postState
+ * @see #getNotifyThreshold
+ * @see #postNotifyThreshold
+ * @see API
+ * @see APIRunnable
+ * @see ExternalConnection
+ */
 public class APIConnector implements API {
-
+    /**
+     * Stores a builder of external connections to Freeturilo API endpoints.
+     */
     private final ExternalConnection.Builder builder;
 
+    /**
+     * Class constructor. Sets {@code builder} to the default value
+     * {@code new APIConnection.Builder()}.
+     */
     public APIConnector() {
         this.builder = new APIConnection.Builder();
     }
 
+    /**
+     * Class constructor.
+     * @param builder       an external connection builder that will be used by
+     *                      this connector to build connections to Freeturilo
+     *                      API endpoints
+     */
     public APIConnector(@NonNull ExternalConnection.Builder builder) {
         this.builder = builder;
     }
 
-    private <T> void attachRequestBody(@NonNull ExternalConnection connection, @NonNull T object) throws APIException {
+    /**
+     * Attaches an object to a request within an API connection.
+     * <p>
+     * Prepares an API connection to accept output payload, serializes an
+     * object to JSON and writes it to the output stream within the connection.
+     * @param connection    an external connection over which the object is
+     *                      sent
+     * @param object        an object to serialize to JSON and send over the
+     *                      connection
+     * @param <T>           the type of the sent object
+     * @throws APIException an exception representing an error which occurred
+     *                      when sending the object over the connection
+     */
+    private <T> void attachRequestBody(@NonNull ExternalConnection connection,
+                                       @NonNull T object) throws APIException {
         Gson gson = getFreeturiloSerializingGson();
         connection.setRequestProperty("Content-type", "application/json");
         connection.setDoOutput(true);
@@ -48,6 +101,20 @@ public class APIConnector implements API {
         catch (IOException ignored) {}
     }
 
+    /**
+     * Retrieves the response code from a response within an API connection.
+     * <p>
+     * Sends a request over an API connection and retrieves its response code.
+     * If the code is not HTTP OK (200), disconnects. This method should always
+     * be used to submit a request prepared within a connection.
+     * @param connection        an external connection which is the source of
+     *                          the response code
+     * @return                  an integer equal to the response code if it is
+     *                          equal to HTTP OK (200)
+     * @throws APIException     an exception representing an error which is
+     *                          indicated by the retrieved response code (if
+     *                          not equal to 200)
+     */
     private int retrieveResponseCode(@NonNull ExternalConnection connection) throws APIException {
         int responseCode = connection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK)
@@ -56,8 +123,23 @@ public class APIConnector implements API {
         throw new APIException(responseCode);
     }
 
+    /**
+     * Retrieves an object from a response within an API connection.
+     * <p>
+     * Reads, deserializes and returns an object from the input stream within
+     * an API connection.
+     * @param connection    an external connection which is the source of the
+     *                      object
+     * @param typeOfObject  the type of the retrieved object
+     * @param <T>           the type of the retrieved object
+     * @return              an object retrieved over the connection and
+     *                      deserialized from JSON
+     * @throws APIException an exception representing an error which occurred
+     *                      when retrieving the object over the connection
+     */
     @NonNull
-    private <T> T retrieveResponseJsonObject(@NonNull ExternalConnection connection, @NonNull Type typeOfObject) throws APIException {
+    private <T> T retrieveResponseJsonObject(@NonNull ExternalConnection connection,
+                                             @NonNull Type typeOfObject) throws APIException {
         Gson gson = getFreeturiloDeserializingGson();
         JsonReader reader = new JsonReader(new InputStreamReader(connection.getInputStream()));
         T object = gson.fromJson(reader, typeOfObject);
@@ -66,6 +148,12 @@ public class APIConnector implements API {
         return object;
     }
 
+    /**
+     * Gets a list of all bike stations.
+     * @return              a list of all NextBike bike stations
+     * @throws APIException an exception representing error that occurred in
+     *                      the API transaction
+     */
     @NonNull
     private List<Station> getStations() throws APIException {
         ExternalConnection connection = builder.newConnection().setMethod("GET")
@@ -77,6 +165,14 @@ public class APIConnector implements API {
         return stations;
     }
 
+    /**
+     * Reports a bike station.
+     * @param station       a station to be reported
+     * @return              an integer equal to the response code of the
+     *                      transaction
+     * @throws APIException an exception representing error that occurred in
+     *                      the API transaction
+     */
     @NonNull
     private Integer reportStation(@NonNull Station station) throws APIException {
         ExternalConnection connection = builder.newConnection().setMethod("POST")
@@ -87,6 +183,14 @@ public class APIConnector implements API {
         return responseCode;
     }
 
+    /**
+     * Sets a bike station state to broken.
+     * @param station       the station to be set as broken
+     * @return              an integer equal to the response code of the
+     *                      transaction
+     * @throws APIException an exception representing error that occurred in
+     *                      the API transaction
+     */
     @NonNull
     private Integer setBrokenStation(@NonNull Station station) throws APIException {
         ExternalConnection connection = builder.newConnection().setMethod("POST")
@@ -97,6 +201,14 @@ public class APIConnector implements API {
         return responseCode;
     }
 
+    /**
+     * Sets a bike station state to working.
+     * @param station       the station to be set as working
+     * @return              an integer equal to the response code of the
+     *                      transaction
+     * @throws APIException an exception representing error that occurred in
+     *                      the API transaction
+     */
     @NonNull
     private Integer setWorkingStation(@NonNull Station station) throws APIException {
         ExternalConnection connection = builder.newConnection().setMethod("POST")
@@ -107,6 +219,14 @@ public class APIConnector implements API {
         return responseCode;
     }
 
+    /**
+     * Performs an administrator authentication.
+     * @param authCredentials   a bundle of authentication credentials for
+     *                          an administrator account
+     * @return                  a string equal to an auth token
+     * @throws APIException an exception representing error that occurred in
+     *                      the API transaction
+     */
     @NonNull
     private String postUser(@NonNull AuthCredentials authCredentials) throws APIException {
         ExternalConnection connection = builder.newConnection().setMethod("POST")
@@ -118,6 +238,14 @@ public class APIConnector implements API {
         return token;
     }
 
+    /**
+     * Calculates a route with given parameters
+     * @param routeParameters   a bundle of parameters to be used in route
+     *                          calculation
+     * @return                  a route calculated with given parameters
+     * @throws APIException an exception representing error that occurred in
+     *                      the API transaction
+     */
     @NonNull
     private Route getRoute(@NonNull RouteParameters routeParameters) throws APIException {
         ExternalConnection connection = builder.newConnection().setMethod("POST")
@@ -131,6 +259,12 @@ public class APIConnector implements API {
         return route;
     }
 
+    /**
+     * Gets the system state.
+     * @return              the current system state
+     * @throws APIException an exception representing error that occurred in
+     *                      the API transaction
+     */
     @NonNull
     private SystemState getState() throws APIException {
         ExternalConnection connection = builder.newConnection().setMethod("GET")
@@ -141,6 +275,14 @@ public class APIConnector implements API {
         return systemState;
     }
 
+    /**
+     * Updates the system state.
+     * @param systemState   the value of system state to be set
+     * @return              an integer equal to the response code of the
+     *                      transaction
+     * @throws APIException an exception representing error that occurred in
+     *                      the API transaction
+     */
     @NonNull
     private Integer postState(@NonNull SystemState systemState) throws APIException {
         ExternalConnection connection = builder.newConnection().setMethod("POST")
@@ -150,6 +292,13 @@ public class APIConnector implements API {
         return responseCode;
     }
 
+    /**
+     * Gets the threshold for administrator mail notifications.
+     * @return              an integer equal to the value of the
+     *                      threshold
+     * @throws APIException an exception representing error that occurred in
+     *                      the API transaction
+     */
     private int getNotifyThreshold() throws APIException {
         ExternalConnection connection = builder.newConnection().setMethod("GET")
                 .appendPath("app").appendPath("notify").create();
@@ -159,6 +308,14 @@ public class APIConnector implements API {
         return threshold;
     }
 
+    /**
+     * Updates the threshold for administrator mail notifications.
+     * @param threshold     the value of the threshold to be set
+     * @return              an integer equal to the response code of the
+     *                      transaction
+     * @throws APIException an exception representing error that occurred in
+     *                      the API transaction
+     */
     @NonNull
     private Integer postNotifyThreshold(int threshold) throws APIException {
         ExternalConnection connection = builder.newConnection().setMethod("POST")
@@ -170,73 +327,98 @@ public class APIConnector implements API {
     }
 
     @NonNull
-    public Thread getStationsAsync(@Nullable Callback<List<Station>> callback, @Nullable APIHandler handler) {
-        Thread thread = APIRunnable.create(this::getStations).setCallback(callback).setHandler(handler).toThread();
+    public Thread getStationsAsync(@Nullable Callback<List<Station>> callback,
+                                   @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(this::getStations)
+                                    .setCallback(callback)
+                                    .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
     @NonNull
-    public Thread reportStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
-        Thread thread = APIRunnable.create(() -> reportStation(station)).setHandler(handler).toThread();
+    public Thread reportStationAsync(@NonNull Station station,
+                                     @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> reportStation(station))
+                                    .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
     @NonNull
-    public Thread setBrokenStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
-        Thread thread = APIRunnable.create(() -> setBrokenStation(station)).setHandler(handler).toThread();
+    public Thread setBrokenStationAsync(@NonNull Station station,
+                                        @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> setBrokenStation(station))
+                                    .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
     @NonNull
-    public Thread setWorkingStationAsync(@NonNull Station station, @Nullable APIHandler handler) {
-        Thread thread = APIRunnable.create(() -> setWorkingStation(station)).setHandler(handler).toThread();
+    public Thread setWorkingStationAsync(@NonNull Station station,
+                                         @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> setWorkingStation(station))
+                                    .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
     @NonNull
     public Thread postUserAsync(@NonNull AuthCredentials authCredentials,
-                              @Nullable Callback<String> callback, @Nullable APIHandler handler) {
-        Thread thread = APIRunnable.create(() -> postUser(authCredentials)).setCallback(callback).setHandler(handler).toThread();
+                                @Nullable Callback<String> callback,
+                                @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> postUser(authCredentials))
+                                    .setCallback(callback)
+                                    .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
     @NonNull
     public Thread getRouteAsync(@NonNull RouteParameters routeParameters,
-                              @Nullable Callback<Route> callback, @Nullable APIHandler handler) {
-        Thread thread = APIRunnable.create(() -> getRoute(routeParameters)).setCallback(callback).setHandler(handler).toThread();
+                                @Nullable Callback<Route> callback,
+                                @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> getRoute(routeParameters))
+                                    .setCallback(callback)
+                                    .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
     @NonNull
-    public Thread getStateAsync(@Nullable Callback<SystemState> callback, @Nullable APIHandler handler) {
-        Thread thread = APIRunnable.create(this::getState).setCallback(callback).setHandler(handler).toThread();
+    public Thread getStateAsync(@Nullable Callback<SystemState> callback,
+                                @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(this::getState)
+                                    .setCallback(callback)
+                                    .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
     @NonNull
-    public Thread postStateAsync(@NonNull SystemState systemState, @Nullable APIHandler handler) {
-        Thread thread = APIRunnable.create(() -> postState(systemState)).setHandler(handler).toThread();
+    public Thread postStateAsync(@NonNull SystemState systemState,
+                                 @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> postState(systemState))
+                                    .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
     @NonNull
-    public Thread getNotifyThresholdAsync(@Nullable Callback<Integer> callback, @Nullable APIHandler handler) {
-        Thread thread = APIRunnable.create(this::getNotifyThreshold).setCallback(callback).setHandler(handler).toThread();
+    public Thread getNotifyThresholdAsync(@Nullable Callback<Integer> callback,
+                                          @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(this::getNotifyThreshold)
+                                    .setCallback(callback)
+                                    .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
 
     @NonNull
-    public Thread postNotifyThresholdAsync(int threshold, @Nullable APIHandler handler) {
-        Thread thread = APIRunnable.create(() -> postNotifyThreshold(threshold)).setHandler(handler).toThread();
+    public Thread postNotifyThresholdAsync(int threshold,
+                                           @Nullable APIHandler handler) {
+        Thread thread = APIRunnable.create(() -> postNotifyThreshold(threshold))
+                                    .setHandler(handler).toThread();
         thread.start();
         return thread;
     }

@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * A bundle of route calculation parameters.
+ * <p>
  * Object of this class represents a bundle of parameters used in calculation
  * of a NextBike bicycle route. It encapsulates the {@link #start},
  * {@link #end} and {@link #stops} of the route and the {@link #criterion} of

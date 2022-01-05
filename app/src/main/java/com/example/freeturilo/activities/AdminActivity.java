@@ -82,7 +82,7 @@ public class AdminActivity extends FreeturiloActivity {
     }
 
     private void changeSystemState(int stateButtonId) {
-        api.postStateAsync(SystemState.getState(stateButtonId), new APIActivityHandler(this));
+        api.postStateAsync(SystemState.getState(stateButtonId), new APIActivityHandler(this, false));
     }
 
     public void showMailNotifyDialog(@NonNull View view) {
@@ -91,6 +91,6 @@ public class AdminActivity extends FreeturiloActivity {
     }
 
     private void setNotifyThreshold(int threshold) {
-        api.postNotifyThresholdAsync(threshold, new APIActivityHandler(this));
+        api.postNotifyThresholdAsync(threshold, new APIActivityHandler(this, false));
     }
 }

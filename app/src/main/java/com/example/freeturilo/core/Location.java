@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * A named geographical location.
+ * <p>
  * Object of this class represents a distinguished real-world location and
  * encapsulates information about its {@link #name}, {@link #latitude} and
  * {@link #longitude}. There are multiple methods declared within the class

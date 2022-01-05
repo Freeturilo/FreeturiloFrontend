@@ -14,6 +14,7 @@ import java.util.Locale;
 
 /**
  * A user-favourite geographical location.
+ * <p>
  * Object of this class represents a real-world location that has been
  * selected as favourite by the application user. It encapsulates the
  * {@link #name}, {@link #latitude}, {@link #longitude} and {@link #type}

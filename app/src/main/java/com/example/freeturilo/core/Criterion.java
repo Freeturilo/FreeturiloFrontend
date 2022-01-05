@@ -8,6 +8,7 @@ import com.example.freeturilo.R;
 
 /**
  * Criterion of {@code Route} calculating.
+ * <p>
  * Values of this enum represent different optimization techniques used when
  * calculating routes.
  *

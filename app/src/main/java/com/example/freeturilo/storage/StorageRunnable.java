@@ -50,4 +50,5 @@ public class StorageRunnable<T> implements Runnable {
     public Thread toThread() {
         return new Thread(this);
     }
+
 }

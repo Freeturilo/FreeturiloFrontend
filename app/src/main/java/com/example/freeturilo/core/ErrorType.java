@@ -12,6 +12,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Type of an error in communication with Freeturilo API.
+ * <p>
  * Values of this enum represent different types of errors that may occur
  * when communicating with Freeturilo API. There are multiple static methods
  * declared within the enum that help represent an error with text or an

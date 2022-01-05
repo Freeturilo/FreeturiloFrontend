@@ -6,6 +6,7 @@ import com.example.freeturilo.R;
 
 /**
  * State of the Freeturilo system.
+ * <p>
  * Values of this enum represent different states of the Freeturilo system.
  * There are static methods declared within the enum that help use it.
  *

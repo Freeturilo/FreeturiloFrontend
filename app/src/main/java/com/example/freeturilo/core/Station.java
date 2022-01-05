@@ -15,6 +15,7 @@ import java.util.Locale;
 
 /**
  * A bike station.
+ * <p>
  * Object of this class represents a NextBike station. It encapsulates
  * the {@link #name}, {@link #latitude}, {@link #longitude}, NextBike
  * identifier ({@link #id}), number of free bike racks ({@link #bikeRacks}),

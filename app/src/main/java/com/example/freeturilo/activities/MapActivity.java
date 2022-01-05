@@ -315,7 +315,7 @@ public class MapActivity extends FreeturiloActivity {
     }
 
     private void reportStation(@NonNull Station station) {
-        api.reportStationAsync(station, new APIActivityHandler(this));
+        api.reportStationAsync(station, new APIActivityHandler(this, false));
         Marker stationMarker = Objects.requireNonNull(findMarkerByLocation(station));
         markers.remove(stationMarker);
         stationMarker.remove();
@@ -338,7 +338,7 @@ public class MapActivity extends FreeturiloActivity {
     }
 
     private void setBrokenStation(@NonNull Station station) {
-        api.setBrokenStationAsync(station, new APIActivityHandler(this));
+        api.setBrokenStationAsync(station, new APIActivityHandler(this, false));
         Marker stationMarker = Objects.requireNonNull(findMarkerByLocation(station));
         markers.remove(stationMarker);
         stationMarker.remove();
@@ -361,7 +361,7 @@ public class MapActivity extends FreeturiloActivity {
     }
 
     private void setWorkingStation(@NonNull Station station) {
-        api.setWorkingStationAsync(station, new APIActivityHandler(this));
+        api.setWorkingStationAsync(station, new APIActivityHandler(this, false));
         Marker stationMarker = Objects.requireNonNull(findMarkerByLocation(station));
         markers.remove(stationMarker);
         stationMarker.remove();
