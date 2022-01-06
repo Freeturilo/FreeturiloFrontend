@@ -13,8 +13,9 @@ import com.example.freeturilo.misc.Callback;
  * <p>
  * Object of this class performs an asynchronous {@link #transaction} with
  * a {@link #callback} and an error {@link #handler}. It can be easily
- * customized and wrapped with a {@code Thread}.
+ * customized and wrapped in a {@code Thread}.
  * @param <T>   the type of payload received within the transaction
+ *              or Integer if no payload is received
  * @author Mikołaj Terzyk
  * @version 1.0.0
  * @see #transaction

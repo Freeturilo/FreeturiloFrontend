@@ -10,7 +10,7 @@ import com.example.freeturilo.core.ErrorType;
  * A handler for errors in Freeturilo API transactions compatible with dialogs.
  * <p>
  * Object of this class handles errors occurring in Freeturilo API transactions
- * that have been performed with a {@link #dialog}.
+ * that have been performed with the use of a {@link #dialog}.
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0

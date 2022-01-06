@@ -9,8 +9,9 @@ import com.example.freeturilo.core.ErrorType;
 /**
  * A handler for errors in Freeturilo API transactions compatible with
  * activities.
+ * <p>
  * Object of this class handles errors occurring in Freeturilo API transactions
- * that have been performed with an activity.
+ * that have been performed with the use of an {@link #activity}.
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0

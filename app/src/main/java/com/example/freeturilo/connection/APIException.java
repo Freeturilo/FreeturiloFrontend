@@ -21,7 +21,7 @@ public class APIException extends Exception {
 
     /**
      * Class constructor.
-     * @param responseCode      the integer indicating the cause of the failure
+     * @param responseCode      an integer indicating the cause of the failure
      *                          of the transaction which was the source of this
      *                          exception
      */

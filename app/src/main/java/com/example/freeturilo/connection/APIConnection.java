@@ -14,10 +14,31 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * A Freeturilo API connection.
+ * <p>
+ * Object of this class performs low-level operations on an HTTPS connection
+ * with Freeturilo API.
+ *
+ * @author Mikołaj Terzyk
+ * @version 1.0.0
+ * @see #connection
+ * @see ExternalConnection
+ * @see Builder
+ * @see HttpsURLConnection
+ */
 public class APIConnection implements ExternalConnection {
-
+    /**
+     * Stores the HTTPS connection used to perform data transaction with
+     * Freeturilo API.
+     */
     private final HttpsURLConnection connection;
 
+    /**
+     * Class constructor.
+     * @param connection    an HTTPS connection to be used to perform data
+     *                      transaction with an endpoint of Freeturilo API
+     */
     private APIConnection(HttpsURLConnection connection) {
         this.connection = connection;
     }
@@ -65,8 +86,28 @@ public class APIConnection implements ExternalConnection {
         connection.disconnect();
     }
 
+    /**
+     * Builder of Freeturilo API connections.
+     * <p>
+     * Object of class implementing this interface builds Freeturilo API
+     * connections with custom paths and request methods.
+     *
+     * @author Mikołaj Terzyk
+     * @version 1.0.0
+     * @see #method
+     * @see #pathFragments
+     * @see ExternalConnection.Builder
+     * @see APIConnection
+     */
     public static class Builder implements ExternalConnection.Builder {
+        /**
+         * Stores the request method for the created API connection.
+         */
         private String method = null;
+        /**
+         * Stores fragments of the path to the endpoint of the created API
+         * connection.
+         */
         private final List<String> pathFragments = new ArrayList<>();
 
         public ExternalConnection.Builder newConnection() {

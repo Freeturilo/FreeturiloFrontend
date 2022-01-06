@@ -20,7 +20,7 @@ public interface APITransaction<T> {
      * Synchronously performs the API transaction.
      *
      * @return a payload received within the transaction or an integer
-     * response code if no payload is received
+     *          response code if no payload is received
      * @throws APIException an exception representing an error which
      *                      occurred when performing the transaction
      */

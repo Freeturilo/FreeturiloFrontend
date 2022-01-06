@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * A Freeturilo API connection.
+ * An external API connection.
  * <p>
  * Object of class implementing this interface performs low-level operations in
  * an I/O connection model.
@@ -16,7 +16,7 @@ import javax.net.ssl.HttpsURLConnection;
  * support HTTP/HTTPS connections but could also be used for other types of I/O
  * connections (it is used with {@code FileStreams} for testing purposes). For
  * feasibility of understanding the methods will be described as if they were
- * methods within an HTTPConnection class.
+ * methods used for HTTP/HTTPS connections.
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
@@ -26,8 +26,9 @@ import javax.net.ssl.HttpsURLConnection;
  * @see #getOutputStream
  * @see #getInputStream
  * @see #getResponseCode
- * @see #disconnect()
+ * @see #disconnect
  * @see Builder
+ * @see APIConnection
  * @see HttpsURLConnection
  * @see HttpURLConnection
  */
@@ -89,7 +90,7 @@ interface ExternalConnection {
     void disconnect();
 
     /**
-     * Builder of Freeturilo API connections.
+     * Builder of external connections.
      * <p>
      * Object of class implementing this interface builds I/O connections with
      * custom paths and request methods.
@@ -99,7 +100,7 @@ interface ExternalConnection {
      * used for other types of I/O connections (it is used with
      * {@code FileStreams} for testing purposes). For feasibility of
      * understanding the methods will be described as if they were methods
-     * within an HTTPConnection class.
+     * used for HTTP/HTTPS connections.
      *
      * @author Mikołaj Terzyk
      * @version 1.0.0
@@ -108,6 +109,7 @@ interface ExternalConnection {
      * @see #appendPath
      * @see #create
      * @see ExternalConnection
+     * @see APIConnection.Builder
      */
     interface Builder {
         /**
@@ -132,12 +134,11 @@ interface ExternalConnection {
         Builder appendPath(String path);
 
         /**
-         * Creates an Freeturilo API connection.
+         * Creates an external connection.
          * @return          the created connection with specified path and
          *                  request method
          * @throws APIException an exception representing an error which occurred
-         *                      when trying to create the Freeturilo API
-         *                      connection
+         *                      when trying to create the external connection
          */
         ExternalConnection create() throws APIException;
     }
