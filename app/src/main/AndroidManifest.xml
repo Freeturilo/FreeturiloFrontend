@@ -21,48 +21,30 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.MapActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.freeturilo.activities.MenuActivity" />
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".activities.RouteCreateActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.freeturilo.activities.MenuActivity" />
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".activities.RouteActivity"
             android:exported="false" />
         <activity
             android:name=".activities.HistoryActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.freeturilo.activities.MenuActivity" />
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".activities.LoginActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.freeturilo.activities.MenuActivity" />
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".activities.AdminActivity"
             android:exported="false" />
         <activity
             android:name=".activities.ErrorActivity"
             android:exported="false" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
