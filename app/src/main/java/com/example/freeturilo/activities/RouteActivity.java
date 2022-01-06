@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.freeturilo.connection.API;
@@ -41,6 +42,7 @@ public class RouteActivity extends FreeturiloActivity {
     private RouteParameters routeParameters;
     private Route route;
     private Polyline polyline;
+    private boolean routeDetailsShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,27 +126,59 @@ public class RouteActivity extends FreeturiloActivity {
             Objects.requireNonNull(marker).setTag(location);
             markers.add(marker);
         }
-        updateBottomPanel(route.getPrimaryText(this),
-                route.getSecondaryText(this), route.getTertiaryText());
+        updateBottomPanelToRoute();
         map.animateCamera(CameraUpdateFactory.newLatLngBounds(route.getBounds(), 100));
         stopLoadingAnimation();
     }
 
     private void unfocus(@Nullable LatLng latLng) {
-        if (route != null)
-            updateBottomPanel(route.getPrimaryText(this),
-                    route.getSecondaryText(this), route.getTertiaryText());
-        else
-            updateBottomPanel(getString(R.string.route_caption_text), null, null);
+        updateBottomPanelToRoute();
     }
 
     private boolean focus(@NonNull Marker marker) {
         Location location = Objects.requireNonNull((Location) marker.getTag());
         LatLng latLng = new LatLng(location.latitude, location.longitude);
         map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        updateBottomPanelToLocation(location);
+        return true;
+    }
+
+    private void enableRouteDetailsExtension() {
+        LinearLayout bottomPanel = findViewById(R.id.bottom_panel);
+        bottomPanel.setOnClickListener((view) -> switchRouteDetails());
+    }
+
+    private void disableRouteDetailsExtension() {
+        LinearLayout bottomPanel = findViewById(R.id.bottom_panel);
+        bottomPanel.setOnClickListener(null);
+    }
+
+    private void switchRouteDetails() {
+        routeDetailsShown = !routeDetailsShown;
+        updateBottomPanelToRoute();
+    }
+
+    private void updateBottomPanelToLocation(Location location) {
+        disableRouteDetailsExtension();
         updateBottomPanel(location.getPrimaryText(),
                 location.getSecondaryText(this), location.getTertiaryText(this));
-        return true;
+    }
+
+    private void updateBottomPanelToRoute() {
+        if (route != null) {
+            if (routeDetailsShown)
+                updateBottomPanel(route.getPrimaryText(this),
+                        route.getSecondaryText(this),
+                        route.getTertiaryText());
+            else
+                updateBottomPanel(route.getPrimaryText(this),
+                        route.getSecondaryText(this),
+                        getString(R.string.route_details_helper));
+            enableRouteDetailsExtension();
+        }
+        else
+            updateBottomPanel(getString(R.string.route_caption_text),
+                    null, null);
     }
 
     private void updateBottomPanel(@NonNull String textPrimary, @Nullable String textSecondary,

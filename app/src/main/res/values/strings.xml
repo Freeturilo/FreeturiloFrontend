@@ -79,4 +79,5 @@
     <string name="station_almost_empty_text">niemal pusta</string>
     <string name="no_file_message">Plik jest niedostępny</string>
     <string name="history_delete_item_description">Usuwanie wpisu</string>
+    <string name="route_details_helper">Kliknij aby wyświetlić szczegóły…</string>
 </resources>

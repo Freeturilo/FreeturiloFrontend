@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/quicksand"
             android:gravity="center_horizontal"
-            android:text="@string/map_caption_text"
+            android:text="@string/route_caption_text"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_big" />
 
