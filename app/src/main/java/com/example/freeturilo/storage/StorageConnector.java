@@ -111,9 +111,10 @@ public class StorageConnector {
      *                          content
      */
     @NonNull
-    private <T> Boolean ensureFileExist(@NonNull String filename, @NonNull T defaultContent) throws StorageException {
-        InternalConnection connection = builder.setContext(context).create();
-        if (connection.checkFileAbsent(filename))
+    private <T> Boolean ensureFileExist(@NonNull String filename,
+                                        @NonNull T defaultContent) throws StorageException {
+        InternalConnection connection = builder.setFilename(filename).setContext(context).create();
+        if (connection.checkFileAbsent())
             saveToFile(filename, defaultContent);
         return true;
     }
@@ -130,10 +131,11 @@ public class StorageConnector {
      * @throws StorageException an exception representing an error which
      *                          occurred when writing the object to the file
      */
-    private <T> void saveToFile(@NonNull String filename, @NonNull T object) throws StorageException {
+    private <T> void saveToFile(@NonNull String filename,
+                                @NonNull T object) throws StorageException {
         Gson gson = getFreeturiloSerializingGson();
-        InternalConnection connection = builder.setContext(context).create();
-        OutputStream out = connection.openFileOutput(filename);
+        InternalConnection connection = builder.setFilename(filename).setContext(context).create();
+        OutputStream out = connection.openFileOutput();
         JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         gson.toJson(object, object.getClass(), writer);
         try { writer.close(); }
@@ -155,10 +157,11 @@ public class StorageConnector {
      *                          file
      */
     @NonNull
-    private <T> T loadFromFile(@NonNull String filename, @NonNull Type typeOfObject) throws StorageException {
+    private <T> T loadFromFile(@NonNull String filename,
+                               @NonNull Type typeOfObject) throws StorageException {
         Gson gson = getFreeturiloDeserializingGson();
-        InternalConnection connection = builder.setContext(context).create();
-        InputStream in = connection.openFileInput(filename);
+        InternalConnection connection = builder.setFilename(filename).setContext(context).create();
+        InputStream in = connection.openFileInput();
         JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         T object = gson.fromJson(reader, typeOfObject);
         try { reader.close(); }
@@ -244,7 +247,9 @@ public class StorageConnector {
      */
     @NonNull
     public Thread ensureFavouritesExistAsync(@Nullable StorageHandler handler) {
-        Thread thread = StorageRunnable.create(() -> ensureFileExist(FAVOURITES_FILE, new ArrayList<Favourite>())).setHandler(handler).toThread();
+        Thread thread = StorageRunnable.create(() ->
+                ensureFileExist(FAVOURITES_FILE, new ArrayList<Favourite>()))
+                .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
@@ -259,7 +264,8 @@ public class StorageConnector {
      */
     @NonNull
     public Thread saveFavouritesAsync(@NonNull List<Favourite> favourites, @Nullable StorageHandler handler) {
-        Thread thread = StorageRunnable.create(() -> saveFavourites(favourites)).setHandler(handler).toThread();
+        Thread thread = StorageRunnable.create(() ->
+                saveFavourites(favourites)).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
@@ -276,7 +282,8 @@ public class StorageConnector {
      */
     @NonNull
     public Thread loadFavouritesAsync(@Nullable Callback<List<Favourite>> callback, @Nullable StorageHandler handler) {
-        Thread thread = StorageRunnable.create(this::loadFavourites).setCallback(callback).setHandler(handler).toThread();
+        Thread thread = StorageRunnable.create(this::loadFavourites)
+                .setCallback(callback).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
@@ -291,7 +298,9 @@ public class StorageConnector {
      */
     @NonNull
     public Thread ensureHistoryExistsAsync(@Nullable StorageHandler handler) {
-        Thread thread = StorageRunnable.create(() -> ensureFileExist(HISTORY_FILE, new ArrayList<RouteParameters>())).setHandler(handler).toThread();
+        Thread thread = StorageRunnable.create(() ->
+                ensureFileExist(HISTORY_FILE, new ArrayList<RouteParameters>()))
+                .setHandler(handler).toThread();
         thread.start();
         return thread;
     }
@@ -307,7 +316,8 @@ public class StorageConnector {
      */
     @NonNull
     public Thread saveHistoryAsync(@NonNull List<RouteParameters> history, @Nullable StorageHandler handler) {
-        Thread thread = StorageRunnable.create(() -> saveHistory(history)).setHandler(handler).toThread();
+        Thread thread = StorageRunnable.create(() ->
+                saveHistory(history)).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
@@ -324,7 +334,8 @@ public class StorageConnector {
      */
     @NonNull
     public Thread loadHistoryAsync(@Nullable Callback<List<RouteParameters>> callback, @Nullable StorageHandler handler) {
-        Thread thread = StorageRunnable.create(this::loadHistory).setCallback(callback).setHandler(handler).toThread();
+        Thread thread = StorageRunnable.create(this::loadHistory)
+                .setCallback(callback).setHandler(handler).toThread();
         thread.start();
         return thread;
     }
@@ -340,7 +351,8 @@ public class StorageConnector {
      */
     @NonNull
     public Thread addToHistoryAsync(@NonNull RouteParameters routeParameters, @Nullable StorageHandler handler) {
-        Thread thread = StorageRunnable.create(() -> addToHistory(routeParameters)).setHandler(handler).toThread();
+        Thread thread = StorageRunnable.create(() ->
+                addToHistory(routeParameters)).setHandler(handler).toThread();
         thread.start();
         return thread;
     }

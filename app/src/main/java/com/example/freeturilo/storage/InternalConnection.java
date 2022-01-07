@@ -32,31 +32,28 @@ import java.io.OutputStream;
 public interface InternalConnection {
     /**
      * Gets the output stream of this connection which can be later used to
-     * write to the target file.
-     * @param filename          a string equal to the name of the target file
+     * write to the file of this connection.
      * @return                  a writeable output stream
      * @throws StorageException an exception representing an error which occurred
      *                          when trying to retrieve the output stream
      */
-    OutputStream openFileOutput(String filename) throws StorageException;
+    OutputStream openFileOutput() throws StorageException;
 
     /**
      * Gets the input stream of this connection which can be later used to read
-     * content of the source file.
-     * @param filename          a string equal to the name of the source file
+     * content of the file of this connection.
      * @return                  a readable input stream
      * @throws StorageException an exception representing an error which occurred
      *                          when trying to retrieve the input stream
      */
-    InputStream openFileInput(String filename) throws StorageException;
+    InputStream openFileInput() throws StorageException;
 
     /**
-     * Checks if the source file of this connection is absent.
-     * @param filename          a string equal to the name of the source file
+     * Checks if the file of this connection is absent.
      * @return                  a boolean defining whether the specified file
      *                          is absent
      */
-    boolean checkFileAbsent(String filename);
+    boolean checkFileAbsent();
 
     /**
      * Builder of internal connections.
@@ -74,6 +71,7 @@ public interface InternalConnection {
      * @author Mikołaj Terzyk
      * @version 1.0.0
      * @see #setContext
+     * @see #setFilename
      * @see #create
      * @see InternalConnection
      * @see StorageConnection.Builder
@@ -86,6 +84,14 @@ public interface InternalConnection {
          * @return          this builder with set context
          */
         Builder setContext(Context context);
+
+        /**
+         * Sets the filename for the created connection.
+         * @param filename  a string equal to the name of the file to be used
+         *                  by the created connection.
+         * @return          this builder with set filename
+         */
+        Builder setFilename(String filename);
 
         /**
          * Creates an internal connection.

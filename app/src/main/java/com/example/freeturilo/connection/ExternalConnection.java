@@ -74,18 +74,16 @@ interface ExternalConnection {
     InputStream getInputStream() throws APIException;
 
     /**
-     * Sends the request of this connection and gets the response code from the
-     * response.
+     * Gets the response code from the response of this connection.
      * @return              an integer equal to the response code of this
      *                      connection's response
      * @throws APIException an exception representing an error which occurred
-     *                      when trying to send the request or receive the
-     *                      response
+     *                      when trying to retrieve the response code
      */
     int getResponseCode() throws APIException;
 
     /**
-     * Ends and disposes the connection.
+     * Ends the connection.
      */
     void disconnect();
 
@@ -119,7 +117,7 @@ interface ExternalConnection {
         Builder newConnection();
 
         /**
-         * Sets the request method for the created connection.
+         * Sets the request method of the created connection.
          * @param method    a string equal to the name of a request method
          * @return          this builder with set request method
          */
@@ -135,10 +133,11 @@ interface ExternalConnection {
 
         /**
          * Creates an external connection.
-         * @return          the created connection with specified path and
-         *                  request method
-         * @throws APIException an exception representing an error which occurred
-         *                      when trying to create the external connection
+         * @return              the created connection with specified path and
+         *                      request method
+         * @throws APIException an exception representing an error which
+         *                      occurred when trying to create the external
+         *                      connection
          */
         ExternalConnection create() throws APIException;
     }

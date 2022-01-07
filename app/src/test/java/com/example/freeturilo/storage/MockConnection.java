@@ -30,21 +30,21 @@ public class MockConnection implements InternalConnection {
     }
 
     @Override
-    public InputStream openFileInput(String filename) throws StorageException {
+    public InputStream openFileInput() throws StorageException {
         if (error)
             throw new StorageException("Test");
         return inputStream;
     }
 
     @Override
-    public OutputStream openFileOutput(String filename) throws StorageException {
+    public OutputStream openFileOutput() throws StorageException {
         if (error)
             throw new StorageException("Test");
         return outputStream;
     }
 
     @Override
-    public boolean checkFileAbsent(String filename) {
+    public boolean checkFileAbsent() {
         return fileAbsent;
     }
 
@@ -77,9 +77,12 @@ public class MockConnection implements InternalConnection {
 
         @NonNull
         public InternalConnection.Builder setContext(Context context) {
-            if (error)
-                return new Builder(true);
-            return new Builder(outputStream, inputFileName, fileAbsent);
+            return this;
+        }
+
+        @Override
+        public InternalConnection.Builder setFilename(String filename) {
+            return this;
         }
 
         @NonNull

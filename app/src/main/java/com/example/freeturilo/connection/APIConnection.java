@@ -43,18 +43,45 @@ public class APIConnection implements ExternalConnection {
         this.connection = connection;
     }
 
+    /**
+     * Sets a request header of this connection.
+     * @param key       a string equal to property name
+     * @param value     a string equal to property value
+     * @see HttpsURLConnection#setRequestProperty
+     */
     public void setRequestProperty(String key, String value) {
         connection.setRequestProperty(key, value);
     }
 
+    /**
+     * Sets a flag that indicates whether the request of this connection
+     * has a body.
+     * @param doOutput  a boolean defining whether an object is or will be
+     *                  attached to this connection's request
+     * @see HttpsURLConnection#setDoOutput
+     */
     public void setDoOutput(boolean doOutput) {
         connection.setDoOutput(doOutput);
     }
 
+    /**
+     * Sets length of a chunk in chunked streaming mode.
+     * @param chunkLength   an integer equal to the length of a chunk in
+     *                      chunked streaming mode
+     * @see HttpsURLConnection#setChunkedStreamingMode
+     */
     public void setChunkedStreamingMode(int chunkLength) {
         connection.setChunkedStreamingMode(chunkLength);
     }
 
+    /**
+     * Gets the output stream of this connection which can be later used to
+     * define request body of this connection.
+     * @return              a writeable output stream
+     * @throws APIException an exception representing an error which occurred
+     *                      when trying to retrieve the output stream
+     * @see HttpsURLConnection#getOutputStream
+     */
     public OutputStream getOutputStream() throws APIException {
         try {
             return connection.getOutputStream();
@@ -64,6 +91,14 @@ public class APIConnection implements ExternalConnection {
         }
     }
 
+    /**
+     * Gets the input stream of this connection which can be later used to
+     * retrieve the payload of this connection
+     * @return              a readable input stream
+     * @throws APIException an exception representing an error which occurred
+     *                      when trying to retrieve the input stream
+     * @see HttpsURLConnection#getInputStream
+     */
     public InputStream getInputStream() throws APIException {
         try {
             return connection.getInputStream();
@@ -73,6 +108,14 @@ public class APIConnection implements ExternalConnection {
         }
     }
 
+    /**
+     * Gets the response code from the response of this connection.
+     * @return              an integer equal to the response code of this
+     *                      connection's response
+     * @throws APIException an exception representing an error which occurred
+     *                      when trying to retrieve the response code
+     * @see HttpsURLConnection#getResponseCode
+     */
     public int getResponseCode() throws APIException {
         try {
             return connection.getResponseCode();
@@ -82,6 +125,9 @@ public class APIConnection implements ExternalConnection {
         }
     }
 
+    /**
+     * Ends the connection.
+     */
     public void disconnect() {
         connection.disconnect();
     }
@@ -110,20 +156,49 @@ public class APIConnection implements ExternalConnection {
          */
         private final List<String> pathFragments = new ArrayList<>();
 
+        /**
+         * Creates a new builder.
+         * @return      a builder with reset request method and path
+         */
         public ExternalConnection.Builder newConnection() {
             return new Builder();
         }
 
+        /**
+         * Sets the request method of the created connection.
+         * @param method    a string equal to the name of a request method
+         * @return          this builder with set request method
+         */
         public ExternalConnection.Builder setMethod(String method) {
             this.method = method;
             return this;
         }
 
+        /**
+         * Appends a path fragment to the current path prepared for the created
+         * connection.
+         * @param path      a string equal to the appended path fragment
+         * @return          this builder with updated path
+         */
         public ExternalConnection.Builder appendPath(String path) {
             this.pathFragments.add(path);
             return this;
         }
 
+        /**
+         * Creates a Freeturilo API connection.
+         * <p>
+         * Creates an {@code HttpsURLConnection} to Freeturilo API with
+         * specified path, request method and auth token (if present) as
+         * header. Wraps the {@code HttpsURLConnection} in an
+         * {@code APIConnection}.
+         * @return              the created connection with specified path and
+         *                      request method
+         * @throws APIException an exception representing an error which
+         *                      occurred when trying to create the Freeturilo
+         *                      API connection
+         * @see URL#openConnection
+         */
         public ExternalConnection create() throws APIException {
             HttpsURLConnection connection = null;
             Uri.Builder builder = new Uri.Builder();
