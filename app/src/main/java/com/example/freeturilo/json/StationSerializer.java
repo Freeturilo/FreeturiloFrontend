@@ -9,8 +9,29 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
+/**
+ * Custom serializer for {@code Station}.
+ *
+ * @author Mikołaj Terzyk
+ * @version 1.0.0
+ * @see #serialize
+ * @see JsonSerializer
+ * @see Station
+ */
 public class StationSerializer implements JsonSerializer<Station> {
 
+    /**
+     * Serializes a {@code Station} to json data containing an object with
+     * {@code String type}, {@code String name}, {@code double latitude},
+     * {@code double longitude}, {@code int id}, {@code int bikeRacks},
+     * {@code int bikes} and {@code int state}, fields with the {@code type}
+     * equal to "Station".
+     * @param src           the station being serialized
+     * @param typeOfSrc     type of object to serialize (the {@code Station}
+     *                      class)
+     * @param context       serialization context
+     * @return              json data representing the station
+     */
     @Override
     public JsonElement serialize(Station src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject object = new JsonObject();

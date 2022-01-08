@@ -11,8 +11,24 @@ import com.google.gson.GsonBuilder;
 import com.google.maps.model.Distance;
 import com.google.maps.model.Duration;
 
+/**
+ * Collection of static methods that help with serialization to JSON and
+ * deserialization from JSON within data transaction with Freeturilo API.
+ *
+ * @author Mikołaj Terzyk
+ * @version 1.0.0
+ * @see #getFreeturiloSerializingGson
+ * @see #getFreeturiloDeserializingGson
+ * @see Gson
+ * @see GsonBuilder
+ */
 public class FreeturiloGson {
 
+    /**
+     * Gets a Gson instance used for serialization of objects sent to
+     * Freeturilo API within data transaction.
+     * @return      a gson instance with all required serializers registered
+     */
     public static Gson getFreeturiloSerializingGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Criterion.class, new CriterionSerializer());
@@ -23,6 +39,11 @@ public class FreeturiloGson {
         return gsonBuilder.create();
     }
 
+    /**
+     * Gets a Gson instance used for deserialization of objects received from
+     * Freeturilo API within data transaction.
+     * @return      a gson instance with all required deserializers registered
+     */
     public static Gson getFreeturiloDeserializingGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Criterion.class, new CriterionDeserializer());

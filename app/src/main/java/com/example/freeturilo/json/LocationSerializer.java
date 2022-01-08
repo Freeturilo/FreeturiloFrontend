@@ -9,8 +9,28 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
+/**
+ * Custom serializer for {@code Location}.
+ *
+ * @author Mikołaj Terzyk
+ * @version 1.0.0
+ * @see #serialize
+ * @see JsonSerializer
+ * @see Location
+ */
 public class LocationSerializer<T extends Location> implements JsonSerializer<T> {
 
+    /**
+     * Serializes a {@code Location} to json data containing an object with
+     * {@code String type}, {@code String name}, {@code double latitude} and
+     * {@code double longitude} fields with the {@code type} equal to
+     * "Location".
+     * @param src           the location being serialized
+     * @param typeOfSrc     type of object to serialize (the {@code Location}
+     *                      class)
+     * @param context       serialization context
+     * @return              json data representing the location
+     */
     @Override
     public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject object = new JsonObject();
