@@ -27,10 +27,10 @@ public class Validation {
         return input.getText().toString().isEmpty();
     }
 
-    public static boolean hasInteger(@NonNull EditText input) {
+    public static boolean hasPositiveInteger(@NonNull EditText input) {
         try {
-            Integer.parseInt(input.getText().toString());
-            return true;
+            int value = Integer.parseInt(input.getText().toString());
+            return value > 0;
         }
         catch (NumberFormatException exception) {
             return false;

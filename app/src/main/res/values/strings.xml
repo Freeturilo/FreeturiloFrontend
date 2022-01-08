@@ -7,6 +7,7 @@
     <string name="map_caption_text">Mapa</string>
     <string name="map_description">Mapa</string>
     <string name="no_favourites_message">Ulubione miejsca są niedostępne</string>
+    <string name="favourite_dialog_title">Zarządzaj ulubionym miejscem</string>
     <string name="add_favourite_dialog_title">Dodaj ulubione miejsce</string>
     <string name="edit_favourite_dialog_title">Edytuj ulubione miejsce</string>
     <string name="favourite_dialog_name_hint">Nazwa</string>

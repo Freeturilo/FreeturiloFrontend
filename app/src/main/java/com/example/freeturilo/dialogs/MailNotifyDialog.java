@@ -23,16 +23,60 @@ import com.example.freeturilo.connection.APIDialogHandler;
 import com.example.freeturilo.misc.Callback;
 import com.example.freeturilo.misc.Validation;
 
+/**
+ * A dialog for managing mail notifications.
+ * <p>
+ * Object of this class is used to manage the threshold of reports of a station
+ * at which an administrator receives a mail notification. This dialog shows a
+ * {@link #view} customized for mail notifications management. When created,
+ * retrieves the current value of the threshold from {@link #api}. When its
+ * positive button is clicked, it should eventually call the
+ * {@link #positiveCallback}.
+ *
+ * @author Mikołaj Terzyk
+ * @version 1.0.0
+ * @see #onAttach
+ * @see #onCreateDialog
+ * @see #onThresholdReady
+ * @see #onShow
+ * @see #onSwitchChange
+ * @see #onPositiveButton
+ * @see #validate
+ * @see DialogFragment
+ */
 public class MailNotifyDialog extends DialogFragment {
+    /**
+     * Stores the view shown within this dialog. Null until the dialog is
+     * attached.
+     */
     private View view;
+    /**
+     * Stores the API used by this dialog to retrieve current value of the
+     * threshold.
+     */
     private final API api;
+    /**
+     * Stores the callback that is called after clicking the positive button
+     * with the set threshold value as an argument.
+     */
     private final Callback<Integer> positiveCallback;
 
+    /**
+     * Class constructor.
+     * @param api               the API used to retrieve
+     * @param positiveCallback  a callback which is called after this dialogs
+     *                          finishes with a positive button click
+     */
     public MailNotifyDialog(API api, Callback<Integer> positiveCallback) {
         this.api = api;
         this.positiveCallback = positiveCallback;
     }
 
+    /**
+     * Attaches this dialog and sets {@link #view}.
+     * @param context       the context of the application providing all global
+     *                      information
+     */
     @SuppressLint("InflateParams")
     @Override
     public void onAttach(@NonNull Context context) {
@@ -41,6 +85,16 @@ public class MailNotifyDialog extends DialogFragment {
         view = inflater.inflate(R.layout.dialog_mail_notify, null);
     }
 
+    /**
+     * Creates this dialog.
+     * <p>
+     * Builds this dialog and initiates retrieval of current value of the
+     * threshold from {@link #api}.
+     * @param savedInstanceState    unused parameter, included for
+     *                              compatibility with {@code DialogFragment}
+     * @return                      the created {@code AlertDialog}
+     *                              representing this dialog
+     */
     @NonNull
     @Override
     public AlertDialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -57,6 +111,10 @@ public class MailNotifyDialog extends DialogFragment {
         return dialog;
     }
 
+    /**
+     * Adjusts inputs of this dialog to the retrieved value of the threshold.
+     * @param threshold     current value of the threshold retrieved from api
+     */
     private void onThresholdReady(int threshold) {
         if (getContext() == null) return;
         EditText notifyThresholdInput = view.findViewById(R.id.notify_threshold_input);
@@ -68,11 +126,21 @@ public class MailNotifyDialog extends DialogFragment {
         notifySwitch.setEnabled(true);
     }
 
+    /**
+     * Shows this dialog.
+     * @param dialog        the shown dialog
+     */
     private void onShow(@NonNull DialogInterface dialog) {
         Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener((view) -> onPositiveButton(dialog));
     }
 
+    /**
+     * Responds to a change of the switch value with UI actions.
+     * @param buttonView        the changed switch
+     * @param isChecked         a boolean indicating whether the switch is
+     *                          checked after the change
+     */
     private void onSwitchChange(@NonNull CompoundButton buttonView, boolean isChecked) {
         TextView notifyThresholdText = view.findViewById(R.id.notify_threshold_text);
         EditText notifyThresholdInput = view.findViewById(R.id.notify_threshold_input);
@@ -88,6 +156,15 @@ public class MailNotifyDialog extends DialogFragment {
         }
     }
 
+    /**
+     * Handles a positive button click.
+     * <p>
+     * Validates input data of this dialog. If validation passes, the managed
+     * {@link #positiveCallback} is called with set threshold value and this
+     * dialog is dismissed.
+     * @param dialog        the shown dialog
+     * @see #validate
+     */
     private void onPositiveButton(@NonNull DialogInterface dialog) {
         if (validate()) {
             SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
@@ -101,10 +178,18 @@ public class MailNotifyDialog extends DialogFragment {
         }
     }
 
+    /**
+     * Validates input data of this dialog.
+     * <p>
+     * If the switch is checked and threshold input does not contain a positive
+     * integer, a validation error occurs.
+     * @return              a boolean indicating whether validation has passed
+     */
     private boolean validate() {
         SwitchCompat notifySwitch = view.findViewById(R.id.notify_switch);
         EditText notifyThresholdInput = view.findViewById(R.id.notify_threshold_input);
-        if (!notifySwitch.isChecked() || Validation.hasInteger(notifyThresholdInput)) return true;
+        if (!notifySwitch.isChecked() || Validation.hasPositiveInteger(notifyThresholdInput))
+            return true;
         Validation.setInputError(requireContext(), notifyThresholdInput, R.string.threshold_invalid_text);
         return false;
     }

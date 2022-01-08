@@ -41,7 +41,7 @@ public class ValidationTest {
         EditText editText = new EditText(context);
         editText.setText("14");
 
-        assertTrue(Validation.hasInteger(editText));
+        assertTrue(Validation.hasPositiveInteger(editText));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class ValidationTest {
         EditText editText = new EditText(context);
         editText.setText("A3");
 
-        assertFalse(Validation.hasInteger(editText));
+        assertFalse(Validation.hasPositiveInteger(editText));
     }
 
     @Test

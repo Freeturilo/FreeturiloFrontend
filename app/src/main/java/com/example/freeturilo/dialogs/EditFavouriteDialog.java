@@ -1,12 +1,9 @@
 package com.example.freeturilo.dialogs;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,43 +12,46 @@ import com.example.freeturilo.R;
 import com.example.freeturilo.core.Favourite;
 import com.example.freeturilo.misc.Callback;
 
+/**
+ * A dialog for editing favourite locations.
+ * <p>
+ * Object of this class is used to edit a {@code Favourite} location.
+ *
+ * @author Mikołaj Terzyk
+ * @version 1.0.0
+ * @see #onCreateDialog
+ * @see FavouriteDialog
+ */
 public class EditFavouriteDialog extends FavouriteDialog {
-    private final Favourite favourite;
 
+    /**
+     * Class constructor.
+     * @param favourite         a favourite location to be edited
+     * @param positiveCallback  a callback which is called after this dialogs
+     *                          finishes with a positive button click
+     */
     public EditFavouriteDialog(@NonNull Favourite favourite, @NonNull Callback<Favourite> positiveCallback) {
-        super(positiveCallback);
-        this.favourite = favourite;
+        super(favourite, positiveCallback);
+        this.titleResourceId = R.string.edit_favourite_dialog_title;
+        this.positiveTextResourceId = R.string.ok_text;
+        this.negativeTextResourceId = R.string.cancel_text;
     }
 
+    /**
+     * Creates this dialog. Sets its inputs to match properties of
+     * {@link #favourite}.
+     * @param savedInstanceState    unused parameter, included for
+     *                              compatibility with {@code DialogFragment}
+     * @return                      the created {@code AlertDialog}
+     *                              representing this dialog
+     */
     @NonNull
     @Override
     public AlertDialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         EditText nameEditText = view.findViewById(R.id.name);
         nameEditText.setText(favourite.name);
-        RadioButton typeRadioButton = (RadioButton) findButtonByType(favourite.type);
+        RadioButton typeRadioButton = findButtonByType(favourite.type);
         typeRadioButton.setChecked(true);
-        AlertDialog dialog = createBuilder()
-                .setTitle(R.string.edit_favourite_dialog_title)
-                .setPositiveButton(R.string.ok_text, null)
-                .setNegativeButton(R.string.cancel_text, null)
-                .create();
-        dialog.setOnShowListener(this::onShow);
-        return dialog;
-    }
-
-    private void onShow(@NonNull DialogInterface dialog) {
-        Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setOnClickListener((view) -> onPositiveButton(dialog));
-    }
-
-    private void onPositiveButton(@NonNull DialogInterface dialog) {
-        if (validate()) {
-            EditText nameEditText = view.findViewById(R.id.name);
-            favourite.name = nameEditText.getText().toString();
-            RadioGroup typeRadioGroup = view.findViewById(R.id.favourite_buttons);
-            favourite.type = getCheckedType(typeRadioGroup);
-            positiveCallback.call(favourite);
-            dialog.dismiss();
-        }
+        return super.onCreateDialog(savedInstanceState);
     }
 }
