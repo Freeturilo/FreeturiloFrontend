@@ -22,7 +22,6 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.freeturilo.BuildConfig;
 import com.example.freeturilo.R;
 
 import org.junit.After;
@@ -30,7 +29,23 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.Objects;
+import java.util.Properties;
+
 public class LoginActivityTest {
+
+    private final String adminEmail;
+    private final String adminPassword;
+
+    public LoginActivityTest() throws IOException {
+        Properties testProperties = new Properties();
+        testProperties.load(Objects.requireNonNull(getClass().getClassLoader())
+                .getResourceAsStream("test.properties"));
+        adminEmail = testProperties.getProperty("ADMIN_EMAIL");
+        adminPassword = testProperties.getProperty("ADMIN_PASSWORD");
+    }
+
 
     @Rule
     public ActivityScenarioRule<LoginActivity> activityScenarioRule
@@ -82,8 +97,8 @@ public class LoginActivityTest {
 
     @Test
     public void loginButton() throws InterruptedException {
-        onView(withId(R.id.email)).perform(typeText(BuildConfig.ADMIN_EMAIL));
-        onView(withId(R.id.password)).perform(typeText(BuildConfig.ADMIN_PASSWORD));
+        onView(withId(R.id.email)).perform(typeText(adminEmail));
+        onView(withId(R.id.password)).perform(typeText(adminPassword));
         onView(withId(R.id.login_button)).perform(click());
         Thread.sleep(2000);
         intended(hasComponent(AdminActivity.class.getName()));
