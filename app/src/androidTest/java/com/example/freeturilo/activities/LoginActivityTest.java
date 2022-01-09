@@ -15,6 +15,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withInputType;
 import static org.hamcrest.CoreMatchers.allOf;
+import static org.junit.Assert.fail;
 
 import android.content.Context;
 
@@ -30,20 +31,25 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
 public class LoginActivityTest {
 
-    private final String adminEmail;
-    private final String adminPassword;
+    private String adminEmail;
+    private String adminPassword;
 
     public LoginActivityTest() throws IOException {
         Properties testProperties = new Properties();
-        testProperties.load(Objects.requireNonNull(getClass().getClassLoader())
-                .getResourceAsStream("test.properties"));
-        adminEmail = testProperties.getProperty("ADMIN_EMAIL");
-        adminPassword = testProperties.getProperty("ADMIN_PASSWORD");
+        InputStream testPropertiesStream =
+                Objects.requireNonNull(getClass().getClassLoader())
+                        .getResourceAsStream("test.properties");
+        if (testPropertiesStream != null) {
+            testProperties.load(testPropertiesStream);
+            adminEmail = testProperties.getProperty("ADMIN_EMAIL");
+            adminPassword = testProperties.getProperty("ADMIN_PASSWORD");
+        }
     }
 
 
@@ -97,6 +103,8 @@ public class LoginActivityTest {
 
     @Test
     public void loginButton() throws InterruptedException {
+        if (adminEmail == null || adminPassword == null)
+            fail("Admin credentials have not been specified.");
         onView(withId(R.id.email)).perform(typeText(adminEmail));
         onView(withId(R.id.password)).perform(typeText(adminPassword));
         onView(withId(R.id.login_button)).perform(click());

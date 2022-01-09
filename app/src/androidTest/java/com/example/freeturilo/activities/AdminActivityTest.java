@@ -25,6 +25,7 @@ import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.fail;
 
 import android.text.InputType;
 import android.widget.Button;
@@ -41,20 +42,25 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
 public class AdminActivityTest {
 
-    private final String adminEmail;
-    private final String adminPassword;
+    private String adminEmail;
+    private String adminPassword;
 
     public AdminActivityTest() throws IOException {
         Properties testProperties = new Properties();
-        testProperties.load(Objects.requireNonNull(getClass().getClassLoader())
-                .getResourceAsStream("test.properties"));
-        adminEmail = testProperties.getProperty("ADMIN_EMAIL");
-        adminPassword = testProperties.getProperty("ADMIN_PASSWORD");
+        InputStream testPropertiesStream =
+                Objects.requireNonNull(getClass().getClassLoader())
+                .getResourceAsStream("test.properties");
+        if (testPropertiesStream != null) {
+            testProperties.load(testPropertiesStream);
+            adminEmail = testProperties.getProperty("ADMIN_EMAIL");
+            adminPassword = testProperties.getProperty("ADMIN_PASSWORD");
+        }
     }
 
     @Rule
@@ -63,6 +69,8 @@ public class AdminActivityTest {
 
     @Before
     public void login() throws InterruptedException {
+        if (adminEmail == null || adminPassword == null)
+            fail("Admin credentials have not been specified.");
         onView(withId(R.id.email)).perform(typeText(adminEmail));
         onView(withId(R.id.password)).perform(typeText(adminPassword));
         onView(withId(R.id.login_button)).perform(click());
