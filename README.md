@@ -8,8 +8,11 @@
 ## Build
 1. Clone the repository
 2. Open the solution in Android Studio
-3. Read chapter `Module` and follow the steps
+3. Follow the pre-build steps of the `Module` chapter
 4. Build the solution
+
+## Download
+You can download the latest release of the Freeturilo mobile app [here](https://github.com/Freeturilo/FreeturiloFrontend/releases/latest).
 
 ## Tests
 
@@ -19,7 +22,7 @@ UI tests are performed on target device. Some of them will fail without administ
 Before testing, enable USB debugging in settings of the target device and connect it to the host with USB.
 To run UI tests execute `gradlew connectedAndroidTest` in the Android Studio Terminal. Reports are generated to `app\build\reports\androidTests`.
 
-## Module: Freeturilo Mobile App
+## Module: Freeturilo mobile app
  - Purpose
     
     Module provides user interface for users and administrators of the Freeturilo system.
@@ -39,6 +42,7 @@ To run UI tests execute `gradlew connectedAndroidTest` in the Android Studio Ter
     ADMIN_EMAIL=#<Email address for your admin account>
     ADMIN_PASSWORD=#<Password for your admin account>
     ```
- - Usage
+    
+ - Documentation
 
-    Enable USB debugging in settings of the target device and connect it to the host with USB. Launch the application remotely with Android Studio.
+    Documentation of this module's source code can be found in `javadoc`.
