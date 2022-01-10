@@ -35,7 +35,7 @@ public class RouteParameters {
      */
     public final List<Location> stops;
     /**
-     * Stores the criterion of the route's calculation.
+     * Stores the criterion of the route calculation.
      */
     public final Criterion criterion;
 
