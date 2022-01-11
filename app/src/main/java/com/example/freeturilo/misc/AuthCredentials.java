@@ -9,8 +9,6 @@ package com.example.freeturilo.misc;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #email
- * @see #password
  */
 public class AuthCredentials {
     /**

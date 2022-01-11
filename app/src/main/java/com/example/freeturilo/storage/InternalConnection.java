@@ -20,9 +20,6 @@ import java.io.OutputStream;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #openFileInput
- * @see #openFileOutput
- * @see #checkFileAbsent
  * @see Builder
  * @see StorageConnection
  * @see Context#openFileInput
@@ -70,9 +67,6 @@ public interface InternalConnection {
      *
      * @author Mikołaj Terzyk
      * @version 1.0.0
-     * @see #setContext
-     * @see #setFilename
-     * @see #create
      * @see InternalConnection
      * @see StorageConnection.Builder
      */

@@ -18,14 +18,6 @@ import com.google.android.gms.maps.model.Marker;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #HOME
- * @see #SCHOOL
- * @see #WORK
- * @see #OTHER
- * @see #getTypeTextId
- * @see #getTypeText
- * @see #getMarkerIconId
- * @see #getMarkerIcon
  * @see Favourite
  */
 public enum FavouriteType {

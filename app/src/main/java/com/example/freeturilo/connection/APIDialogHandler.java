@@ -14,9 +14,6 @@ import com.example.freeturilo.core.ErrorType;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #dialog
- * @see #dismissDialog
- * @see #handle
  * @see APIHandler
  * @see APIException
  * @see APIRunnable

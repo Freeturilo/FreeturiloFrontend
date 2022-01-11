@@ -8,10 +8,6 @@ import androidx.annotation.Nullable;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #token
- * @see #setToken
- * @see #getToken
- * @see #isLoggedIn
  */
 public class AuthTools {
     /**

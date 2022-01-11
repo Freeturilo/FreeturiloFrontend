@@ -8,7 +8,6 @@ package com.example.freeturilo.storage;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #handle
  * @see StorageException
  * @see StorageRunnable
  */

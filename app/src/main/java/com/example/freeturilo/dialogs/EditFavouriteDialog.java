@@ -19,7 +19,6 @@ import com.example.freeturilo.misc.Callback;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #onCreateDialog
  * @see FavouriteDialog
  */
 public class EditFavouriteDialog extends FavouriteDialog {

@@ -17,8 +17,6 @@ import com.google.maps.model.Duration;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #getFreeturiloSerializingGson
- * @see #getFreeturiloDeserializingGson
  * @see Gson
  * @see GsonBuilder
  */

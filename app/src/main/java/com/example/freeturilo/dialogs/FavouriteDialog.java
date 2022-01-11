@@ -33,15 +33,6 @@ import com.example.freeturilo.misc.Validation;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #view
- * @see #positiveCallback
- * @see #onAttach
- * @see #onCreateDialog
- * @see #onShow
- * @see #onPositiveButton
- * @see #validate
- * @see #findButtonByType
- * @see #getCheckedType
  * @see DialogFragment
  * @see AlertDialog
  */
@@ -93,7 +84,7 @@ public abstract class FavouriteDialog extends DialogFragment {
     }
 
     /**
-     * Attaches this dialog and sets {@link #view}.
+     * Called when this dialog is attached. Sets {@link #view}.
      * @param context       the context of the application providing all global
      *                      information
      */
@@ -106,7 +97,8 @@ public abstract class FavouriteDialog extends DialogFragment {
     }
 
     /**
-     * Creates this dialog. When overridden, should call super.onCreateDialog.
+     * Called when this dialog is created. When overridden, should call
+     * super.onCreateDialog.
      * @param savedInstanceState    unused parameter, included for
      *                              compatibility with {@code DialogFragment}
      * @return                      the created {@code AlertDialog}
@@ -126,7 +118,7 @@ public abstract class FavouriteDialog extends DialogFragment {
     }
 
     /**
-     * Shows this dialog.
+     * Called when this dialog is shown.
      * @param dialog        the shown dialog
      */
     protected void onShow(@NonNull DialogInterface dialog) {
@@ -135,7 +127,7 @@ public abstract class FavouriteDialog extends DialogFragment {
     }
 
     /**
-     * Handles a positive button click.
+     * Called when the positive button is clicked.
      * <p>
      * Validates input data of this dialog. If validation passes, the managed
      * {@link #favourite} is updated with input data, {@link #positiveCallback}

@@ -35,13 +35,6 @@ import java.util.Locale;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #activity
- * @see #token
- * @see #input
- * @see #customLocations
- * @see #cancellationTokenSource
- * @see #matchCustomLocations
- * @see #onTextChanged
  * @see TextWatcher
  */
 public class AutoCompleteTextWatcher implements TextWatcher {

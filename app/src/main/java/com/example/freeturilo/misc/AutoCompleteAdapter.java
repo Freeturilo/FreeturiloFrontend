@@ -26,7 +26,6 @@ import java.util.List;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #getView
  * @see ArrayAdapter
  * @see Location
  * @see AutoCompleteTextView

@@ -35,18 +35,6 @@ import java.util.List;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #FAVOURITES_FILE
- * @see #HISTORY_FILE
- * @see #context
- * @see #builder
- * @see #ensureFileExist
- * @see #saveToFile
- * @see #loadFromFile
- * @see #saveFavourites
- * @see #loadFavourites
- * @see #saveHistory
- * @see #loadHistory
- * @see #addToHistory
  * @see StorageRunnable
  * @see StorageConnection
  */

@@ -22,7 +22,6 @@ import java.util.Locale;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #type
  * @see Location
  * @see FavouriteType
  */

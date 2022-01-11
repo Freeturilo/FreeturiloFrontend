@@ -21,9 +21,6 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #details
- * @see #placeId
- * @see #token
  * @see Location
  * @see AutocompletePrediction
  * @see AutocompleteSessionToken

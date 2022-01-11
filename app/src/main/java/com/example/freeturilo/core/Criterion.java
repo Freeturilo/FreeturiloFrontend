@@ -14,10 +14,6 @@ import com.example.freeturilo.R;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #COST
- * @see #TIME
- * @see #HYBRID
- * @see #getCriterionText
  * @see Route
  * @see RouteParameters
  */

@@ -15,10 +15,6 @@ import com.google.android.gms.maps.model.Marker;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #getConditionTextId
- * @see #getConditionText
- * @see #getMarkerIconId
- * @see #getMarkerIcon
  * @see Marker
  * @see Station#state
  * @see Station#bikes

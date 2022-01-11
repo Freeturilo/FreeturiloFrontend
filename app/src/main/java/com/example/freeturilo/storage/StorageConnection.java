@@ -16,7 +16,6 @@ import java.io.OutputStream;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #context
  * @see InternalConnection
  * @see Builder
  * @see Context
@@ -98,7 +97,6 @@ public class StorageConnection implements InternalConnection {
      *
      * @author Mikołaj Terzyk
      * @version 1.0.0
-     * @see #context
      * @see InternalConnection.Builder
      * @see StorageConnection
      */

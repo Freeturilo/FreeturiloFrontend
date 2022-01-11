@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.example.freeturilo.R;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
@@ -22,16 +23,6 @@ import java.util.Locale;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #fragments
- * @see #parameters
- * @see #getWaypoints
- * @see #getPrimaryText
- * @see #getSecondaryText
- * @see #getTertiaryText
- * @see #getTime
- * @see #getDistance
- * @see #getCost
- * @see #getBounds
  * @see RouteFragment
  * @see RouteParameters
  */
@@ -206,5 +197,17 @@ public class Route {
             fullBounds = fullBounds.including(bounds.northeast);
         }
         return fullBounds;
+    }
+
+    /**
+     * Gets the path of this route.
+     * @return          a dense, ordered list of points on this route
+     */
+    @NonNull
+    public List<LatLng> getPath() {
+        List<LatLng> path = new ArrayList<>();
+        for (RouteFragment fragment : fragments)
+            path.addAll(fragment.getPath());
+        return path;
     }
 }

@@ -7,7 +7,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.model.Bounds;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.DirectionsStep;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,19 +23,6 @@ import java.util.Locale;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #cost
- * @see #parameters
- * @see #waypoints
- * @see #directionsRoute
- * @see #getStart
- * @see #getEnd
- * @see #getDistanceInMeters
- * @see #getDistance
- * @see #getTimeInSeconds
- * @see #getTime
- * @see #getCostInPLN
- * @see #getCost
- * @see #getBounds
  * @see RouteParameters
  * @see DirectionsRoute
  */
@@ -156,5 +145,21 @@ public class RouteFragment {
         LatLng southwest = new LatLng(bounds.southwest.lat, bounds.southwest.lng);
         LatLng northeast = new LatLng(bounds.northeast.lat, bounds.northeast.lng);
         return new LatLngBounds(southwest, northeast);
+    }
+
+    /**
+     * Gets the path of this route fragment.
+     * @return          a dense, ordered list of points on this fragment
+     */
+    public List<LatLng> getPath() {
+        List<LatLng> path = new ArrayList<>();
+        for (DirectionsLeg leg : directionsRoute.legs) {
+            for (DirectionsStep step : leg.steps) {
+                List<com.google.maps.model.LatLng> decodedPath = step.polyline.decodePath();
+                for (com.google.maps.model.LatLng point : decodedPath)
+                    path.add(new LatLng(point.lat, point.lng));
+            }
+        }
+        return path;
     }
 }

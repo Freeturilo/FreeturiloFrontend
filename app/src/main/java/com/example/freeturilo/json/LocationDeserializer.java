@@ -16,7 +16,6 @@ import java.lang.reflect.Type;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #deserialize
  * @see JsonDeserializer
  * @see Location
  */

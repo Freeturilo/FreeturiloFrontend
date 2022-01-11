@@ -18,8 +18,30 @@ import com.example.freeturilo.storage.StorageConnector;
 import com.example.freeturilo.storage.ToastStorageHandler;
 import com.google.android.libraries.places.api.Places;
 
-public class FreeturiloActivity extends AppCompatActivity {
+/**
+ * A parent activity for all activities of the application.
+ * <p>
+ * This is an abstract class. Object of a child class of this class is an
+ * activity within the application.
+ *
+ * @author Mikołaj Terzyk
+ * @version 1.0.0
+ * @see AppCompatActivity
+ */
+public abstract class FreeturiloActivity extends AppCompatActivity {
 
+    /**
+     * Called when this activity is created. When overridden should call
+     * super.onCreate.
+     * <p>
+     * Initializes Google Maps Places API for further requests. Ensures that
+     * the favourites file and the history file exist in Internal Storage.
+     * @param savedInstanceState    unused parameter, included for
+     *                              compatibility with
+     *                              {@code AppCompatActivity}
+     * @see Places
+     * @see StorageConnector
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,11 +51,27 @@ public class FreeturiloActivity extends AppCompatActivity {
         storage.ensureHistoryExistsAsync(new ToastStorageHandler(this));
     }
 
+    /**
+     * Sets a listener for long click of the application logo to start the
+     * {@code LoginActivity} (or {@code AdminActivity} if user is logged in).
+     * Requires that toolbar is included in the layout of this activity.
+     *
+     * @see #goToAdmin
+     */
     protected void initializeLogoForAdmin() {
         ImageView logo = findViewById(R.id.toolbar).findViewById(R.id.logo);
         logo.setOnLongClickListener(this::goToAdmin);
     }
 
+    /**
+     * Starts the {@code LoginActivity} (or {@code AdminActivity} if user is
+     * logged in).
+     * @param view          unused parameter, an imageview representing the
+     *                      application logo
+     * @return              a boolean equal to true
+     * @see LoginActivity
+     * @see AdminActivity
+     */
     protected boolean goToAdmin(@NonNull View view) {
         Intent intent;
         if (AuthTools.isLoggedIn())
@@ -44,6 +82,10 @@ public class FreeturiloActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Shows the animated loading icon. Requires that toolbar is included in
+     * the layout of this activity.
+     */
     protected void startLoadingAnimation() {
         ProgressBar progressBar = findViewById(R.id.loading);
         progressBar.setAlpha(0.0f);
@@ -51,6 +93,10 @@ public class FreeturiloActivity extends AppCompatActivity {
         progressBar.animate().alpha(1.0f).setDuration(500);
     }
 
+    /**
+     * Hides the animated loading icon. Requires that toolbar is included in
+     * the layout of this activity.
+     */
     protected void stopLoadingAnimation() {
         ProgressBar progressBar = findViewById(R.id.loading);
         progressBar.setAlpha(1.0f);

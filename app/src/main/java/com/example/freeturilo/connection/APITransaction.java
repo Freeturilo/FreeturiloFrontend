@@ -12,7 +12,6 @@ package com.example.freeturilo.connection;
  *            Integer if no payload is received
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #go
  * @see APIException
  */
 public interface APITransaction<T> {

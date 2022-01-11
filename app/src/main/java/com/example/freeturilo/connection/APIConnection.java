@@ -22,7 +22,6 @@ import javax.net.ssl.HttpsURLConnection;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #connection
  * @see ExternalConnection
  * @see Builder
  * @see HttpsURLConnection
@@ -140,8 +139,6 @@ public class APIConnection implements ExternalConnection {
      *
      * @author Mikołaj Terzyk
      * @version 1.0.0
-     * @see #method
-     * @see #pathFragments
      * @see ExternalConnection.Builder
      * @see APIConnection
      */

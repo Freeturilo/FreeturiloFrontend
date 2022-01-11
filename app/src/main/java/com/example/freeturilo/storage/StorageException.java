@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #message
  * @see Exception
  * @see StorageTransaction
  */

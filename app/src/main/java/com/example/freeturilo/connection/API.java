@@ -24,16 +24,6 @@ import java.util.List;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #getStationsAsync
- * @see #reportStationAsync
- * @see #setBrokenStationAsync
- * @see #setWorkingStationAsync
- * @see #postUserAsync
- * @see #getRouteAsync
- * @see #getStateAsync
- * @see #postStateAsync
- * @see #getNotifyThresholdAsync
- * @see #postNotifyThresholdAsync
  * @see Thread
  * @see Callback
  * @see APIHandler

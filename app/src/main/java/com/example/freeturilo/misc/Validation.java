@@ -17,10 +17,7 @@ import java.util.Objects;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #setInputError
- * @see #isEmpty
- * @see #hasPositiveInteger
- * @see #hasEmail
+ * @see EditText
  */
 public class Validation {
 

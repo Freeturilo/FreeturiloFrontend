@@ -34,20 +34,6 @@ import java.util.List;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #builder
- * @see #attachRequestBody
- * @see #retrieveResponseCode
- * @see #retrieveResponseJsonObject
- * @see #getStations
- * @see #reportStation
- * @see #setBrokenStation
- * @see #setWorkingStation
- * @see #postUser
- * @see #getRoute
- * @see #getState
- * @see #postState
- * @see #getNotifyThreshold
- * @see #postNotifyThreshold
  * @see API
  * @see APIRunnable
  * @see ExternalConnection

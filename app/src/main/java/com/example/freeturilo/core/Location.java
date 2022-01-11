@@ -19,14 +19,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #name
- * @see #latitude
- * @see #longitude
- * @see #getPrimaryText
- * @see #getSecondaryText
- * @see #getInlineSecondaryText
- * @see #getTertiaryText
- * @see #createMarkerOptions
  */
 public class Location {
     /**

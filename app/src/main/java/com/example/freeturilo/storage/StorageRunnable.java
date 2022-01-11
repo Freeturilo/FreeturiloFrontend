@@ -18,14 +18,6 @@ import com.example.freeturilo.misc.Callback;
  *              or Boolean if no payload is retrieved
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #transaction
- * @see #callback
- * @see #handler
- * @see #run
- * @see #create
- * @see #setCallback
- * @see #setHandler
- * @see #toThread
  * @see Runnable
  * @see StorageTransaction
  * @see Callback

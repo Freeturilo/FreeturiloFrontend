@@ -35,13 +35,6 @@ import com.example.freeturilo.misc.Validation;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #onAttach
- * @see #onCreateDialog
- * @see #onThresholdReady
- * @see #onShow
- * @see #onSwitchChange
- * @see #onPositiveButton
- * @see #validate
  * @see DialogFragment
  */
 public class MailNotifyDialog extends DialogFragment {
@@ -73,7 +66,7 @@ public class MailNotifyDialog extends DialogFragment {
     }
 
     /**
-     * Attaches this dialog and sets {@link #view}.
+     * Called when this dialog is attached. Sets {@link #view}.
      * @param context       the context of the application providing all global
      *                      information
      */
@@ -86,7 +79,7 @@ public class MailNotifyDialog extends DialogFragment {
     }
 
     /**
-     * Creates this dialog.
+     * Called when this dialog is created.
      * <p>
      * Builds this dialog and initiates retrieval of current value of the
      * threshold from {@link #api}.
@@ -127,7 +120,7 @@ public class MailNotifyDialog extends DialogFragment {
     }
 
     /**
-     * Shows this dialog.
+     * Called when this dialog is shown.
      * @param dialog        the shown dialog
      */
     private void onShow(@NonNull DialogInterface dialog) {
@@ -136,7 +129,7 @@ public class MailNotifyDialog extends DialogFragment {
     }
 
     /**
-     * Responds to a change of the switch value with UI actions.
+     * Called when the switch is changed.
      * @param buttonView        the changed switch
      * @param isChecked         a boolean indicating whether the switch is
      *                          checked after the change
@@ -157,9 +150,9 @@ public class MailNotifyDialog extends DialogFragment {
     }
 
     /**
-     * Handles a positive button click.
+     * Called when the positive button is clicked.
      * <p>
-     * Validates input data of this dialog. If validation passes, the managed
+     * Validates input data of this dialog. If validation passes, the
      * {@link #positiveCallback} is called with set threshold value and this
      * dialog is dismissed.
      * @param dialog        the shown dialog

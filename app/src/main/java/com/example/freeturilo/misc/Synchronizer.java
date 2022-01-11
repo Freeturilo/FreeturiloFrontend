@@ -17,9 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #counter
- * @see #callback
- * @see #decrement
  * @see AtomicInteger
  */
 public class Synchronizer {

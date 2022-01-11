@@ -9,9 +9,6 @@ import com.google.gson.JsonObject;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #equals(JsonElement, JsonElement)
- * @see #equals(JsonObject, JsonObject)
- * @see #equals(JsonArray, JsonArray)
  * @see JsonElement
  */
 public class JsonEquality {

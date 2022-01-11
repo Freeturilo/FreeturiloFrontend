@@ -15,9 +15,6 @@ import com.example.freeturilo.core.ErrorType;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #activity
- * @see #finishActivity
- * @see #handle
  * @see APIHandler
  * @see APIException
  * @see APIRunnable

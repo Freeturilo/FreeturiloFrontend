@@ -8,7 +8,6 @@ package com.example.freeturilo.connection;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #responseCode
  * @see Exception
  * @see APITransaction
  */

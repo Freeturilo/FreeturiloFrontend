@@ -12,7 +12,6 @@ package com.example.freeturilo.storage;
  *            Boolean if no payload is retrieved
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #go
  * @see StorageException
  */
 public interface StorageTransaction<T> {

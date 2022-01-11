@@ -20,15 +20,6 @@ import javax.net.ssl.HttpsURLConnection;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #NETWORK
- * @see #AUTH
- * @see #STOPPED
- * @see #SERVER
- * @see #getTypeTextId
- * @see #getTypeText
- * @see #getTypeImageId
- * @see #getTypeImage
- * @see #getType
  */
 public enum ErrorType {
     /**

@@ -15,10 +15,6 @@ import java.util.List;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #start
- * @see #end
- * @see #stops
- * @see #criterion
  * @see Route
  */
 public class RouteParameters {

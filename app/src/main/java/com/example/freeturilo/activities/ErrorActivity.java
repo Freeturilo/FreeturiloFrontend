@@ -7,9 +7,31 @@ import android.widget.TextView;
 import com.example.freeturilo.R;
 import com.example.freeturilo.core.ErrorType;
 
+/**
+ * An activity displaying an error view.
+ *
+ * @author Mikołaj Terzyk
+ * @version 1.0.0
+ * @see FreeturiloActivity
+ * @see ErrorType
+ */
 public class ErrorActivity extends FreeturiloActivity {
+    /**
+     * Stores the name of the {@code ErrorType} in the {@code Intent} used to
+     * create this activity.
+     */
     public static final String ERROR_TYPE_INTENT = "error_type";
 
+    /**
+     * Called when this activity is created.
+     * <p>
+     * Calls {@link FreeturiloActivity#onCreate}. Initializes the layout of
+     * this activity customized for {@code ErrorType} passed in the
+     * {@code Intent}.
+     * @param savedInstanceState    unused parameter, included for
+     *                              compatibility with
+     *                              {@code AppCompatActivity}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

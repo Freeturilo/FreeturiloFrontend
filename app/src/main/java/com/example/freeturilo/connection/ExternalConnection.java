@@ -20,13 +20,6 @@ import javax.net.ssl.HttpsURLConnection;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #setRequestProperty
- * @see #setDoOutput
- * @see #setChunkedStreamingMode
- * @see #getOutputStream
- * @see #getInputStream
- * @see #getResponseCode
- * @see #disconnect
  * @see Builder
  * @see APIConnection
  * @see HttpsURLConnection
@@ -102,10 +95,6 @@ interface ExternalConnection {
      *
      * @author Mikołaj Terzyk
      * @version 1.0.0
-     * @see #newConnection
-     * @see #setMethod
-     * @see #appendPath
-     * @see #create
      * @see ExternalConnection
      * @see APIConnection.Builder
      */

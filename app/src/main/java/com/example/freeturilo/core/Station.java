@@ -23,10 +23,6 @@ import java.util.Locale;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #id
- * @see #bikeRacks
- * @see #bikes
- * @see #state
  * @see Location
  * @see FavouriteType
  */

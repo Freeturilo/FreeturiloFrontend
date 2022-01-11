@@ -12,8 +12,6 @@ import androidx.fragment.app.DialogFragment;
  *
  * @author Mikołaj Terzyk
  * @version 1.0.0
- * @see #context
- * @see #handle
  * @see StorageHandler
  * @see StorageException
  * @see StorageRunnable
