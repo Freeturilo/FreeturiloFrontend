@@ -94,7 +94,7 @@
     <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="true" />
     <option name="OPTION_DOCUMENT_TAG_VERSION" value="true" />
     <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="false" />
-    <option name="OTHER_OPTIONS" value="-encoding UTF-8  -classpath C:\Users\mikol\AppData\Local\Android\Sdk\platforms\android-31\android.jar --ignore-source-errors" />
+    <option name="OTHER_OPTIONS" value="-doctitle &quot;&lt;b&gt;Freeturilo&lt;/b&gt;&lt;br&gt;&lt;i&gt;Frontend source code documentation&lt;/i&gt;&quot; -encoding UTF-8  -classpath C:\Users\mikol\AppData\Local\Android\Sdk\platforms\android-31\android.jar --ignore-source-errors" />
     <option name="OPTION_INCLUDE_LIBS" value="true" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">

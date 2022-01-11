@@ -23,7 +23,7 @@ import com.example.freeturilo.misc.Callback;
 import com.example.freeturilo.misc.Validation;
 
 /**
- * A dialog for managing favourite locations.
+ * A parent dialog for dialogs managing favourite locations.
  * <p>
  * This is an abstract class. Object of a class that is child to this class is
  * used to manage a {@link #favourite} location through an {@code AlertDialog}.
